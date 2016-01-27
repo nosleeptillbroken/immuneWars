@@ -101,6 +101,7 @@ public class Tower : MonoBehaviour
 		TargetEnemy(); // update the selected target and look at it
 		if (selectedTarget){ // if there's any target in the range...
 			transform.LookAt(selectedTarget); // aim at it
+			transform.eulerAngles = new Vector3(0,transform.eulerAngles.y,0);
 			//print(selectedTarget);
 			if (Time.time >= shootTime){ // if it's time to shoot...
 				GameObject bulletObj = Instantiate<GameObject>(Resources.Load(Game.GetPrefabLocation("Bullet")) as GameObject);
