@@ -16,10 +16,13 @@ public class bullet : MonoBehaviour {
 	// Update is called once per frame
 	 void Update () 
 	{
-		Vector3 targetDir = towerTarget.position - transform.position;
-		Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, 0.033f, 0.0f);
-		transform.rotation = Quaternion.LookRotation(newDir);
-		transform.Translate(Vector3.forward * bulletSpeed * Time.deltaTime);
+		if (towerTarget) {
+			Vector3 targetDir = towerTarget.position - transform.position;
+			Vector3 newDir = Vector3.RotateTowards (transform.forward, targetDir, 2.0f, 0.0f);
+			transform.rotation = Quaternion.LookRotation (newDir);
+			transform.Translate (Vector3.forward * bulletSpeed * Time.deltaTime);
+		}
+	
 	}
 	void OnCollisionEnter(Collision col){
 		if (col.gameObject.CompareTag("Enemy")){
@@ -30,4 +33,5 @@ public class bullet : MonoBehaviour {
 		}
 		Destroy(gameObject); // bullet suicides after hitting anything
 	}
+	
 }

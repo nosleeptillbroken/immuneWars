@@ -18,6 +18,9 @@ public class Tower : MonoBehaviour
 	public List<Transform> targets;
 	public Transform selectedTarget;
 	private Transform myTransform;
+	public bool hit = false;
+	Vector3 distance;
+	float dist = 12;
 	[SerializeField] private float bulletSpeed;
 
     // List of towers in use (STATIC: list is the same for all towers)
@@ -27,9 +30,9 @@ public class Tower : MonoBehaviour
     // Tower ID in list;
     int id = -1;
 
-    public int range;
-    public float fireSpeed;
-    public float damage;
+    //public int range;
+    //public float fireSpeed;
+   // public float damage;
 
     // Returns a tower from towerList
     public static Tower GetTowerByIndex(int i)
@@ -68,8 +71,9 @@ public class Tower : MonoBehaviour
     }
 
 	void OnTriggerEnter(Collider other){
-		if (other.tag == "Enemy"){ // only enemies are added to the target list!
+		if (other.tag == "Enemy"){ // only objects with tag 'Enemy' are added to the target list!
 			targets.Add(other.transform);
+			other.gameObject.GetComponent<enemy_movement_sample> ().listIndex = targets.Count-1;
 			print(targets);
 		}
 	}
@@ -77,22 +81,50 @@ public class Tower : MonoBehaviour
 	void OnTriggerExit(Collider other){
 		if (other.tag == "Enemy"){
 			targets.Remove(other.transform);
+			other.gameObject.GetComponent<enemy_movement_sample> ().listIndex = -1;
 		}
 	}
 
 	public void TargetEnemy(){
 
-		if (selectedTarget == null){ // if target destroyed or not selected yet...
-			SortTargetsByDistance();  // select the closest one
-			if (targets.Count > 0) selectedTarget = targets[0];    
-		}
+		if (selectedTarget == null) { // if target destroyed or not selected yet...
+			SortTargetsByDistance ();  // select the closest one
+			if (targets.Count > 0)
+				selectedTarget = targets [0];    
+		} 
 	}
 
 	public void SortTargetsByDistance(){
-		targets.Sort(delegate(Transform t1, Transform t2){ 
+		/*targets.Sort(delegate(Transform t1, Transform t2)
+			{ 
 			//return Vector3.Distance(t1.position, myTransform.position).CompareTo(Vector3.Distance(t2.position, myTransform.position));
 			return Vector3.Distance(t1.position, myTransform.position).CompareTo(Vector3.Distance(t2.position, myTransform.position));
-		});
+		});*/
+
+		for (int e = 0; e < targets.Count - 1; e++) {
+
+			if (targets [e + 0] == null) {
+				targets.RemoveAt (e + 0);
+				e -= 1;
+				continue;
+			}
+
+			if (targets [e + 1] == null) {
+				targets.RemoveAt (e + 1);
+				e -= 1;
+				continue;
+			}
+
+			float sqrMag1 = (targets [e + 0].position - myTransform.position).sqrMagnitude;
+			float sqrMag2 = (targets [e + 1].position - myTransform.position).sqrMagnitude;
+
+			if (sqrMag2 < sqrMag1) {
+				Transform tempStore = targets [e];
+				targets [e] = targets [e + 1];
+				targets [e + 1] = tempStore;
+				e = 0;
+			}
+		}
 	}
 
 
@@ -105,16 +137,11 @@ public class Tower : MonoBehaviour
 			transform.eulerAngles = new Vector3(0,transform.eulerAngles.y,0);
 			//print(selectedTarget);
 			if (Time.time >= shootTime){ // if it's time to shoot...
-				GameObject bulletObj = Instantiate<GameObject>(Resources.Load(Game.GetPrefabLocation("Bullet")) as GameObject);
+				GameObject bulletObj = Instantiate<GameObject>(Resources.Load(Game.GetPrefabLocation("Bullet")) as GameObject); //instantiates the bullet to shoot
 				bulletObj.transform.position = bulletSpawn.position;
 				bulletObj.transform.rotation = bulletSpawn.rotation;
 				bulletObj.GetComponent<bullet>().towerTarget = selectedTarget.transform;
 				bulletObj.GetComponent<bullet>().bulletSpeed = bulletSpeed;
-				//Rigidbody bullet = bulletObj.GetComponent<Rigidbody>();
-
-				//bullet.transform.position = Vector3.Lerp(bulletSpawn.position ,selectedTarget.transform.position,speed);
-				//bullet.velocity = (selectedTarget.position - bulletSpawn.position).normalized * speed; 
-				//bullet.AddForce(transform.forward*speed); // shoot in the target direction
 				shootTime = Time.time + shotInterval; // set time for next shot
 			}
 		}

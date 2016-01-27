@@ -8,6 +8,9 @@ public class enemy_movement_sample : MonoBehaviour {
 	public float max=6f;
 	public float Health = 50;
 	public Tower _TurretScript;
+
+	[HideInInspector]
+	public int listIndex = -1;
 	// Use this for initialization
 	void Start () {
 		//Debug.Log ("HIIIIIIII",gameObject);
@@ -21,8 +24,11 @@ public class enemy_movement_sample : MonoBehaviour {
 		Health -= damage;
 		if (Health <= 0) {
 			//_TurretScript.SortTargetsByDistance ();
+
+			//_TurretScript.targets.RemoveAt (listIndex);
+
 			Destroy(gameObject);
-			//_TurretScript.targets.Remove(GameObject.FindGameObjectWithTag("Enemy").transform);
+
 			//_TurretScript.selectedTarget = _TurretScript.targets [0];
 
 
