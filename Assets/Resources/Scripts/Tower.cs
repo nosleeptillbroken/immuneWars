@@ -18,6 +18,7 @@ public class Tower : MonoBehaviour
 	public List<Transform> targets;
 	public Transform selectedTarget;
 	private Transform myTransform;
+	[SerializeField] private float bulletSpeed;
 
     // List of towers in use (STATIC: list is the same for all towers)
     static List<Tower> towerList = new List<Tower>(128);
@@ -107,11 +108,13 @@ public class Tower : MonoBehaviour
 				GameObject bulletObj = Instantiate<GameObject>(Resources.Load(Game.GetPrefabLocation("Bullet")) as GameObject);
 				bulletObj.transform.position = bulletSpawn.position;
 				bulletObj.transform.rotation = bulletSpawn.rotation;
-				Rigidbody bullet = bulletObj.GetComponent<Rigidbody>();
+				bulletObj.GetComponent<bullet>().towerTarget = selectedTarget.transform;
+				bulletObj.GetComponent<bullet>().bulletSpeed = bulletSpeed;
+				//Rigidbody bullet = bulletObj.GetComponent<Rigidbody>();
 
-				bullet.transform.position = Vector3.Lerp(bulletSpawn.position ,selectedTarget.transform.position,speed);
+				//bullet.transform.position = Vector3.Lerp(bulletSpawn.position ,selectedTarget.transform.position,speed);
 				//bullet.velocity = (selectedTarget.position - bulletSpawn.position).normalized * speed; 
-				bullet.AddForce(transform.forward*speed); // shoot in the target direction
+				//bullet.AddForce(transform.forward*speed); // shoot in the target direction
 				shootTime = Time.time + shotInterval; // set time for next shot
 			}
 		}

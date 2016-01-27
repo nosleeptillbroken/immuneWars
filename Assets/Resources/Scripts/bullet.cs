@@ -2,17 +2,13 @@
 using System.Collections;
 
 public class bullet : MonoBehaviour {
-	public bool hit = false;
-	public float min=1f;
-	public float max=12f;
+	public Transform towerTarget;
 	public Tower _TurretScript;
-	public Vector3 bulletman;
+	public float bulletSpeed;
 
 	// Use this for initialization
 	void Start () {
-		min=transform.position.x;
-		max=transform.position.x+6;
-		//bulletman = _TurretScript.selectedTarget.transform.position;
+		
 	}
 
 
@@ -20,9 +16,10 @@ public class bullet : MonoBehaviour {
 	// Update is called once per frame
 	 void Update () 
 	{
-		
-		//transform.Translate(Vector3.forward * 10.0f * Time.deltaTime);
-
+		Vector3 targetDir = towerTarget.position - transform.position;
+		Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, 0.033f, 0.0f);
+		transform.rotation = Quaternion.LookRotation(newDir);
+		transform.Translate(Vector3.forward * bulletSpeed * Time.deltaTime);
 	}
 	void OnCollisionEnter(Collision col){
 		if (col.gameObject.CompareTag("Enemy")){
