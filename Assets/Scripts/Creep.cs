@@ -18,10 +18,7 @@ public class Creep : MonoBehaviour
     /// How much damage the unit inflicts when it successfully leaks through.
     /// </summary>
     public int LeakDamage = 1;
-
-	[HideInInspector]
-	public int listIndex = -1;
-    
+        
 	// Use this for initialization
 	void Start ()
     {

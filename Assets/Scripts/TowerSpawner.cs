@@ -8,7 +8,7 @@ public class TowerSpawner : MonoBehaviour
     /// <summary>
     /// The current tower to spawn. Switch this tower to a different name, and create a new prefab in the Assets/Prefabs folder with the same name to change the tower
     /// </summary>
-    public string towerName = "GenericTower";
+    public GameObject selectedTower;
 
     /// <summary>
     /// Minimum Y value towers can spawn at
@@ -26,14 +26,14 @@ public class TowerSpawner : MonoBehaviour
             first = false;
 
             // Load the ghost from the tower prefab
-            ghost = Instantiate(Resources.Load(towerName) as GameObject);
+            ghost = Instantiate(selectedTower);
 
             // Destroy tower components so it's not functional
             Destroy(ghost.GetComponent<CapsuleCollider>());
             Destroy(ghost.GetComponent<Tower>());
 
             // 
-            ghost.GetComponent<MeshRenderer>().material = new Material(Shader.Find("Transparent/Diffuse"));
+            ghost.GetComponent<MeshRenderer>().material = Resources.Load("Ghost") as Material;
             ghost.name = "Tower Ghost";
             ghost.layer = 1;
 
@@ -48,7 +48,7 @@ public class TowerSpawner : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         // If raycast collides
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~LayerMask.GetMask("Towers"))) // ignore towers in raycast so they don't obstruct terrain
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~(LayerMask.GetMask("Towers") + LayerMask.GetMask("Creeps")))) // ignore towers in raycast so they don't obstruct terrain
         {
             // Make the ghost appear
             ghost.SetActive(true);
@@ -62,18 +62,18 @@ public class TowerSpawner : MonoBehaviour
 
 
             // Load the new tower's prefab
-            GameObject newTowerObj = Resources.Load(towerName) as GameObject;
+            GameObject newTowerObj = selectedTower;
 
             // Check if the tower would collide with any other towers
             bool collidesWithtower = false;
             if (newTowerObj != null)
             {
                 // Get tower's collider component
-                CapsuleCollider collider = newTowerObj.GetComponent<CapsuleCollider>();
+                CapsuleCollider capCollider = newTowerObj.GetComponent<CapsuleCollider>();
 
                 // Casts a sphere at the collision point that is the same radius as the tower's collider
                 // Returns true if colliding with tower
-                collidesWithtower = Physics.CheckSphere(hit.point, collider.radius * newTowerObj.transform.localScale.z, ~LayerMask.GetMask("Terrain")/*ignore terrain colliders*/);
+                collidesWithtower = Physics.CheckSphere(hit.point, capCollider.radius * newTowerObj.transform.localScale.z, ~LayerMask.GetMask("Terrain")/*ignore terrain colliders*/, QueryTriggerInteraction.Ignore/*ignore range volumes*/);
 
                 // if tower does not collide
                 if (!collidesWithtower && hit.point.y > minYHeight)

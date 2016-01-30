@@ -7,26 +7,31 @@ using System.Collections.Generic;
 public class Tower : MonoBehaviour
 {
 
-	[Range(0.0f,10.0f)]
-	public float shotInterval = 0.5f; // interval between shots
-	public Rigidbody bulletPrefab; // drag the bullet prefab here
+    // bullet type this tower uses
+	public Rigidbody bulletPrefab;
+    // spawn point of the bullet
 	public Transform bulletSpawn;
-	[Range(0.0f,10000.0f)]
-	public float speed = 1000.0f;
-	public float shootSpeed = 1.0f;
-	private float shootTime = 0.0f;
+
+    // list of potential targets
 	public List<Transform> targets;
-	public Transform selectedTarget;
-	private Transform myTransform;
-	public bool hit = false;
-	Vector3 distance;
-	float dist = 12;
-	[SerializeField] private float bulletSpeed;
+    // current target (based on sort settings)
+	public Transform currentTarget;
+    
+    // shots per second
+    public float rateOfFire = 1.0f;
+    // speed of the bullet
+    public float bulletSpeed;
+    
+    // time since last shot
+    private float elapsedTime = 0.0f;
+    // time between shots, in seconds
+    private float shotInterval = 0.0f;
 
     // List of towers in use (STATIC: list is the same for all towers)
     static List<Tower> towerList = new List<Tower>(128);
     // Count of towers (STATIC)
     static int towerCount = 0;
+
     // Tower ID in list;
     int id = -1;
 
@@ -55,9 +60,13 @@ public class Tower : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        // initialize targets
 		targets = new List<Transform>();
-		selectedTarget = null;
-		myTransform = transform;
+		currentTarget = null;
+
+        shotInterval = 1 / rateOfFire;
+        
+        // add this tower to the tower list and set id
         towerList.Add(this);
         id = towerList.Count-1;
         gameObject.name = "Tower " + Id() + " (" + gameObject.name + ")";
@@ -65,96 +74,120 @@ public class Tower : MonoBehaviour
 
     void OnDestroy()
     {
+        // remove from the tower list and reset id
         towerList.Remove(this);
         towerCount -= 1;
         id = -1;
     }
 
-	void OnTriggerEnter(Collider other)
+    /// <summary>
+    /// Called when an enemy enters tower's range volume
+    /// </summary>
+    /// <param name="other"></param>
+	public void OnRangeEnter(Collider other)
     {
-		if (other.tag == "Enemy") // only objects with tag 'Enemy' are added to the target list!
+		if (other.CompareTag("Enemy")) // only objects with tag 'Enemy' are added to the target list!
         { 
+            // add enemy to targets
 			targets.Add(other.transform);
-			other.gameObject.GetComponent<Creep> ().listIndex = targets.Count-1;
-			print(targets);
 		}
 	}
 
-	void OnTriggerExit(Collider other)
+    /// <summary>
+    /// Called when an enemy leaves tower's range volume
+    /// </summary>
+    /// <param name="other"></param>
+    public void OnRangeExit(Collider other)
     {
-		if (other.tag == "Enemy")
+		if (other.CompareTag("Enemy"))
         {
+            // remove enemy from targets
 			targets.Remove(other.transform);
-			other.gameObject.GetComponent<Creep> ().listIndex = -1;
+            currentTarget = null;
 		}
+
+        // target new enemy
+        TargetEnemy();
 	}
 
+    /// <summary>
+    /// Tells the tower to target the next enemy
+    /// </summary>
 	public void TargetEnemy()
     {
 
-		if (selectedTarget == null) { // if target destroyed or not selected yet...
+		if (currentTarget == null) { // if target destroyed or not selected yet...
 			SortTargetsByDistance ();  // select the closest one
 			if (targets.Count > 0)
-				selectedTarget = targets [0];    
+				currentTarget = targets [0];    
 		} 
 	}
 
+    /// <summary>
+    /// Sorts targets by distance
+    /// </summary>
 	public void SortTargetsByDistance()
     {
-		/*targets.Sort(delegate(Transform t1, Transform t2)
-			{ 
-			//return Vector3.Distance(t1.position, myTransform.position).CompareTo(Vector3.Distance(t2.position, myTransform.position));
-			return Vector3.Distance(t1.position, myTransform.position).CompareTo(Vector3.Distance(t2.position, myTransform.position));
-		});*/
 
-		for (int e = 0; e < targets.Count - 1; e++) {
+        // First, make sure the array is purged of any empty transforms
+        for (int e = 0; e < targets.Count; e++)
+        {
+            // if the current transform is null
+            if (targets[e] == null)
+            {
+                // remove current transform
+                targets.RemoveAt(e);
+                e -= 1;
+            }
+        }
 
-			if (targets [e + 0] == null) {
-				targets.RemoveAt (e + 0);
-				e -= 1;
-				continue;
-			}
+        // Second, sort the array according to distance
+        targets.Sort
+        (
+            delegate(Transform t1, Transform t2)
+		    {
+		    	return Vector3.Distance(t1.position, transform.position).CompareTo(Vector3.Distance(t2.position, transform.position));
+		    }
+        );
 
-			if (targets [e + 1] == null) {
-				targets.RemoveAt (e + 1);
-				e -= 1;
-				continue;
-			}
+    }
 
-			float sqrMag1 = (targets [e + 0].position - myTransform.position).sqrMagnitude;
-			float sqrMag2 = (targets [e + 1].position - myTransform.position).sqrMagnitude;
-
-			if (sqrMag2 < sqrMag1) {
-				Transform tempStore = targets [e];
-				targets [e] = targets [e + 1];
-				targets [e + 1] = tempStore;
-				e = 0;
-			}
-		}
-	}
-
-	void Update()
+    void Update()
     {
 		TargetEnemy(); // update the selected target and look at it
 
         // if there's any target in the range...
-        if (selectedTarget)
-        { 
-			transform.LookAt(selectedTarget); // aim at it
-			transform.eulerAngles = new Vector3(0,transform.eulerAngles.y,0);
+        if (currentTarget)
+        {
             //print(selectedTarget);
 
             // if it's time to shoot...
-            if (Time.time >= shootTime)
+            if (elapsedTime >= shotInterval)
             { 
 				GameObject bulletObj = Instantiate(Resources.Load("Bullet") as GameObject); //instantiates the bullet to shoot
 				bulletObj.transform.position = bulletSpawn.position;
 				bulletObj.transform.rotation = bulletSpawn.rotation;
-				bulletObj.GetComponent<Bullet>().towerTarget = selectedTarget.transform;
+				bulletObj.GetComponent<Bullet>().towerTarget = currentTarget.transform;
 				bulletObj.GetComponent<Bullet>().bulletSpeed = bulletSpeed;
-				shootTime = Time.time + shotInterval; // set time for next shot
+
+                // reset time
+                elapsedTime = 0.0f;
 			}
+
+            elapsedTime += Time.deltaTime;
 		}
 	}
+
+    void LateUpdate()
+    {
+        if (currentTarget)
+        {
+            // rotate towards selected object 
+            Quaternion newRotation = Quaternion.LookRotation(currentTarget.position - transform.position, Vector3.forward);
+            newRotation.x = 0.0f;
+            newRotation.z = 0.0f;
+            transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * 8);
+        }
+    }
 
 }
