@@ -12,4 +12,13 @@ public class CreepGoal : MonoBehaviour {
 	void Update () {
 	
 	}
+
+    void OnTriggerEnter(Collider other)
+    {
+        GameObject playerObject = GameObject.Find("Player");
+        if (playerObject && other.CompareTag("Enemy"))
+        {
+            playerObject.GetComponent<Player>().currentHealth -= other.gameObject.GetComponent<Creep>().LeakDamage;
+        }
+    }
 }
