@@ -34,7 +34,7 @@ public class MainMenuScript : MonoBehaviour
 
 	public void startLevel()
 	{
-		SceneManager.LoadScene(1);
+		SceneManager.LoadScene("Level Test");
 	}
 
 	public void exitGame()

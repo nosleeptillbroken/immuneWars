@@ -16,15 +16,19 @@ public class CameraController : MonoBehaviour {
 
     // Zoom Properties
     [Header("Zoom")]
-    public float zoomSensitivity = 1;
-    public float zoomSpeed = 1;
+    public float zoomSensitivity = 18;
+    public float zoomSpeed = 4;
 
     private float zoom = 0.5f;
     private float zoomLerp = 0;
 
-    public Vector3 zoomedInOrientation, zoomedOutOrientation;
+    public Vector3 zoomedInOrientation = Vector3.zero;
+    public Vector3 zoomedOutOrientation = new Vector3(90, 0, 0);
     private Quaternion zoomedInRot, zoomedOutRot;
-    public float zoomedInHeight, zoomedOutHeight;
+
+    public float zoomedInHeight = 2;
+    public float zoomedOutHeight = 20;
+    
 
     Quaternion currRot = Quaternion.identity;
 

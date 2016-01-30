@@ -70,22 +70,27 @@ public class Tower : MonoBehaviour
         id = -1;
     }
 
-	void OnTriggerEnter(Collider other){
-		if (other.tag == "Enemy"){ // only objects with tag 'Enemy' are added to the target list!
+	void OnTriggerEnter(Collider other)
+    {
+		if (other.tag == "Enemy") // only objects with tag 'Enemy' are added to the target list!
+        { 
 			targets.Add(other.transform);
-			other.gameObject.GetComponent<MovingEnemy> ().listIndex = targets.Count-1;
+			other.gameObject.GetComponent<Creep> ().listIndex = targets.Count-1;
 			print(targets);
 		}
 	}
 
-	void OnTriggerExit(Collider other){
-		if (other.tag == "Enemy"){
+	void OnTriggerExit(Collider other)
+    {
+		if (other.tag == "Enemy")
+        {
 			targets.Remove(other.transform);
-			other.gameObject.GetComponent<MovingEnemy> ().listIndex = -1;
+			other.gameObject.GetComponent<Creep> ().listIndex = -1;
 		}
 	}
 
-	public void TargetEnemy(){
+	public void TargetEnemy()
+    {
 
 		if (selectedTarget == null) { // if target destroyed or not selected yet...
 			SortTargetsByDistance ();  // select the closest one
@@ -94,7 +99,8 @@ public class Tower : MonoBehaviour
 		} 
 	}
 
-	public void SortTargetsByDistance(){
+	public void SortTargetsByDistance()
+    {
 		/*targets.Sort(delegate(Transform t1, Transform t2)
 			{ 
 			//return Vector3.Distance(t1.position, myTransform.position).CompareTo(Vector3.Distance(t2.position, myTransform.position));
@@ -127,21 +133,25 @@ public class Tower : MonoBehaviour
 		}
 	}
 
-
-
-
-	void Update(){
+	void Update()
+    {
 		TargetEnemy(); // update the selected target and look at it
-		if (selectedTarget){ // if there's any target in the range...
+
+        // if there's any target in the range...
+        if (selectedTarget)
+        { 
 			transform.LookAt(selectedTarget); // aim at it
 			transform.eulerAngles = new Vector3(0,transform.eulerAngles.y,0);
-			//print(selectedTarget);
-			if (Time.time >= shootTime){ // if it's time to shoot...
+            //print(selectedTarget);
+
+            // if it's time to shoot...
+            if (Time.time >= shootTime)
+            { 
 				GameObject bulletObj = Instantiate(Resources.Load("Bullet") as GameObject); //instantiates the bullet to shoot
 				bulletObj.transform.position = bulletSpawn.position;
 				bulletObj.transform.rotation = bulletSpawn.rotation;
-				bulletObj.GetComponent<bullet>().towerTarget = selectedTarget.transform;
-				bulletObj.GetComponent<bullet>().bulletSpeed = bulletSpeed;
+				bulletObj.GetComponent<Bullet>().towerTarget = selectedTarget.transform;
+				bulletObj.GetComponent<Bullet>().bulletSpeed = bulletSpeed;
 				shootTime = Time.time + shotInterval; // set time for next shot
 			}
 		}

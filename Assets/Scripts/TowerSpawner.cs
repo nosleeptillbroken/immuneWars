@@ -4,9 +4,16 @@ using System.Collections.Generic;
 
 public class TowerSpawner : MonoBehaviour
 {
-    
-    // The current tower to spawn. Switch this tower to a different name, and create a new prefab in the Assets/Prefabs folder with the same name to change the tower
+
+    /// <summary>
+    /// The current tower to spawn. Switch this tower to a different name, and create a new prefab in the Assets/Prefabs folder with the same name to change the tower
+    /// </summary>
     public string towerName = "GenericTower";
+
+    /// <summary>
+    /// Minimum Y value towers can spawn at
+    /// </summary>
+    public float minYHeight = 0.0f;
 
     static GameObject ghost;
 
@@ -69,7 +76,7 @@ public class TowerSpawner : MonoBehaviour
                 collidesWithtower = Physics.CheckSphere(hit.point, collider.radius * newTowerObj.transform.localScale.z, ~LayerMask.GetMask("Terrain")/*ignore terrain colliders*/);
 
                 // if tower does not collide
-                if (!collidesWithtower)
+                if (!collidesWithtower && hit.point.y > minYHeight)
                 {
                     // set ghost color to green to indicate tower can be placed
                     ghost.GetComponent<MeshRenderer>().material.color = new Color(0, 0.75f, 0, 0.5f);
