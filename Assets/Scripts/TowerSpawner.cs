@@ -19,7 +19,7 @@ public class TowerSpawner : MonoBehaviour
             first = false;
 
             // Load the ghost from the tower prefab
-            ghost = Instantiate(Resources.Load<GameObject>(Game.GetPrefabLocation(towerName)));
+            ghost = Instantiate(Resources.Load(towerName) as GameObject);
 
             // Destroy tower components so it's not functional
             Destroy(ghost.GetComponent<CapsuleCollider>());
@@ -55,7 +55,7 @@ public class TowerSpawner : MonoBehaviour
 
 
             // Load the new tower's prefab
-            GameObject newTowerObj = Resources.Load<GameObject>(Game.GetPrefabLocation(towerName));
+            GameObject newTowerObj = Resources.Load(towerName) as GameObject;
 
             // Check if the tower would collide with any other towers
             bool collidesWithtower = false;

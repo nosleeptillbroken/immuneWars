@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class enemy_movement_sample : MonoBehaviour {
+public class MovingEnemy : MonoBehaviour {
 	public GameObject Bullet;
 
 	public float min=5f;

@@ -73,7 +73,7 @@ public class Tower : MonoBehaviour
 	void OnTriggerEnter(Collider other){
 		if (other.tag == "Enemy"){ // only objects with tag 'Enemy' are added to the target list!
 			targets.Add(other.transform);
-			other.gameObject.GetComponent<enemy_movement_sample> ().listIndex = targets.Count-1;
+			other.gameObject.GetComponent<MovingEnemy> ().listIndex = targets.Count-1;
 			print(targets);
 		}
 	}
@@ -81,7 +81,7 @@ public class Tower : MonoBehaviour
 	void OnTriggerExit(Collider other){
 		if (other.tag == "Enemy"){
 			targets.Remove(other.transform);
-			other.gameObject.GetComponent<enemy_movement_sample> ().listIndex = -1;
+			other.gameObject.GetComponent<MovingEnemy> ().listIndex = -1;
 		}
 	}
 
@@ -137,7 +137,7 @@ public class Tower : MonoBehaviour
 			transform.eulerAngles = new Vector3(0,transform.eulerAngles.y,0);
 			//print(selectedTarget);
 			if (Time.time >= shootTime){ // if it's time to shoot...
-				GameObject bulletObj = Instantiate<GameObject>(Resources.Load(Game.GetPrefabLocation("Bullet")) as GameObject); //instantiates the bullet to shoot
+				GameObject bulletObj = Instantiate(Resources.Load("Bullet") as GameObject); //instantiates the bullet to shoot
 				bulletObj.transform.position = bulletSpawn.position;
 				bulletObj.transform.rotation = bulletSpawn.rotation;
 				bulletObj.GetComponent<bullet>().towerTarget = selectedTarget.transform;
