@@ -5,7 +5,10 @@ public class CameraController : MonoBehaviour {
 
     // Pan Properties
     [Header("Panning")]
-    public float panThreshold = 16; // The number of px on each side of the screen that will count towards panning the screen
+    [Tooltip("Enables whether hovering the mouse near a screen edge pans the camera in that direction.")]
+    public bool enableEdgePanning = true;
+    [Tooltip("Distance from the edge of the screen before edge panning will occur.")]
+    public float edgePanThreshold = 16; // The number of px on each side of the screen that will count towards panning the screen
     public float panSpeed = 32; // The speed at which the camera pans
 
     // Rotation Properties
@@ -103,26 +106,26 @@ public class CameraController : MonoBehaviour {
             {
                 sprintMult = 2.0f;
             }
-            if (cursorX < panThreshold || Input.GetKey(KeyCode.A))
+            if ((cursorX < edgePanThreshold && enableEdgePanning) || Input.GetKey(KeyCode.A))
             {
                 transform.rotation = Quaternion.identity;
                 transform.Translate(Vector3.right * -panSpeed * Time.deltaTime * sprintMult);
                 transform.rotation = currRot;
             }
-            else if (cursorX >= Screen.width - panThreshold || Input.GetKey(KeyCode.D))
+            else if ((cursorX >= Screen.width - edgePanThreshold && enableEdgePanning) || Input.GetKey(KeyCode.D))
             {
                 transform.rotation = Quaternion.identity;
                 transform.Translate(Vector3.right * panSpeed * Time.deltaTime * sprintMult);
                 transform.rotation = currRot;
             }
 
-            if (cursorY < panThreshold || Input.GetKey(KeyCode.S))
+            if ((cursorY < edgePanThreshold && enableEdgePanning) || Input.GetKey(KeyCode.S))
             {
                 transform.rotation = Quaternion.identity;
                 transform.Translate(Vector3.forward * -panSpeed * Time.deltaTime * sprintMult);
                 transform.rotation = currRot;
             }
-            else if (cursorY >= Screen.height - panThreshold || Input.GetKey(KeyCode.W))
+            else if ((cursorY >= Screen.height - edgePanThreshold && enableEdgePanning) || Input.GetKey(KeyCode.W))
             {
                 transform.rotation = Quaternion.identity;
                 transform.Translate(Vector3.forward * panSpeed * Time.deltaTime * sprintMult);

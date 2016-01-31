@@ -167,8 +167,8 @@ public class Tower : MonoBehaviour
 				GameObject bulletObj = Instantiate(Resources.Load("Bullet") as GameObject); //instantiates the bullet to shoot
 				bulletObj.transform.position = bulletSpawn.position;
 				bulletObj.transform.rotation = bulletSpawn.rotation;
-				bulletObj.GetComponent<Bullet>().towerTarget = currentTarget.transform;
-				bulletObj.GetComponent<Bullet>().bulletSpeed = bulletSpeed;
+				bulletObj.GetComponent<Missile>().towerTarget = currentTarget.transform;
+				bulletObj.GetComponent<Missile>().bulletSpeed = bulletSpeed;
 
                 // reset time
                 elapsedTime = 0.0f;

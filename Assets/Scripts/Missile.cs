@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Bullet : MonoBehaviour {
+public class Missile : MonoBehaviour
+{
 	public Transform towerTarget;
 	public Tower _TurretScript;
 
