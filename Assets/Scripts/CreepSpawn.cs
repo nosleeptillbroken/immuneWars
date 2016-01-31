@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// CreepSpawn.cs
+// Defines behaviour for spawning creeps, how to spawn creeps, and where to spawn creeps.
+
+using UnityEngine;
 using System.Collections;
 
 public class CreepSpawn : MonoBehaviour {

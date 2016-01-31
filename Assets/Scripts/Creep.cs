@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Creep.cs
+// General-purpose enemy movement and stats script. Also defines enemy behaviour.
+
+using UnityEngine;
 using System.Collections;
 
 public class Creep : MonoBehaviour
@@ -64,7 +67,7 @@ public class Creep : MonoBehaviour
     // OnTriggerEnter
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Despawn")
+        if (other.CompareTag("Despawn"))
         {
             Destroy(gameObject);
             /*	

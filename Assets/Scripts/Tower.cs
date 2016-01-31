@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Tower.cs
+// Contains behaviour for spawning projectiles (Missiles) and aiming them at a creep based on targeting parameters.
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 

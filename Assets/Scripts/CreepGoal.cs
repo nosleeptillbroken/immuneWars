@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// CreepGoal.cs
+// Defines any behaviour to be perfomed when an enemy successfully enters the creep goal.
+
+using UnityEngine;
 using System.Collections;
 
 public class CreepGoal : MonoBehaviour {

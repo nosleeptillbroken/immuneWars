@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// MainMenuScript.cs
+// Defines main menu behaviour and actions.
+
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;

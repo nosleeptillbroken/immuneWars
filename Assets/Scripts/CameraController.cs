@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// CameraController.cs
+// Script allows for RTS-style camera movement, rotation, and zoom.
+
+using UnityEngine;
 using System.Collections;
 
 public class CameraController : MonoBehaviour {

@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// TowerSpawner.cs
+// Contains behaviour for spawning towers on the map, and displaying a ghost image of the selected tower when placing.
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 

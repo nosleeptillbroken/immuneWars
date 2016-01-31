@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Player.cs
+// Defines behaviour for all player-related tasks.
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 

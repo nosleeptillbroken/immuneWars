@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// CreepPath.cs
+// General-purpose (currently not used) script for defining a path of points to be followed by a creep.
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 

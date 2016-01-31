@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// RangeTrigger.cs
+// Notifies the tower if an enemy enters the range volume.
+
+using UnityEngine;
 using System.Collections;
 
 public class RangeTrigger : MonoBehaviour

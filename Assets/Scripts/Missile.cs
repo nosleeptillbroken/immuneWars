@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Missile.cs
+// Defines behaviour and stats for projectiles that shoot from towers to damage enemies.
+
+using UnityEngine;
 using System.Collections;
 
 public class Missile : MonoBehaviour
@@ -20,7 +23,7 @@ public class Missile : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	 void Update () 
+	void Update () 
 	{
 		if (towerTarget)
         {
@@ -35,6 +38,7 @@ public class Missile : MonoBehaviour
         }
 	
 	}
+
 	void OnCollisionEnter(Collision other)
     {
 		if (other.gameObject.CompareTag("Enemy"))

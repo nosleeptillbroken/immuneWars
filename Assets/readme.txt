@@ -8,3 +8,4 @@ Scripts being used by the unity editor should be placed inside the Scripts/Edito
 
 Place test scenes in Scenes/Experimental, and make sure you uniquely name them to avoid merge conflicts in the future. Only scenes used in the current release build should go in Scenes/
 
+When in doubt regarding which scripts to code in, read the summary at the top of the cs file. If you are creating a script, remember to add a summary to explain its purpose.
