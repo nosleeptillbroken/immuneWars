@@ -118,11 +118,15 @@ public class Tower : MonoBehaviour
     /// </summary>
 	public void TargetEnemy()
     {
-
-		if (currentTarget == null) { // if target destroyed or not selected yet...
-			SortTargetsByDistance ();  // select the closest one
-			if (targets.Count > 0)
-				currentTarget = targets [0];    
+    // if target destroyed or not selected yet...
+		if (currentTarget == null)
+        { 
+            // select the closest one
+			SortTargetsByDistance();
+            if (targets.Count > 0)
+            {
+                currentTarget = targets[0];
+            }
 		} 
 	}
 
