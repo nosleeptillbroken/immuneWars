@@ -9,18 +9,13 @@ public class TowerSelector : MonoBehaviour {
     /// <summary>
     /// Tower the selector is focused on.
     /// </summary>
-    public Tower selectedTower;
+    public Tower selectedTower = null;
 
 	// Use this for initialization
 	void Start ()
     {
-        transform.GetChild(0).gameObject.SetActive(false);
-        transform.GetChild(1).gameObject.SetActive(false);
         // Focus on a tower if it is the current tower set
-	    if(selectedTower)
-        {
-            SelectTower(selectedTower);
-        }
+        SelectTower(selectedTower);
 	}
 
     //
