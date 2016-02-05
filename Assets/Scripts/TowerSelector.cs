@@ -14,12 +14,20 @@ public class TowerSelector : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+        transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild(1).gameObject.SetActive(false);
         // Focus on a tower if it is the current tower set
 	    if(selectedTower)
         {
             SelectTower(selectedTower);
         }
 	}
+
+    //
+    void OnDisable()
+    {
+        DeselectTower();
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -42,6 +50,14 @@ public class TowerSelector : MonoBehaviour {
                 }
             }
         }
+        else
+        {
+            // if mouse button is pressed and mouse is not over any GUI elements
+            if (Input.GetMouseButtonDown(0) && !eventSystem.IsPointerOverGameObject())
+            {
+                DeselectTower();
+            }
+        }
     }
 
 
@@ -54,9 +70,14 @@ public class TowerSelector : MonoBehaviour {
         if (selectedTower)
         {
             this.selectedTower = selectedTower;
-            transform.position = selectedTower.transform.position + new Vector3(0.0f, 5.01f, 0.0f);
+            transform.position = selectedTower.transform.position + (selectedTower.transform.up * 0.01f);
+            transform.rotation = selectedTower.transform.rotation;
             transform.GetChild(0).gameObject.SetActive(true);
-            GetComponentInChildren<Projector>().enabled = true;
+            transform.GetChild(1).gameObject.SetActive(true);
+        }
+        else
+        {
+            DeselectTower();
         }
     }
 
@@ -67,8 +88,9 @@ public class TowerSelector : MonoBehaviour {
     {
         this.selectedTower = null;
         transform.position = Vector3.zero;
+        transform.rotation = Quaternion.identity;
         transform.GetChild(0).gameObject.SetActive(false);
-        GetComponentInChildren<Projector>().enabled = false;
+        transform.GetChild(1).gameObject.SetActive(false);
     }
 
 }
