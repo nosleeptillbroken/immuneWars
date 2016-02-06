@@ -8,7 +8,8 @@ using System.Collections.Generic;
 /// <summary>
 /// Specifies a path (or paths) that creeps can follow.
 /// </summary>
-public class CreepPath : MonoBehaviour {
+public class CreepPath : MonoBehaviour
+{
 
     public List<Vector3> points = new List<Vector3>();
 

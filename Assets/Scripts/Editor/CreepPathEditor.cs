@@ -33,7 +33,7 @@ public class CreepPathEditor : Editor
 
         Handles.Label(path.transform.position, "Origin");
         
-        for (int i = 0; i < points.Count;i++)
+        for (int i = 0; i < points.Count; i++)
         {
             Handles.lighting = false;
             points[i] = Handles.PositionHandle(points.ElementAt(i), Quaternion.identity);

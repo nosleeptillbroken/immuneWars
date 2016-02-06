@@ -14,6 +14,11 @@ public class CameraController : MonoBehaviour {
     public float edgePanThreshold = 16; // The number of px on each side of the screen that will count towards panning the screen
     public float panSpeed = 32; // The speed at which the camera pans
 
+    [Tooltip("Enables camera restriction within a box defined by two points.")]
+    public bool cameraBoundsRestriction = false;
+    public Vector3 minimumBounds = Vector3.zero;
+    public Vector3 maximumBounds = Vector3.zero;
+
     // Rotation Properties
     [Header("Rotation")]
     public float rotationSensitivity = 90;
@@ -156,7 +161,18 @@ public class CameraController : MonoBehaviour {
         Vector3 hpos = transform.position;
         hpos.y = Mathf.Lerp(zoomedInHeight, zoomedOutHeight, zoomLerp);
         hpos.z += (zoom - zoomLerp) * zoomSensitivity * Time.deltaTime;
+
         transform.position = hpos;
+
+        if(cameraBoundsRestriction)
+        {
+            Vector3 clampPos;
+            clampPos.x = Mathf.Clamp(hpos.x, minimumBounds.x, maximumBounds.x);
+            clampPos.y = Mathf.Clamp(hpos.y, minimumBounds.y, maximumBounds.y);
+            clampPos.z = Mathf.Clamp(hpos.z, minimumBounds.z, maximumBounds.z);
+
+            transform.position = clampPos;
+        }
 
     }
 }
