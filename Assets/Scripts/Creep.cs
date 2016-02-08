@@ -22,7 +22,7 @@ public class Creep : MonoBehaviour
     /// How much health the unit currently has.
     /// </summary>
 	public int Health = 50;
-    private int startingHealth;
+    private float startingHealth;
 
     /// <summary>
     /// How much damage the unit inflicts when it successfully leaks through.
@@ -76,7 +76,9 @@ public class Creep : MonoBehaviour
 
        //rescale healthBar
         Vector3 newScale = new Vector3(((healthBarScale.x * Health) / startingHealth), healthBarScale.y, healthBarScale.z);
+        Vector4 newColor = new Vector4((1 - (Health / startingHealth)), (Health / startingHealth), 0, 1);
         healthBar.transform.localScale = newScale;
+        healthBarRenderer.material.color = newColor;
 	}
 
     // Update
