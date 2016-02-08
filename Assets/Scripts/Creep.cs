@@ -6,6 +6,10 @@ using System.Collections;
 
 public class Creep : MonoBehaviour
 {
+    //Vars for the health bar
+    [SerializeField] private GameObject healthBar; //link to the health bar game object
+    [SerializeField] private Transform lookHere;
+
     // Target for despawning
     private Transform target;
 
@@ -58,6 +62,10 @@ public class Creep : MonoBehaviour
     // Update
 	void Update ()
     {
+        //make the healthbar look at the camera
+
+        transform.LookAt(lookHere);
+
         if (agent && target)
         {
             agent.SetDestination(target.position);
