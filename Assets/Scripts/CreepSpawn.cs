@@ -30,6 +30,13 @@ public class CreepSpawn : MonoBehaviour {
 		StartCoroutine (SpawnWaves ());
 	}
 
+	/// Waits for startWait seconds
+	/// Iterates through every waveList in levelList
+	/// Iterates through every CreepPair in every waveList
+	/// Instantiates number creeps of type creep as defined by every CreepPair
+	/// Waits after Instantiating every creep spawnWait seconds
+	/// Waits waveWait seconds after every waveList finishes iteration
+	
 	IEnumerator SpawnWaves ()
 	{
 		yield return new WaitForSeconds (startWait);

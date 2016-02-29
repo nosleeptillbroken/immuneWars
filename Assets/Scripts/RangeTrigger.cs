@@ -8,12 +8,14 @@ public class RangeTrigger : MonoBehaviour
 {
     [HideInInspector]
     public Tower parent;
-
+	
+	// Initializes parent object
 	void Start()
     {
         parent = transform.parent.gameObject.GetComponent<Tower>();
     }
 
+	// Calls parent's OnRangeEnter if parent still exists
     void OnTriggerEnter(Collider other)
     {
         if (parent)
@@ -22,6 +24,7 @@ public class RangeTrigger : MonoBehaviour
         }
     }
 
+	// Calls parent's OnRangeExit if parent still exists
     void OnTriggerExit(Collider other)
     {
         if (parent)

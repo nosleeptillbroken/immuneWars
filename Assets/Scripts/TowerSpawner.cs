@@ -35,7 +35,7 @@ public class TowerSpawner : MonoBehaviour
             Destroy(ghost.GetComponent<CapsuleCollider>());
             Destroy(ghost.GetComponent<Tower>());
 
-            // 
+            // Set ghost tower specific properties
             ghost.GetComponent<MeshRenderer>().material = Resources.Load("Ghost") as Material;
             ghost.name = "Tower Ghost";
             ghost.layer = 1;

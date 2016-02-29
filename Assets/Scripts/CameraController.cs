@@ -86,6 +86,7 @@ public class CameraController : MonoBehaviour {
             freeRotate = false;
         }
 
+		// If freely rotating follow the change in mousePosition with camera rotation
         if (freeRotate)
         {
             xDeg -= deltaMouseY * Time.deltaTime * rotationSensitivity;
@@ -94,7 +95,6 @@ public class CameraController : MonoBehaviour {
         }
         else if (Input.GetMouseButton(2))
         {
-            
             // Set rotation to identity so that translation is planar
             transform.rotation = Quaternion.identity;
             // Translate camera according to mouse delta
@@ -141,8 +141,10 @@ public class CameraController : MonoBehaviour {
             }
         }
 
+		// Get mouse scroll wheel input
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        if(scroll != 0)
+		// If scroll wheel moved zoom camera in relation
+		if(scroll != 0)
         {
             zoom += zoomSensitivity * Time.deltaTime * -scroll;
         }
@@ -150,10 +152,13 @@ public class CameraController : MonoBehaviour {
 
     }
 
+	// LateUpdate is called at the end of every frame, after update
     void LateUpdate()
     {
         float zoomPercent = Mathf.Clamp(Time.deltaTime * zoomSpeed, 0.0f, 1.0f);
-        zoomLerp = Mathf.Lerp(zoomLerp, zoom, zoomPercent);
+		
+		// Adjust the zoom, rotation, y and z coordinates of the camera according to changes this frame
+		zoomLerp = Mathf.Lerp(zoomLerp, zoom, zoomPercent);
         if (!freeRotate)
         {
             transform.rotation = Quaternion.Slerp(zoomedInRot, zoomedOutRot, zoomLerp);
@@ -163,7 +168,8 @@ public class CameraController : MonoBehaviour {
         hpos.z += (zoom - zoomLerp) * zoomSensitivity * Time.deltaTime;
 
         transform.position = hpos;
-
+		
+		// Bound the camera position so it cannot fly away from the play area
         if(cameraBoundsRestriction)
         {
             Vector3 clampPos;
