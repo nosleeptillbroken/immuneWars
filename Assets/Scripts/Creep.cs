@@ -15,12 +15,12 @@ public class Creep : MonoBehaviour
     /// <summary>
     /// How much health the unit currently has.
     /// </summary>
-	public int Health = 50;
+	public int health = 50;
 
     /// <summary>
     /// How much damage the unit inflicts when it successfully leaks through.
     /// </summary>
-    public int LeakDamage = 1;
+    public int leakDamage = 1;
         
 	// Use this for initialization
 	void Start ()
@@ -48,8 +48,8 @@ public class Creep : MonoBehaviour
     /// <param name="damage">How much damage the enemy will take</param>
 	void TakeDamage(int damage)
     {
-		Health -= damage;
-		if (Health <= 0)
+		health -= damage;
+		if (health <= 0)
         {
 			Destroy(gameObject);
 		}

@@ -21,7 +21,7 @@ public class CreepGoal : MonoBehaviour {
         GameObject playerObject = GameObject.Find("Player");
         if (playerObject && other.CompareTag("Enemy"))
         {
-            playerObject.GetComponent<Player>().currentHealth -= other.gameObject.GetComponent<Creep>().LeakDamage;
+            playerObject.GetComponent<Player>().currentHealth -= other.gameObject.GetComponent<Creep>().leakDamage;
         }
     }
 }

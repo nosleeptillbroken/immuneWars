@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class TowerSelector : MonoBehaviour {
 
@@ -9,7 +10,12 @@ public class TowerSelector : MonoBehaviour {
     /// <summary>
     /// Tower the selector is focused on.
     /// </summary>
-    public Tower selectedTower = null;
+    public TowerBehaviour selectedTower = null;
+
+    /// <summary>
+    /// The UI panel that appears when a tower is selected
+    /// </summary>
+    public GameObject selectionPanel = null;
 
 	// Use this for initialization
 	void Start ()
@@ -34,7 +40,7 @@ public class TowerSelector : MonoBehaviour {
         // If raycast collides with a tower
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Towers"), QueryTriggerInteraction.Ignore))
         {
-            Tower rayTower = hit.collider.gameObject.GetComponent<Tower>();
+            TowerBehaviour rayTower = hit.collider.gameObject.GetComponent<TowerBehaviour>();
 
             if (rayTower)
             {
@@ -53,6 +59,13 @@ public class TowerSelector : MonoBehaviour {
                 DeselectTower();
             }
         }
+
+        if(selectionPanel && selectedTower)
+        {
+            Vector3 panelPosition = Camera.main.WorldToScreenPoint(selectedTower.transform.position + (selectedTower.GetComponent<CapsuleCollider>().bounds.extents.y * selectedTower.transform.up));
+            panelPosition.z = 0.0f;
+            selectionPanel.transform.position = panelPosition;
+        }
     }
 
 
@@ -60,15 +73,22 @@ public class TowerSelector : MonoBehaviour {
     /// Enables the selector.
     /// </summary>
     /// <param name="selectedTower">The tower the selector will be focused on</param>
-    public void SelectTower(Tower selectedTower)
+    public void SelectTower(TowerBehaviour selectedTower)
     {
         if (selectedTower)
         {
             this.selectedTower = selectedTower;
             transform.position = selectedTower.transform.position + (selectedTower.transform.up * 0.01f);
             transform.rotation = selectedTower.transform.rotation;
-            transform.GetChild(0).gameObject.SetActive(true);
-            transform.GetChild(1).gameObject.SetActive(true);
+            foreach (Transform child in transform)
+            {
+                child.gameObject.SetActive(true);
+            }
+            if (selectionPanel)
+            {
+                selectionPanel.SetActive(true);
+                selectionPanel.GetComponent<TowerSelectionPanel>().UpdateDisplayInformation();
+            }
         }
         else
         {
@@ -81,11 +101,17 @@ public class TowerSelector : MonoBehaviour {
     /// </summary>
     public void DeselectTower()
     {
+        if (selectionPanel)
+        {
+            selectionPanel.SetActive(false);
+        }
         this.selectedTower = null;
         transform.position = Vector3.zero;
         transform.rotation = Quaternion.identity;
-        transform.GetChild(0).gameObject.SetActive(false);
-        transform.GetChild(1).gameObject.SetActive(false);
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(false);
+        }
     }
 
 }

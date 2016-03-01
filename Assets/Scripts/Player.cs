@@ -15,6 +15,20 @@ public class Player : MonoBehaviour {
     public TowerSpawner towerSpawner; // tower spawner childed to this gameobject
     public TowerSelector towerSelector; // tower selector childed to this gameobject
 
+    //
+    public void PlaceTowersMode()
+    {
+        towerSelector.gameObject.SetActive(false);
+        towerSpawner.gameObject.SetActive(true);
+    }
+
+    //
+    public void SelectTowersMode()
+    {
+        towerSpawner.gameObject.SetActive(false);
+        towerSelector.gameObject.SetActive(true);
+    }
+
     // Use this for initialization
     void Start ()
     {

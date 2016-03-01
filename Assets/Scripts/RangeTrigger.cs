@@ -7,11 +7,11 @@ using System.Collections;
 public class RangeTrigger : MonoBehaviour
 {
     [HideInInspector]
-    public Tower parent;
+    public TowerBehaviour parent;
 
 	void Start()
     {
-        parent = transform.parent.gameObject.GetComponent<Tower>();
+        parent = transform.parent.gameObject.GetComponent<TowerBehaviour>();
     }
 
     void OnTriggerEnter(Collider other)

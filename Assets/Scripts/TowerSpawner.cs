@@ -41,7 +41,7 @@ public class TowerSpawner : MonoBehaviour
     //
     void Update()
     {
-        if(selectedTower != null && selectedTower.GetComponent<Tower>())
+        if(selectedTower != null && selectedTower.GetComponent<TowerBehaviour>())
         {
             // Raycast once per frame for tower location and for displaying tower ghost
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -107,7 +107,7 @@ public class TowerSpawner : MonoBehaviour
     /// <param name="tower">The tower to be used. Must contain a tower component.</param>
     public void SetSelectedTower(GameObject tower)
     {
-        if(tower != null && tower.GetComponent<Tower>() != null)
+        if(tower != null && tower.GetComponent<TowerBehaviour>() != null)
         {
             selectedTower = tower;
 
@@ -118,13 +118,27 @@ public class TowerSpawner : MonoBehaviour
             ghost = Instantiate(selectedTower);
 
             // Destroy tower components so it's not functional
+            Destroy(ghost.GetComponent<TowerBehaviour>());
+            Destroy(ghost.GetComponent<TowerAttributes>());
+            Destroy(ghost.GetComponent<Rigidbody>());
             Destroy(ghost.GetComponent<CapsuleCollider>());
-            Destroy(ghost.GetComponent<Tower>());
 
-            // 
+            // Destroy children of the tower ghost
+            foreach (Transform child in ghost.transform)
+            {
+                Destroy(child.gameObject);
+            }
+
+            // Load the ghost material
             ghost.GetComponent<MeshRenderer>().material = Resources.Load("Ghost") as Material;
-            ghost.name = "Tower Ghost";
+            // Set it to the transparentfx layer
             ghost.layer = 1;
+            // Remove the tag
+            ghost.tag = "Untagged";
+
+            // Set the name of the object to Tower Ghost
+            ghost.name = "Tower Ghost";
+
         }
         else
         {
