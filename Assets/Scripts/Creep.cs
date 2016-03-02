@@ -3,9 +3,16 @@
 
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Creep : MonoBehaviour
 {
+    public GameObject GoldDrop;
+    [SerializeField]
+    private float goldValue;
+    private static float currentGold = 0;
+    public Text CurrencyText;
+
     // Target for despawning
     private Transform target;
 
@@ -39,6 +46,8 @@ public class Creep : MonoBehaviour
         {
             Debug.Log("Cannot find despawn object");
         }
+        CurrencyText = GameObject.FindGameObjectWithTag("MoneyText").GetComponent<Text>(); //
+        CurrencyText.text = "";
 
     }
 
@@ -52,16 +61,24 @@ public class Creep : MonoBehaviour
 		if (Health <= 0)
         {
 			Destroy(gameObject);
+            Instantiate(GoldDrop,transform.position,Camera.main.transform.rotation);
+            GoldDrop.SetActive(true);
+            GoldDrop.GetComponent<TextMesh>().text = "+" + goldValue + " Gold";
+            currentGold += goldValue;
+            //Debug.Log(currentGold);
+
 		}
 	}
 
     // Update
 	void Update ()
     {
+        GoldDrop.transform.position = transform.position;
         if (agent && target)
         {
             agent.SetDestination(target.position);
         }
+        CurrencyText.text = "Gold: " + currentGold;
     }
 
     // OnTriggerEnter
