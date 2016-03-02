@@ -7,7 +7,6 @@ using System.Collections.Generic;
 
 // Tower Class
 // One in every tower. Stores all information needed for detecting enemies. Stores range, speed, damage it inflicts
-[RequireComponent(typeof(TowerAttributes))]
 [RequireComponent(typeof(CapsuleCollider))]
 public class TowerBehaviour : MonoBehaviour
 {
@@ -21,6 +20,7 @@ public class TowerBehaviour : MonoBehaviour
 
     // the tower attributes for this tower
     public TowerAttributes attributes = null;
+    public TowerAttributes upgradeAttributes = new TowerAttributes();
 
     // list of potential targets
     public List<Creep> targets = new List<Creep>();
@@ -43,11 +43,81 @@ public class TowerBehaviour : MonoBehaviour
     // time since last shot
     private float elapsedTime = 0.0f;
 
+    #region TowerUpgrades
+
+    [System.Serializable]
+    public class UpgradePath
+    {
+        public List<TowerAttributes> list;
+    }
+
+    public List<UpgradePath> upgradeTree;
+
+    public List<int> upgradeLevels;
+
+    public void Upgrade(int path)
+    {
+        if(path < upgradeLevels.Count)
+        {
+            int currentLevel = upgradeLevels[path];
+            if(currentLevel < upgradeTree[path].list.Count - 1)
+            {
+                upgradeLevels[path] += 1;
+                ApplyAttributes(path);
+            }
+        }
+    }
+
+    public TowerAttributes GetCurrentUpgrade(int path)
+    {
+        return upgradeTree[path].list[upgradeLevels[path]];
+    }
+
+    public TowerAttributes GetNextUpgrade(int path)
+    {
+        return upgradeTree[path].list[upgradeLevels[path]+1];
+    }
+
+    public bool CanUpgrade(int path)
+    {
+        return upgradeLevels[path] + 1 < upgradeTree[path].list.Count;
+    }
+
+    #endregion
+
     #region TowerAttributes
+
+    void ApplyAttributes(int path)
+    {
+        Mesh upgradeMesh = GetCurrentUpgrade(path).mesh;
+        Material upgradeMaterial = GetCurrentUpgrade(path).material;
+
+        if (upgradeMesh)
+        {
+            GetComponent<MeshFilter>().mesh = upgradeMesh;
+        }
+
+        if(upgradeMaterial)
+        {
+            GetComponent<MeshRenderer>().material = upgradeMaterial;
+        }
+
+        upgradeAttributes = new TowerAttributes();
+        for (int i = 0; i < upgradeTree.Count; i++)
+        {
+            if (upgradeLevels[i] >= 0)
+            {
+                upgradeAttributes += GetCurrentUpgrade(i);
+            }
+        }
+
+        ApplyAttributes();
+    }
 
     void ApplyAttributes()
     {
-        rangeVolume.GetComponent<SphereCollider>().radius = attributes.range;
+        TowerAttributes compositeAttributes = attributes + upgradeAttributes;
+        rangeVolume.GetComponent<SphereCollider>().radius = compositeAttributes.range;
     }
 
     #endregion
@@ -216,6 +286,14 @@ public class TowerBehaviour : MonoBehaviour
 
     void Start()
     {
+        if(upgradeLevels.Count == 0)
+        {
+            for(int i = 0; i < upgradeTree.Count; i++)
+            {
+                upgradeLevels.Add(-1);
+            }
+        }    
+        
         if (rangeVolume == null)
         {
             rangeVolume = transform.FindChild("RangeVolume").gameObject;
@@ -259,8 +337,10 @@ public class TowerBehaviour : MonoBehaviour
 
             elapsedTime += Time.deltaTime;
 
+            TowerAttributes compositeAttributes = attributes + upgradeAttributes;
+
             // if it's time to shoot...
-            if (elapsedTime > 1.0f / attributes.rateOfFire)
+            if (elapsedTime > 1.0f / compositeAttributes.rateOfFire)
             {
                 GameObject missileObj = Instantiate(missilePrefab.gameObject); //instantiates the bullet to shoot
                 missileObj.transform.position = missileSpawn.position;
@@ -269,7 +349,7 @@ public class TowerBehaviour : MonoBehaviour
                 Missile missile = missileObj.GetComponent<Missile>();
                 missile.tower = this;
                 missile.target = currentTarget.transform;
-                missile.attributes = attributes;
+                missile.attributes = compositeAttributes;
 
                 // reset time
                 elapsedTime = 0.0f;
@@ -291,10 +371,12 @@ public class TowerBehaviour : MonoBehaviour
 
     void OnDrawGizmos()
     {
+
+        TowerAttributes compositeAttributes = attributes + upgradeAttributes;
         if (attributes != null)
         {
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, attributes.range);
+            Gizmos.DrawWireSphere(transform.position, compositeAttributes.range);
         }
         if (missileSpawn != null && currentTarget != null)
         {

@@ -7,19 +7,20 @@ public class TowerSelectionPanel : MonoBehaviour {
     public TowerSelector towerSelector = null;
 
     public TowerBehaviour selectedTower { get { return towerSelector.selectedTower; } }
-    public TowerAttributes selectedAttributes { get { return towerSelector.selectedTower.attributes; } }
 
     private Text displayNameUI;
     private Dropdown targetingModeUI;
+
+    public Button[] upgradeButtonsUI;
 
     /// <summary>
     /// Destroys the selected tower without selling it.
     /// </summary>
     public void DestroySelectedTower()
     {
-        if(towerSelector && towerSelector.selectedTower)
+        if(towerSelector && selectedTower)
         {
-            Destroy(towerSelector.selectedTower.gameObject);
+            Destroy(selectedTower.gameObject);
             towerSelector.DeselectTower();
         }
     }
@@ -35,13 +36,37 @@ public class TowerSelectionPanel : MonoBehaviour {
         }
     }
 
+    public void UpgradeSelectedTower(int path)
+    {
+        if(towerSelector && selectedTower)
+        {
+            selectedTower.Upgrade(path);
+        }
+    }
+
     /// <summary>
     /// Updates the information displayed on the selection panel with the information from the tower and its attributes.
     /// </summary>
     public void UpdateDisplayInformation()
     {
-        displayNameUI.text = selectedAttributes.displayName;
+        TowerAttributes compositeAttributes = selectedTower.attributes + selectedTower.upgradeAttributes;
+        displayNameUI.text = compositeAttributes.displayName;
         targetingModeUI.value = (int)selectedTower.targetingMode;
+        int i = 0;
+        foreach (Button btn in upgradeButtonsUI)
+        {
+            if (selectedTower.CanUpgrade(i))
+            {
+                btn.GetComponentInChildren<Text>().text = selectedTower.GetNextUpgrade(i).displayName;
+                btn.interactable = true;
+            }
+            else
+            {
+                btn.GetComponentInChildren<Text>().text = "Complete";
+                btn.interactable = false;
+            }
+            i += 1;
+        }
     }
 
     /// <summary>

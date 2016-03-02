@@ -33,38 +33,41 @@ public class TowerSelector : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        // Raycast once per frame
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        // If raycast collides with a tower
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Towers"), QueryTriggerInteraction.Ignore))
+        if (Camera.main)
         {
-            TowerBehaviour rayTower = hit.collider.gameObject.GetComponent<TowerBehaviour>();
+            // Raycast once per frame
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
 
-            if (rayTower)
+            // If raycast collides with a tower
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Towers"), QueryTriggerInteraction.Ignore))
+            {
+                TowerBehaviour rayTower = hit.collider.gameObject.GetComponent<TowerBehaviour>();
+
+                if (rayTower)
+                {
+                    // if mouse button is pressed and mouse is not over any GUI elements
+                    if (Input.GetMouseButtonDown(0) && !eventSystem.IsPointerOverGameObject())
+                    {
+                        SelectTower(rayTower);
+                    }
+                }
+            }
+            else
             {
                 // if mouse button is pressed and mouse is not over any GUI elements
                 if (Input.GetMouseButtonDown(0) && !eventSystem.IsPointerOverGameObject())
                 {
-                    SelectTower(rayTower);
+                    DeselectTower();
                 }
             }
-        }
-        else
-        {
-            // if mouse button is pressed and mouse is not over any GUI elements
-            if (Input.GetMouseButtonDown(0) && !eventSystem.IsPointerOverGameObject())
-            {
-                DeselectTower();
-            }
-        }
 
-        if(selectionPanel && selectedTower)
-        {
-            Vector3 panelPosition = Camera.main.WorldToScreenPoint(selectedTower.transform.position + (selectedTower.GetComponent<CapsuleCollider>().bounds.extents.y * selectedTower.transform.up));
-            panelPosition.z = 0.0f;
-            selectionPanel.transform.position = panelPosition;
+            if (selectionPanel && selectedTower)
+            {
+                Vector3 panelPosition = Camera.main.WorldToScreenPoint(selectedTower.transform.position + (selectedTower.GetComponent<CapsuleCollider>().bounds.extents.y * selectedTower.transform.up));
+                panelPosition.z = 0.0f;
+                selectionPanel.transform.position = panelPosition;
+            }
         }
     }
 

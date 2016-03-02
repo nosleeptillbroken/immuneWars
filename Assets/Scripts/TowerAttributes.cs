@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 
 [System.Serializable]
-public class TowerAttributes : MonoBehaviour
+public class TowerAttributes
 {
     [Header("General")]
 
     /// <summary>
     /// The name of the tower / upgrade in-game.
     /// </summary>
-    public string displayName = "Tower Attribute";
+    public string displayName = null;
 
     /// <summary>
     /// The cost to purchase or upgrade this tower.
@@ -18,22 +18,22 @@ public class TowerAttributes : MonoBehaviour
     /// <summary>
     /// The tower's targeting range.
     /// </summary>
-    public float range = 1.0f;
+    public float range = 0.0f;
 
     /// <summary>
     /// The damage each shot inflicts.
     /// </summary>
-    public int damage = 1;
+    public int damage = 0;
 
     /// <summary>
     /// Number of shots the tower fires per second.
     /// </summary>
-    public float rateOfFire = 1.0f;
+    public float rateOfFire = 0.0f;
 
     /// <summary>
     /// Speed of a missile shot from this tower.
     /// </summary>
-    public float missileSpeed = 1.0f;
+    public float missileSpeed = 0.0f;
     
     [Header("Creep Slowing")]
 
@@ -45,12 +45,12 @@ public class TowerAttributes : MonoBehaviour
     /// <summary>
     /// How many seconds to slow the target for.
     /// </summary>
-    public float slowTime = 1.0f;
+    public float slowTime = 0.0f;
 
     /// <summary>
     /// How much to slow the target's speed by.
     /// </summary>
-    public float slowFactor = 0.5f;
+    public float slowFactor = 0.0f;
 
     [Header("Creep Burn")]
 
@@ -62,16 +62,42 @@ public class TowerAttributes : MonoBehaviour
     /// <summary>
     /// Time between target burns, in seconds.
     /// </summary>
-    public float burnTime = 1.0f;
+    public float burnTime = 0.0f;
 
     /// <summary>
     /// Number of burns to inflict on the target.
     /// </summary>
-    public int burnCount = 1;
+    public int burnCount = 0;
 
     /// <summary>
     /// Damage to inflict on the target each burn.
     /// </summary>
-    public int burnDamage = 1;
+    public int burnDamage = 0;
+
+    [Header("Display")]
+
+    public Mesh mesh = null;
+    public Material material = null;
     
+    // add two sets of attributes together
+    public static TowerAttributes operator +(TowerAttributes lhs, TowerAttributes rhs)
+    {
+        TowerAttributes ret = new TowerAttributes();
+        
+        ret.displayName = rhs.displayName + lhs.displayName;
+        ret.cost = lhs.cost + rhs.cost;
+        ret.range = lhs.range + rhs.range;
+        ret.damage = lhs.damage + rhs.damage;
+        ret.rateOfFire = lhs.rateOfFire + rhs.rateOfFire;
+        ret.missileSpeed = lhs.missileSpeed + rhs.missileSpeed;
+        ret.applySlow = lhs.applySlow || rhs.applySlow;
+        ret.slowTime = lhs.slowTime + rhs.slowTime;
+        ret.slowFactor = lhs.slowFactor + rhs.slowFactor;
+        ret.applyBurn = lhs.applyBurn || rhs.applyBurn;
+        ret.burnTime = lhs.burnTime + rhs.burnTime;
+        ret.burnCount = lhs.burnCount + rhs.burnCount;
+        ret.burnDamage = lhs.burnDamage + rhs.burnDamage;
+
+        return ret;
+    }
 }

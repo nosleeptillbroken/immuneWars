@@ -119,7 +119,6 @@ public class TowerSpawner : MonoBehaviour
 
             // Destroy tower components so it's not functional
             Destroy(ghost.GetComponent<TowerBehaviour>());
-            Destroy(ghost.GetComponent<TowerAttributes>());
             Destroy(ghost.GetComponent<Rigidbody>());
             Destroy(ghost.GetComponent<CapsuleCollider>());
 
