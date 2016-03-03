@@ -50,53 +50,56 @@ public class TowerSpawner : MonoBehaviour
             // If raycast collides
             bool successfulRay = Physics.Raycast(ray, out hit, Mathf.Infinity, ~LayerMask.GetMask("Towers", "Creeps"));
 
-            if (successfulRay) // ignore towers and creeps in raycast so they don't obstruct terrain
+            if (ghost != null)
             {
-                // Set the ghost's position to the collision point of the ray
-                ghost.transform.position = hit.point;
-
-                // Orient the ghost so it's facing in the normal direction of the surface
-                Quaternion YY = Quaternion.FromToRotation(Vector3.up, Vector3.forward);
-                ghost.transform.rotation = Quaternion.LookRotation(hit.normal) * YY;
-
-                // Load the new tower's prefab
-                GameObject newTowerObj = selectedTower;
-
-                // Check if the tower would collide with any other towers
-                bool collidesWithtower = false;
-                if (newTowerObj != null)
+                if (successfulRay) // ignore towers and creeps in raycast so they don't obstruct terrain
                 {
-                    // Get tower's collider component
-                    CapsuleCollider capCollider = newTowerObj.GetComponent<CapsuleCollider>();
+                    // Set the ghost's position to the collision point of the ray
+                    ghost.transform.position = hit.point;
 
-                    // Casts a sphere at the collision point that is the same radius as the tower's collider
-                    // Returns true if colliding with tower
-                    collidesWithtower = Physics.CheckSphere(hit.point, capCollider.radius * newTowerObj.transform.localScale.z, ~LayerMask.GetMask("Terrain")/*ignore terrain colliders*/, QueryTriggerInteraction.Ignore/*ignore range volumes*/);
+                    // Orient the ghost so it's facing in the normal direction of the surface
+                    Quaternion YY = Quaternion.FromToRotation(Vector3.up, Vector3.forward);
+                    ghost.transform.rotation = Quaternion.LookRotation(hit.normal) * YY;
 
-                    // if tower does not collide
-                    if (!collidesWithtower && hit.point.y > minYHeight)
+                    // Load the new tower's prefab
+                    GameObject newTowerObj = selectedTower;
+
+                    // Check if the tower would collide with any other towers
+                    bool collidesWithtower = false;
+                    if (newTowerObj != null)
                     {
-                        // set ghost color to green to indicate tower can be placed
-                        ghost.GetComponent<MeshRenderer>().material.color = new Color(0, 0.75f, 0, 0.5f);
+                        // Get tower's collider component
+                        CapsuleCollider capCollider = newTowerObj.GetComponent<CapsuleCollider>();
 
-                        // if mouse button is pressed and mouse is not over any GUI elements
-                        if (Input.GetMouseButtonDown(0) && !eventSystem.IsPointerOverGameObject())
+                        // Casts a sphere at the collision point that is the same radius as the tower's collider
+                        // Returns true if colliding with tower
+                        collidesWithtower = Physics.CheckSphere(hit.point, capCollider.radius * newTowerObj.transform.localScale.z, ~LayerMask.GetMask("Terrain")/*ignore terrain colliders*/, QueryTriggerInteraction.Ignore/*ignore range volumes*/);
+
+                        // if tower does not collide
+                        if (!collidesWithtower && hit.point.y > minYHeight)
                         {
-                            // place the tower according to the ghost
-                            GameObject newTower = Instantiate(newTowerObj);
-                            newTower.transform.position = ghost.transform.position;
-                            newTower.transform.rotation = ghost.transform.rotation;
+                            // set ghost color to green to indicate tower can be placed
+                            ghost.GetComponent<MeshRenderer>().material.color = new Color(0, 0.75f, 0, 0.5f);
+
+                            // if mouse button is pressed and mouse is not over any GUI elements
+                            if (Input.GetMouseButtonDown(0) && !eventSystem.IsPointerOverGameObject())
+                            {
+                                // place the tower according to the ghost
+                                GameObject newTower = Instantiate(newTowerObj);
+                                newTower.transform.position = ghost.transform.position;
+                                newTower.transform.rotation = ghost.transform.rotation;
+                            }
+                        }
+                        else // otherwise
+                        {
+                            // set ghost color to red
+                            ghost.GetComponent<Renderer>().material.color = new Color(0.75f, 0, 0, 0.5f);
                         }
                     }
-                    else // otherwise
-                    {
-                        // set ghost color to red
-                        ghost.GetComponent<Renderer>().material.color = new Color(0.75f, 0, 0, 0.5f);
-                    }
                 }
+                // Turn off ghost if ray does not hit any objects
+                ghost.SetActive(successfulRay);
             }
-            // Turn off ghost if ray does not hit any objects
-            ghost.SetActive(successfulRay);
 
         }
     }

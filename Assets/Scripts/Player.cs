@@ -15,6 +15,19 @@ public class Player : MonoBehaviour {
     public TowerSpawner towerSpawner; // tower spawner childed to this gameobject
     public TowerSelector towerSelector; // tower selector childed to this gameobject
 
+    private bool towersMode = false;
+
+    public bool placeTowers { get { return towersMode; } }
+    public bool selectTowers { get { return !towersMode; } }
+
+    //
+    public void ToggleTowersMode()
+    {
+        towersMode = !towersMode;
+        towerSelector.gameObject.SetActive(selectTowers);
+        towerSpawner.gameObject.SetActive(placeTowers);
+    }
+
     //
     public void PlaceTowersMode()
     {

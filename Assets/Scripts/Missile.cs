@@ -48,7 +48,7 @@ public class Missile : MonoBehaviour
 	
 	}
 
-	void OnCollisionEnter(Collision other)
+	void OnTriggerEnter(Collider other)
     {
 		if (other.gameObject.CompareTag("Enemy"))
         {
@@ -56,6 +56,38 @@ public class Missile : MonoBehaviour
 			//i need to call the specific bullet, otherwise all enemies take damage. take not for future sessions
 			//transform.position = Vector3.Lerp (transform.position, bulletman, _TurretScript.speed * Time.deltaTime);
 			other.gameObject.SendMessage("TakeDamage", attributes.damage, SendMessageOptions.DontRequireReceiver);
+
+            CreepEffect effect = other.gameObject.GetComponent<CreepEffect>();
+            if(effect == null)
+            {
+                effect = other.gameObject.AddComponent<CreepEffect>();
+                if(attributes.applyBurn)
+                {
+                    effect.burnCount = attributes.burnCount;
+                    effect.burnDamage = attributes.burnDamage;
+                    effect.burnTime = attributes.burnTime;
+                }
+                if(attributes.applySlow)
+                {
+                    effect.slowFactor = attributes.slowFactor;
+                    effect.slowTime = attributes.slowTime;
+                }
+            }
+            else
+            {
+
+                if (attributes.applyBurn)
+                {
+                    effect.burnCount = Mathf.Max(effect.burnCount, attributes.burnCount);
+                    effect.burnDamage = Mathf.Max(effect.burnDamage,attributes.burnDamage);
+                    effect.burnTime = Mathf.Min(effect.burnTime, attributes.burnTime);
+                }
+                if (attributes.applySlow)
+                {
+                    effect.slowFactor = Mathf.Min(effect.slowFactor,attributes.slowFactor);
+                    effect.slowTime = Mathf.Max(effect.slowTime, attributes.slowTime);
+                }
+            }
 		}
 		Destroy(gameObject); // bullet suicides after hitting anything
 	}

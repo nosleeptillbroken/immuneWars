@@ -10,6 +10,7 @@ public class TowerSelectionPanel : MonoBehaviour {
 
     private Text displayNameUI;
     private Dropdown targetingModeUI;
+    private Toggle sortOrderUI;
 
     public Button[] upgradeButtonsUI;
 
@@ -52,17 +53,21 @@ public class TowerSelectionPanel : MonoBehaviour {
         TowerAttributes compositeAttributes = selectedTower.attributes + selectedTower.upgradeAttributes;
         displayNameUI.text = compositeAttributes.displayName;
         targetingModeUI.value = (int)selectedTower.targetingMode;
+        sortOrderUI.gameObject.GetComponentInChildren<Text>().text = (selectedTower.sortOrder == 1) ? "<" : ">";
         int i = 0;
         foreach (Button btn in upgradeButtonsUI)
         {
             if (selectedTower.CanUpgrade(i))
             {
-                btn.GetComponentInChildren<Text>().text = selectedTower.GetNextUpgrade(i).displayName;
+                btn.transform.FindChild("Name").GetComponent<Text>().text = selectedTower.GetNextUpgrade(i).displayName;
+                btn.transform.FindChild("Cost").gameObject.SetActive(true);
+                btn.transform.FindChild("Cost").GetComponent<Text>().text = "Cost: " + selectedTower.GetNextUpgrade(i).cost;
                 btn.interactable = true;
             }
             else
             {
-                btn.GetComponentInChildren<Text>().text = "Complete";
+                btn.transform.FindChild("Name").GetComponent<Text>().text = "Complete";
+                btn.transform.FindChild("Cost").gameObject.SetActive(false);
                 btn.interactable = false;
             }
             i += 1;
@@ -75,6 +80,7 @@ public class TowerSelectionPanel : MonoBehaviour {
     public void UpdateTowerInformation()
     {
         selectedTower.targetingMode = (TowerBehaviour.TargetingMode)targetingModeUI.value;
+        selectedTower.sortOrder = sortOrderUI.isOn ? 1 : -1;
     }
 
     //
@@ -82,6 +88,7 @@ public class TowerSelectionPanel : MonoBehaviour {
     {
         displayNameUI = transform.FindChild("Name").GetComponent<Text>();
         targetingModeUI = transform.FindChild("Dropdown").GetComponent<Dropdown>();
+        sortOrderUI = transform.FindChild("Sort Order").GetComponent<Toggle>();
     }
 
     //

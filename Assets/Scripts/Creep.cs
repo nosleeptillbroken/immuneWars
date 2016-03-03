@@ -21,9 +21,19 @@ public class Creep : MonoBehaviour
     /// How much damage the unit inflicts when it successfully leaks through.
     /// </summary>
     public int leakDamage = 1;
-        
-	// Use this for initialization
-	void Start ()
+
+    /// <summary>
+    /// The current speed of the creep.
+    /// </summary>
+    public float speed { get { return GetComponent<NavMeshAgent>().speed; } set { GetComponent<NavMeshAgent>().speed = value; } }
+
+    /// <summary>
+    /// The current acceleration of the creep.
+    /// </summary>
+    public float acceleration { get { return GetComponent<NavMeshAgent>().acceleration; } set { GetComponent<NavMeshAgent>().acceleration = value; } }
+
+    // Use this for initialization
+    void Start ()
     {
         // The creep is referenced with the NavMesh so it can interact.
         agent = GetComponent<NavMeshAgent>();
