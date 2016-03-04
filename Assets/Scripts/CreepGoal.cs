@@ -14,7 +14,7 @@ public class CreepGoal : MonoBehaviour
         //If an enemy reaches the despawn point, subtract health from the player's total.
         if (scoreKeeperObject && other.CompareTag("Enemy"))
         {
-            scoreKeeperObject.GetComponent<ScoreKeeper>().currentHealth -= other.gameObject.GetComponent<Creep>().LeakDamage;
+            scoreKeeperObject.GetComponent<Player>().currentHealth -= other.gameObject.GetComponent<Creep>().LeakDamage;
         }
     }
 }

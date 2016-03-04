@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class ScoreKeeper : MonoBehaviour
+public class Player : MonoBehaviour
 {
     //Create objects for the gameover panel, player object, camera object.
     private GameObject gameOver;

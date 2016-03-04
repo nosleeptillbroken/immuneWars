@@ -57,7 +57,7 @@ public class Creep : MonoBehaviour
 		Health -= damage;
 		if (Health <= 0)
         {
-            scoreKeeperOb.GetComponent<ScoreKeeper>().addScore();   //Run addScore function in ScoreKeeper.
+            scoreKeeperOb.GetComponent<Player>().addScore();   //Run addScore function in ScoreKeeper.
             Destroy(gameObject);
 		}
 	}
@@ -76,7 +76,7 @@ public class Creep : MonoBehaviour
     {
         if (other.CompareTag("Despawn"))
         {
-            scoreKeeperOb.GetComponent<ScoreKeeper>().enemiesMissed();   //Run addKills function in ScoreKeeper.
+            scoreKeeperOb.GetComponent<Player>().enemiesMissed();   //Run addKills function in ScoreKeeper.
             Destroy(gameObject);
         }
     }
