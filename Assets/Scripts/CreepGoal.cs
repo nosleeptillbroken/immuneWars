@@ -18,9 +18,11 @@ public class CreepGoal : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        GameObject playerObject = GameObject.Find("Player");
+        GameObject playerObject = GameObject.Find("Player"); // find Player object
+		// if player object exists and colliding object is enemy
         if (playerObject && other.CompareTag("Enemy"))
         {
+			// lower the players current health by that enemys damage amount
             playerObject.GetComponent<Player>().currentHealth -= other.gameObject.GetComponent<Creep>().LeakDamage;
         }
     }

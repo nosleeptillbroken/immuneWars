@@ -10,7 +10,7 @@ using System.Collections.Generic;
 public class Tower : MonoBehaviour
 {
 
-    // bullet type this tower uses
+    // bullet object this tower uses
 	public Rigidbody bulletPrefab;
     // spawn point of the bullet
 	public Transform bulletSpawn;
@@ -40,7 +40,7 @@ public class Tower : MonoBehaviour
 
     //public int range;
     //public float fireSpeed;
-   // public float damage;
+	//public float damage;
 
     // Returns a tower from towerList
     public static Tower GetTowerByIndex(int i)
