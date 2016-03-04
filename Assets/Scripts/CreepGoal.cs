@@ -22,8 +22,8 @@ public class CreepGoal : MonoBehaviour {
 		// if player object exists and colliding object is enemy
         if (playerObject && other.CompareTag("Enemy"))
         {
-			// lower the players current health by that enemys damage amount
-            playerObject.GetComponent<Player>().currentHealth -= other.gameObject.GetComponent<Creep>().LeakDamage;
+            Player.current.RemoveHealth(other.gameObject.GetComponent<Creep>().leakDamage);
+            Destroy(other.gameObject);
         }
     }
 }

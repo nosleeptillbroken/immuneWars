@@ -6,13 +6,11 @@ using System.Collections;
 
 public class RangeTrigger : MonoBehaviour
 {
-    [HideInInspector]
-    public Tower parent;
-	
-	// Initializes parent object
+    public TowerBehaviour parent;
+
 	void Start()
     {
-        parent = transform.parent.gameObject.GetComponent<Tower>();
+        parent = transform.parent.gameObject.GetComponent<TowerBehaviour>();
     }
 
 	// Calls parent's OnRangeEnter if parent still exists
