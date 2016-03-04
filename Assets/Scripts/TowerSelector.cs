@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public class TowerSelector : MonoBehaviour {
 
-    public EventSystem eventSystem;
+    private static TowerSelector _current = null;
+
+    public static TowerSelector current { get { return _current; } }
 
     /// <summary>
     /// Tower the selector is focused on.
@@ -20,6 +22,7 @@ public class TowerSelector : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+        _current = this;
         // Focus on a tower if it is the current tower set
         SelectTower(selectedTower);
 	}
@@ -47,7 +50,7 @@ public class TowerSelector : MonoBehaviour {
                 if (rayTower)
                 {
                     // if mouse button is pressed and mouse is not over any GUI elements
-                    if (Input.GetMouseButtonDown(0) && !eventSystem.IsPointerOverGameObject())
+                    if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
                     {
                         SelectTower(rayTower);
                     }
@@ -56,7 +59,7 @@ public class TowerSelector : MonoBehaviour {
             else
             {
                 // if mouse button is pressed and mouse is not over any GUI elements
-                if (Input.GetMouseButtonDown(0) && !eventSystem.IsPointerOverGameObject())
+                if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
                 {
                     DeselectTower();
                 }
@@ -87,7 +90,7 @@ public class TowerSelector : MonoBehaviour {
             {
                 child.gameObject.SetActive(true);
             }
-            if (selectionPanel)
+            if (selectionPanel && selectedTower)
             {
                 selectionPanel.SetActive(true);
                 selectionPanel.GetComponent<TowerSelectionPanel>().UpdateDisplayInformation();

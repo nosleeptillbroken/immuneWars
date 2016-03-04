@@ -11,6 +11,11 @@ public class TowerAttributes
     public string displayName = null;
 
     /// <summary>
+    /// Description for the tower in the shop menu
+    /// </summary>
+    public string description = null;
+
+    /// <summary>
     /// The cost to purchase or upgrade this tower.
     /// </summary>
     public int cost = 0;
@@ -100,4 +105,41 @@ public class TowerAttributes
 
         return ret;
     }
+
+    static string GetColoredRichTextForOutcome(string text, int outcome, bool addNewline = true)
+    {
+        string str = "";
+
+        if(outcome < 0)
+        {
+            str += "<color=red>" + text + " -</color>";
+        }
+        else if(outcome > 0)
+        {
+            str += "<color=green>" + text + " +</color>";
+        }
+        else
+        {
+            return "";
+        }
+
+        if(addNewline)
+        {
+            str += "\n";
+        }
+
+        return str;
+    }
+
+    public static string GetUpgradeTooltip(TowerAttributes lhs, TowerAttributes rhs)
+    {
+        string str = "";
+
+        str += GetColoredRichTextForOutcome("Range",lhs.range.CompareTo(rhs.range));
+        str += GetColoredRichTextForOutcome("Damage", lhs.damage.CompareTo(rhs.damage));
+        str += GetColoredRichTextForOutcome("Rate of Fire", lhs.rateOfFire.CompareTo(rhs.rateOfFire), false);
+
+        return str;
+    }
+
 }

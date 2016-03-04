@@ -8,8 +8,9 @@ using UnityEngine.EventSystems;
 
 public class TowerSpawner : MonoBehaviour
 {
-    public EventSystem eventSystem;
-
+    private static TowerSpawner _current = null;
+    public static TowerSpawner current { get { return _current; } }
+    
     /// <summary>
     /// The current tower to spawn. Switch this tower to a different name, and create a new prefab in the Assets/Prefabs folder with the same name to change the tower
     /// </summary>
@@ -25,6 +26,8 @@ public class TowerSpawner : MonoBehaviour
     //
     void Start()
     {
+        _current = this;
+
         SetSelectedTower(selectedTower);
     }
 
@@ -82,7 +85,7 @@ public class TowerSpawner : MonoBehaviour
                             ghost.GetComponent<MeshRenderer>().material.color = new Color(0, 0.75f, 0, 0.5f);
 
                             // if mouse button is pressed and mouse is not over any GUI elements
-                            if (Input.GetMouseButtonDown(0) && !eventSystem.IsPointerOverGameObject())
+                            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
                             {
                                 // place the tower according to the ghost
                                 GameObject newTower = Instantiate(newTowerObj);

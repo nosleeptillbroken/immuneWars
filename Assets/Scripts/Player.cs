@@ -12,8 +12,6 @@ public class Player : MonoBehaviour {
     
     public Slider healthBar;
     public GameObject gameOver;
-    public TowerSpawner towerSpawner; // tower spawner childed to this gameobject
-    public TowerSelector towerSelector; // tower selector childed to this gameobject
 
     private bool towersMode = false;
 
@@ -24,22 +22,22 @@ public class Player : MonoBehaviour {
     public void ToggleTowersMode()
     {
         towersMode = !towersMode;
-        towerSelector.gameObject.SetActive(selectTowers);
-        towerSpawner.gameObject.SetActive(placeTowers);
+        TowerSelector.current.gameObject.SetActive(selectTowers);
+        TowerSpawner.current.gameObject.SetActive(placeTowers);
     }
 
     //
     public void PlaceTowersMode()
     {
-        towerSelector.gameObject.SetActive(false);
-        towerSpawner.gameObject.SetActive(true);
+        TowerSelector.current.gameObject.SetActive(false);
+        TowerSpawner.current.gameObject.SetActive(true);
     }
 
     //
     public void SelectTowersMode()
     {
-        towerSpawner.gameObject.SetActive(false);
-        towerSelector.gameObject.SetActive(true);
+        TowerSpawner.current.gameObject.SetActive(false);
+        TowerSelector.current.gameObject.SetActive(true);
     }
 
     // Use this for initialization
@@ -47,12 +45,6 @@ public class Player : MonoBehaviour {
     {
         if(!healthBar) healthBar = GameObject.Find("Health Bar").GetComponent<Slider>();
         if (!gameOver) gameOver = GameObject.Find("Game Over");
-
-        towerSpawner = GetComponentInChildren<TowerSpawner>();
-        towerSelector = GetComponentInChildren<TowerSelector>();
-
-        towerSpawner.gameObject.SetActive(false);
-        towerSelector.gameObject.SetActive(true);
 
         // set health to max at beginning
         currentHealth = maxHealth;

@@ -179,7 +179,7 @@ public class TowerBehaviour : MonoBehaviour
             targets.Add(other.GetComponent<Creep>());
 
             // target enemy if none targeted
-            TargetNewEnemy();
+            ObtainTarget();
         }
     }
 
@@ -196,7 +196,7 @@ public class TowerBehaviour : MonoBehaviour
             currentTarget = null;
 
             // target enemy if none targeted
-            TargetNewEnemy();
+            ObtainTarget();
         }
     }
 
@@ -204,7 +204,10 @@ public class TowerBehaviour : MonoBehaviour
 
     #region Targeting
 
-    public void ClearEmptyTransforms()
+    /// <summary>
+    /// Clear old targets from the tower's target array
+    /// </summary>
+    public void ClearOldTargets()
     {
         // First, make sure the array is purged of any empty transforms
         for (int e = 0; e < targets.Count; e++)
@@ -220,13 +223,13 @@ public class TowerBehaviour : MonoBehaviour
     }
 
     /// <summary>
-    /// Tells the tower to target the next enemy, if an enemy isn't targeted
+    /// Tells the tower to obtain a new target.
     /// </summary>
-    public void TargetNewEnemy()
+    public void ObtainTarget()
     {
         currentTarget = null;
 
-        ClearEmptyTransforms();
+        ClearOldTargets();
         // select the closest one
         if (targetingMode == TargetingMode.Distance)
         {
@@ -251,6 +254,14 @@ public class TowerBehaviour : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Obtain a new target only if there isn't a current target.
+    /// </summary>
+    public void ObtainTargetWeak()
+    {
+        if (currentTarget == null) ObtainTarget();
+    }
+
     #endregion
 
     #region Target Sorting
@@ -263,7 +274,7 @@ public class TowerBehaviour : MonoBehaviour
         // sort the array according to distance
         targets.Sort
         (
-            (l, r) => Vector3.Distance(l.transform.position, transform.position).CompareTo(Vector3.Distance(r.transform.position, transform.position)) * sortOrder
+            (l, r) => (Vector3.Distance(l.transform.position, transform.position).CompareTo(Vector3.Distance(r.transform.position, transform.position)) * sortOrder)
         );
     }
 
@@ -275,7 +286,7 @@ public class TowerBehaviour : MonoBehaviour
         // sort the array according to health
         targets.Sort
         (
-            (l, r) => (l.health - r.health) * sortOrder
+            (l, r) => (l.health.CompareTo(r.health) * sortOrder)
         );
     }
 
@@ -287,7 +298,7 @@ public class TowerBehaviour : MonoBehaviour
         // sort the array according to distance
         targets.Sort
         (
-            (l, r) => (l.leakDamage - r.leakDamage) * sortOrder
+            (l, r) => (l.leakDamage.CompareTo(r.leakDamage) * sortOrder)
         );
     }
 
@@ -299,7 +310,7 @@ public class TowerBehaviour : MonoBehaviour
         // sort the array according to distance
         targets.Sort
         (
-            (l, r) => ((int)(l.speed*10) - (int)(r.speed*10)) * sortOrder
+            (l, r) => (l.speed.CompareTo(r.speed) * sortOrder)
         );
     }
 
@@ -348,8 +359,10 @@ public class TowerBehaviour : MonoBehaviour
 
     void Update()
     {
+
         ApplyAttributes(); // update the attributes in case something has changed
-        
+        ObtainTargetWeak(); // prevents the tower from not targeting at all
+
         // if there's any target in the range...
         if (currentTarget)
         {
@@ -362,7 +375,7 @@ public class TowerBehaviour : MonoBehaviour
             // if it's time to shoot...
             if (elapsedTime > 1.0f / compositeAttributes.rateOfFire)
             {
-                TargetNewEnemy();
+                ObtainTarget();
 
                 GameObject missileObj = Instantiate(missilePrefab.gameObject); //instantiates the bullet to shoot
                 missileObj.transform.position = missileSpawn.position;

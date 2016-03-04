@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 
 public class TowerShop : MonoBehaviour {
-
-    [Header("General")]
-    public TowerSpawner towerSpawner = null;
-
+    
     [Header("Shop")]
     public List<GameObject> towers;
 
@@ -26,7 +23,6 @@ public class TowerShop : MonoBehaviour {
         RectTransform rectTransform = (RectTransform)transform;
 
         buttonTemplate = transform.FindChild("Template").gameObject;
-        RectTransform buttonTemplateTransform = (RectTransform)buttonTemplate.transform;
 
         newPosition = GetComponent<RectTransform>().anchoredPosition;
 
@@ -48,7 +44,6 @@ public class TowerShop : MonoBehaviour {
             GameObject button = Instantiate(buttonTemplate);
             ShopButton shopButton = button.GetComponent<ShopButton>();
 
-            shopButton.spawner = towerSpawner;
             shopButton.tower = tower;
 
             RectTransform buttonTransform = (RectTransform)button.transform;

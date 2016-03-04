@@ -2,11 +2,10 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class TowerSelectionPanel : MonoBehaviour {
+public class TowerSelectionPanel : MonoBehaviour
+{
 
-    public TowerSelector towerSelector = null;
-
-    public TowerBehaviour selectedTower { get { return towerSelector.selectedTower; } }
+    public TowerBehaviour selectedTower { get { return TowerSelector.current.selectedTower; } }
 
     private Text displayNameUI;
     private Dropdown targetingModeUI;
@@ -19,10 +18,10 @@ public class TowerSelectionPanel : MonoBehaviour {
     /// </summary>
     public void DestroySelectedTower()
     {
-        if(towerSelector && selectedTower)
+        if(TowerSelector.current && selectedTower)
         {
             Destroy(selectedTower.gameObject);
-            towerSelector.DeselectTower();
+            TowerSelector.current.DeselectTower();
         }
     }
 
@@ -31,7 +30,7 @@ public class TowerSelectionPanel : MonoBehaviour {
     /// </summary>
     public void SellSelectedTower()
     {
-        if(towerSelector)
+        if(TowerSelector.current)
         {
             DestroySelectedTower();
         }
@@ -39,7 +38,7 @@ public class TowerSelectionPanel : MonoBehaviour {
 
     public void UpgradeSelectedTower(int path)
     {
-        if(towerSelector && selectedTower)
+        if(TowerSelector.current && selectedTower)
         {
             selectedTower.Upgrade(path);
         }
@@ -50,9 +49,17 @@ public class TowerSelectionPanel : MonoBehaviour {
     /// </summary>
     public void UpdateDisplayInformation()
     {
+        if(!HasComponents())
+        {
+            GetComponents();
+        }
+
         TowerAttributes compositeAttributes = selectedTower.attributes + selectedTower.upgradeAttributes;
+        
         displayNameUI.text = compositeAttributes.displayName;
+
         targetingModeUI.value = (int)selectedTower.targetingMode;
+
         sortOrderUI.gameObject.GetComponentInChildren<Text>().text = (selectedTower.sortOrder == 1) ? "<" : ">";
         int i = 0;
         foreach (Button btn in upgradeButtonsUI)
@@ -83,18 +90,44 @@ public class TowerSelectionPanel : MonoBehaviour {
         selectedTower.sortOrder = sortOrderUI.isOn ? 1 : -1;
     }
 
+
+    public void UpdateTooltipUpgradeInformation(int id)
+    {
+        if (upgradeButtonsUI[id] && upgradeButtonsUI[id].interactable)
+        {
+            Tooltip.current.ForceShow();
+
+            TowerAttributes attr = selectedTower.attributes + selectedTower.upgradeAttributes;
+            TowerAttributes upAttr = selectedTower.GetNextUpgrade(id);
+            Tooltip.current.SetText("<b>" + upAttr.displayName + "</b>\n" + TowerAttributes.GetUpgradeTooltip(attr, upAttr));
+        }
+        else
+        {
+            Tooltip.current.ForceHide();
+        }
+    }
+
     //
     void Start()
     {
-        displayNameUI = transform.FindChild("Name").GetComponent<Text>();
-        targetingModeUI = transform.FindChild("Dropdown").GetComponent<Dropdown>();
-        sortOrderUI = transform.FindChild("Sort Order").GetComponent<Toggle>();
+        GetComponents();
     }
 
     //
     void Update()
     {
-
+        UpdateDisplayInformation();
     }
 
+    bool HasComponents()
+    {
+        return (displayNameUI != null && targetingModeUI != null && sortOrderUI != null);
+    }
+
+    void GetComponents()
+    {
+        displayNameUI = transform.FindChild("Name").GetComponent<Text>();
+        targetingModeUI = transform.FindChild("Dropdown").GetComponent<Dropdown>();
+        sortOrderUI = transform.FindChild("Sort Order").GetComponent<Toggle>();
+    }
 }
