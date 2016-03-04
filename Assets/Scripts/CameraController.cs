@@ -21,12 +21,14 @@ public class CameraController : MonoBehaviour {
 
     // Rotation Properties
     [Header("Rotation")]
-    public float rotationSensitivity = 90;
+	public bool rotationOn;
+	public float rotationSensitivity = 90;
     public float rotationSpeed = 45; // The speed at which the camera rotates during zoom
                                     //public float rotationThreshold = 8; // The threshold at which rotation stops. larger number = more narrow range of rotation
 
     // Zoom Properties
     [Header("Zoom")]
+	public bool zoomOn;
     public float zoomSensitivity = 18;
     public float zoomSpeed = 4;
 
@@ -75,7 +77,7 @@ public class CameraController : MonoBehaviour {
 
         // Free movement w/ Middle Mouse Click
         // If middle mouse button is pressed
-        if(Input.GetMouseButtonDown(1))
+		if(Input.GetMouseButtonDown(1) && rotationOn == true)
         {
             xDeg = transform.rotation.eulerAngles.x;
             yDeg = transform.rotation.eulerAngles.y;
@@ -86,7 +88,7 @@ public class CameraController : MonoBehaviour {
             freeRotate = false;
         }
 
-        if (freeRotate)
+		if (freeRotate)
         {
             xDeg -= deltaMouseY * Time.deltaTime * rotationSensitivity;
             yDeg += deltaMouseX * Time.deltaTime * rotationSensitivity;
@@ -142,7 +144,7 @@ public class CameraController : MonoBehaviour {
         }
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        if(scroll != 0)
+		if(scroll != 0 && zoomOn == true)
         {
             zoom += zoomSensitivity * Time.deltaTime * -scroll;
         }

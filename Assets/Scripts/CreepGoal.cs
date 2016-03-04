@@ -4,24 +4,17 @@
 using UnityEngine;
 using System.Collections;
 
-public class CreepGoal : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
+public class CreepGoal : MonoBehaviour
+{
     void OnTriggerEnter(Collider other)
     {
-        GameObject playerObject = GameObject.Find("Player");
-        if (playerObject && other.CompareTag("Enemy"))
+        //References the ScoreKeeper object.
+        GameObject scoreKeeperObject = GameObject.Find("ScoreKeeper");
+
+        //If an enemy reaches the despawn point, subtract health from the player's total.
+        if (scoreKeeperObject && other.CompareTag("Enemy"))
         {
-            playerObject.GetComponent<Player>().currentHealth -= other.gameObject.GetComponent<Creep>().LeakDamage;
+            scoreKeeperObject.GetComponent<ScoreKeeper>().currentHealth -= other.gameObject.GetComponent<Creep>().LeakDamage;
         }
     }
 }

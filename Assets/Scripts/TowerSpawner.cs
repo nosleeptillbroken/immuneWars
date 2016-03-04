@@ -19,15 +19,9 @@ public class TowerSpawner : MonoBehaviour
     public float minYHeight = 0.0f;
 
     static GameObject ghost;
-
-    static bool first = true;
-
+    
     void Start()
     {
-        if (first)
-        {
-            first = false;
-
             // Load the ghost from the tower prefab
             ghost = Instantiate(selectedTower);
 
@@ -39,8 +33,6 @@ public class TowerSpawner : MonoBehaviour
             ghost.GetComponent<MeshRenderer>().material = Resources.Load("Ghost") as Material;
             ghost.name = "Tower Ghost";
             ghost.layer = 1;
-
-        }
     }
 
 
