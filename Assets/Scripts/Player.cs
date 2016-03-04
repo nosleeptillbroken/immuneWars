@@ -26,8 +26,10 @@ public class Player : MonoBehaviour
     public Text goldDisplay;
 
     public int maxGold = int.MaxValue;
+    [SerializeField]
     private int _currentGold = 0;
     public int currentGold { get { return _currentGold; } }
+    public bool infiniteGold = false;
 
     //
     public GameObject gameOver;
@@ -82,6 +84,7 @@ public class Player : MonoBehaviour
         // Health bar displayed reflects current health
         healthBar.value = currentHealth;
 
+        goldDisplay.gameObject.SetActive(!infiniteGold);
         // Update text on the gold display
         goldDisplay.text = "Gold: " + currentGold;
 	}
@@ -157,6 +160,11 @@ public class Player : MonoBehaviour
     /// <returns>If the gold does not exceed max gold, return true and add gold. Else, add up to max gold and return false.</returns>
     public bool AddGold(int amount)
     {
+        if(infiniteGold)
+        {
+            return true;
+        }
+
         if (currentGold + amount <= maxGold)
         {
             _currentGold += amount;
@@ -176,6 +184,11 @@ public class Player : MonoBehaviour
     /// <returns></returns>
     public bool RemoveGold(int amount)
     {
+        if(infiniteGold)
+        {
+            return true;
+        }
+
         if(currentGold - amount >= 0)
         {
             _currentGold -= amount;

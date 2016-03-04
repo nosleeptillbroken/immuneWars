@@ -4,11 +4,14 @@ using System.Collections;
 
 public class ShopButton : MonoBehaviour
 {
-    
+    private Button button = null;
+
+    [HideInInspector]
     public GameObject tower = null;
 	
-    public void Start()
+    void Start()
     {
+        button = GetComponent<Button>();
         if (tower != null)
         {
             transform.FindChild("Name").GetComponent<Text>().text = tower.GetComponent<TowerBehaviour>().attributes.displayName;
@@ -17,11 +20,26 @@ public class ShopButton : MonoBehaviour
         AddListener();
     }
 
+    void Update()
+    {
+        if(Player.current.currentGold >= tower.GetComponent<TowerBehaviour>().attributes.cost)
+        {
+            button.interactable = true;
+        }
+        else
+        {
+            button.interactable = false;
+        }
+    }
+
     void AddListener()
     {
         UnityEngine.Events.UnityAction selectTower = () =>
         {
-            TowerSpawner.current.SetSelectedTower(tower);
+            if (Player.current.RemoveGold(tower.GetComponent<TowerBehaviour>().attributes.cost))
+            {
+                TowerSpawner.current.Selecttower(tower);
+            }
         };
 
         GetComponent<Button>().onClick.AddListener(selectTower);

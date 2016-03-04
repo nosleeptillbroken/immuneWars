@@ -28,7 +28,7 @@ public class TowerSpawner : MonoBehaviour
     {
         _current = this;
 
-        SetSelectedTower(selectedTower);
+        Selecttower(selectedTower);
     }
 
     //
@@ -91,6 +91,9 @@ public class TowerSpawner : MonoBehaviour
                                 GameObject newTower = Instantiate(newTowerObj);
                                 newTower.transform.position = ghost.transform.position;
                                 newTower.transform.rotation = ghost.transform.rotation;
+
+                                // Deselect tower
+                                Selecttower(null);
                             }
                         }
                         else // otherwise
@@ -111,7 +114,7 @@ public class TowerSpawner : MonoBehaviour
     /// Sets which tower the tower spawner will use to place towers. Also sets the ghost image for the tower spawner.
     /// </summary>
     /// <param name="tower">The tower to be used. Must contain a tower component.</param>
-    public void SetSelectedTower(GameObject tower)
+    public void Selecttower(GameObject tower)
     {
         if(tower != null && tower.GetComponent<TowerBehaviour>() != null)
         {
@@ -147,8 +150,14 @@ public class TowerSpawner : MonoBehaviour
         }
         else
         {
-            selectedTower = null;
+            DeselectTower();
         }
+    }
+
+    public void DeselectTower()
+    {
+        selectedTower = null;
+        if (ghost != null) Destroy(ghost.gameObject);
     }
 
 }

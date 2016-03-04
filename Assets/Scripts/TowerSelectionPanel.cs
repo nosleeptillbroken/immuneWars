@@ -32,13 +32,14 @@ public class TowerSelectionPanel : MonoBehaviour
     {
         if(TowerSelector.current)
         {
+            Player.current.AddGold(selectedTower.attributes.cost + selectedTower.upgradeAttributes.cost);
             DestroySelectedTower();
         }
     }
 
     public void UpgradeSelectedTower(int path)
     {
-        if(TowerSelector.current && selectedTower)
+        if(TowerSelector.current && selectedTower && Player.current.RemoveGold(selectedTower.attributes.cost))
         {
             selectedTower.Upgrade(path);
         }
@@ -69,7 +70,14 @@ public class TowerSelectionPanel : MonoBehaviour
                 btn.transform.FindChild("Name").GetComponent<Text>().text = selectedTower.GetNextUpgrade(i).displayName;
                 btn.transform.FindChild("Cost").gameObject.SetActive(true);
                 btn.transform.FindChild("Cost").GetComponent<Text>().text = "Cost: " + selectedTower.GetNextUpgrade(i).cost;
-                btn.interactable = true;
+                if (Player.current.currentGold >= selectedTower.GetNextUpgrade(i).cost)
+                {
+                    btn.interactable = true;
+                }
+                else
+                {
+                    btn.interactable = false;
+                }
             }
             else
             {
