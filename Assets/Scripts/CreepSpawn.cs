@@ -3,6 +3,7 @@
 
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class CreepPair // provides a pair of GameObject to select creep type and number of that type to spawn
@@ -59,7 +60,10 @@ public class CreepSpawn : MonoBehaviour
 	
 	IEnumerator SpawnWaves ()
 	{
-		yield return new WaitForSeconds (startWait);
+        WaveCountdown waveCounter = GameObject.Find("Wave Countdown").GetComponent<WaveCountdown>();
+        waveCounter.gameObject.SetActive(false);
+
+        yield return new WaitForSeconds (startWait);
         for (int i = 0; i < levelList.Length; i++) // for every wave in the level
         {
             for (int j = 0; j < levelList[i].waveList.Length; j++) // for every creep type listed in the wave
@@ -71,8 +75,13 @@ public class CreepSpawn : MonoBehaviour
                     Instantiate (levelList[i].waveList[j].creep, spawnPosition, spawnRotation); // spawn wave for this wave, of this type
                     yield return new WaitForSeconds (spawnWait); // wait before spawning next creep
                 }
+
+                waveCounter.gameObject.SetActive(true);
+                waveCounter.BeginCountdown(waveWait);
+                waveCounter.GetComponentInChildren<Text>().text = "Wave " + (j+2) + " in:";
+                yield return new WaitForSeconds(waveWait); // wait before starting next wave
+                waveCounter.gameObject.SetActive(false);
             }
-            yield return new WaitForSeconds(waveWait); // wait before starting next wave
         }
         // fall out the bottom
         Debug.Log("Spawning Finished");

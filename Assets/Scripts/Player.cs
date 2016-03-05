@@ -40,9 +40,6 @@ public class Player : MonoBehaviour
 
     [Header("Interface")] ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
-    // Create the slider for display of the health bar
-    // This will notify the player of their current progress towards a lose condition
-    public Slider healthBar;
 
     /// <summary>
     /// The GameObject that contains the game over UI dialog.
@@ -57,7 +54,12 @@ public class Player : MonoBehaviour
     /// <summary>
     /// The GameObject that contains the score screen.
     /// </summary>
-    public GameObject scoreScreen;
+    public GameObject resultsScreen;
+
+    /// <summary>
+    /// The Slider component that displays the player's current health.
+    /// </summary>
+    public Slider healthBar;
 
     /// <summary>
     /// The Text component that displays gold on screen.
@@ -133,10 +135,16 @@ public class Player : MonoBehaviour
     void Start ()
     {
 		// If they were not linked in editor find the Health Bar and Game Over objects for the scene
-        if(!healthBar) healthBar = GameObject.Find("Health Bar").GetComponent<Slider>();
+        if(!healthBar) healthBar = GameObject.Find("Health Display").GetComponent<Slider>();
         if (!goldText) goldText = GameObject.Find("Gold Display").GetComponent<Text>();
+
         if (!gameOver) gameOver = GameObject.Find("Game Over");
         if (!gameWin) gameWin = GameObject.Find("Game Win");
+        if (!resultsScreen) resultsScreen = GameObject.Find("Results Screen");
+
+        gameOver.SetActive(false);
+        gameWin.SetActive(false);
+        resultsScreen.SetActive(false);
 
         // Get a reference to the tower spawner
         // set health to max at beginning
@@ -154,7 +162,7 @@ public class Player : MonoBehaviour
         killsText.text = "Kills: " + totalKills.ToString();   //Adjust the player's total kills.
         
         // Update text on the gold display
-        goldText.GetComponentInChildren<Text>().text = "Gold: " + (infiniteGold ? "∞" : currentGold.ToString());
+        goldText.GetComponentInChildren<Text>().text = (infiniteGold ? "∞" : currentGold.ToString());
         
 
         if ((totalKills) >= killsToWin && winFlag == false) //Game Win State.
@@ -334,7 +342,7 @@ public class Player : MonoBehaviour
     public void DisplayScoreScreen()
     {
         //Activate score screen.
-        scoreScreen.SetActive(true);      
+        resultsScreen.SetActive(true);      
 
         //More values can be added in the future for different creep types.
         int CKV = 10;   //Creep Kill Value
@@ -362,10 +370,10 @@ public class Player : MonoBehaviour
         Camera.main.GetComponent<CameraController>().enabled = false;
 
         // Disable health bar
-        healthBar.transform.parent.gameObject.SetActive(false);
+        healthBar.gameObject.SetActive(false);
 
         // Disable gold display
-        goldText.gameObject.SetActive(false);
+        goldText.transform.parent.gameObject.SetActive(false);
         
         // Disable tower spawner and tower selector
         TowerSpawner.current.gameObject.SetActive(false);
