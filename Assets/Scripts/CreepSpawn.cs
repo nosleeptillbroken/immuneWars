@@ -17,7 +17,9 @@ public class WaveList // allows for the creation of a 2 dimensional array of Cre
     public CreepPair[] waveList;
 }
 
-public class CreepSpawn : MonoBehaviour {
+public class CreepSpawn : MonoBehaviour
+{
+
     public WaveList[] levelList; // an array of waves will create the level
 
 	// public int creepCount;
@@ -28,7 +30,25 @@ public class CreepSpawn : MonoBehaviour {
 	void Start ()
 	{
 		StartCoroutine (SpawnWaves ());
+        Player.current.killsToWin += GetNumberOfCreeps();
 	}
+
+    /// <summary>
+    /// Gets the number of creeps to be spawned in this level.
+    /// </summary>
+    /// <returns></returns>
+    public int GetNumberOfCreeps()
+    {
+        int result = 0;
+        foreach(WaveList wl in levelList)
+        {
+            foreach(CreepPair cp in wl.waveList)
+            {
+                result += cp.number;
+            }
+        }
+        return result;
+    }
 
 	/// Waits for startWait seconds
 	/// Iterates through every waveList in levelList
@@ -55,7 +75,7 @@ public class CreepSpawn : MonoBehaviour {
             yield return new WaitForSeconds(waveWait); // wait before starting next wave
         }
         // fall out the bottom
-        Debug.Log("Level Ended"); // log that level is over, will need a call for level completed scene to begin
+        Debug.Log("Spawning Finished");
         // Debug.Break();
 	}
 }

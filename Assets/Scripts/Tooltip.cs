@@ -20,11 +20,14 @@ public class Tooltip : MonoBehaviour
     /// </summary>
     public static Canvas canvas;
 
+    void Awake ()
+    {
+        _current = this;
+    }
+
 	// Use this for initialization
 	void Start ()
     {
-        _current = this;
-
         Canvas[] c = GetComponentsInParent<Canvas>();
         canvas = c[c.Length - 1];
     }

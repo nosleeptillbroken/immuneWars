@@ -112,6 +112,7 @@ public class Creep : MonoBehaviour
             goldDrop.transform.position = transform.position;
             goldDrop.GetComponent<TextMesh>().text = "+" + goldValue + " Gold";
             Player.current.AddGold(goldValue); //increments the player's gold by the set gold value associated with the creep
+            Player.current.SendMessage("OnKillCreep", null, SendMessageOptions.DontRequireReceiver);
 
             Destroy(gameObject);
         }
@@ -128,21 +129,16 @@ public class Creep : MonoBehaviour
     // LateUpdate
     void LateUpdate ()
     {
-        healthBar.transform.rotation = healthBarRot; //rotation correction for health bar
+        //rotation correction for health bar
+        healthBar.transform.rotation = healthBarRot; 
     }
 
     // OnTriggerEnter
-    void OnTriggerEnter(Collider other)
+    void OnDespawn()
     {
-        if (other.CompareTag("Despawn"))
-        {
-            Destroy(gameObject);
-            /*	
-			 * {
-			 * 	Code for Losing Lives.
-			 * }
-			*/
-        }
+        Player.current.SendMessage("OnMissCreep", null, SendMessageOptions.DontRequireReceiver);
+        Player.current.RemoveHealth(leakDamage);
+        Destroy(gameObject);
     }
 
 }

@@ -21,12 +21,16 @@ public class CameraController : MonoBehaviour {
 
     // Rotation Properties
     [Header("Rotation")]
+
+    public bool enableRotation = true;
     public float rotationSensitivity = 90;
     public float rotationSpeed = 45; // The speed at which the camera rotates during zoom
                                     //public float rotationThreshold = 8; // The threshold at which rotation stops. larger number = more narrow range of rotation
 
     // Zoom Properties
     [Header("Zoom")]
+
+    public bool enableZoom = true;
     public float zoomSensitivity = 18;
     public float zoomSpeed = 4;
 
@@ -42,8 +46,7 @@ public class CameraController : MonoBehaviour {
     
 
     Quaternion currRot = Quaternion.identity;
-
-
+    
     bool freeRotate = false;
     float xDeg = 0;
     float yDeg = 0;

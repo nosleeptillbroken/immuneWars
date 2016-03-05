@@ -24,9 +24,14 @@ public class TowerSpawner : MonoBehaviour
     static GameObject ghost = null;
     
     //
-    void Start()
+    void Awake()
     {
         _current = this;
+    }
+
+    //
+    void Start()
+    {
 
         Selecttower(selectedTower);
     }

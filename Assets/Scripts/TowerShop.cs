@@ -59,28 +59,58 @@ public class TowerShop : MonoBehaviour {
         }
 	}
 	
+    // Called every frame.
 	void Update ()
     {
 	
 	}
 
+    // Called every frame after Update.
     void LateUpdate()
     {
         GetComponent<RectTransform>().anchoredPosition = Vector3.Lerp(GetComponent<RectTransform>().anchoredPosition, newPosition, Time.deltaTime * animationSpeed);
     }
 
+    /// <summary>
+    /// Toggles the panel between open and close.
+    /// </summary>
     public void TogglePanel()
     {
-        RectTransform rectTransform = (RectTransform)transform;
-        Vector3 delta = new Vector3(rectTransform.rect.width, 0.0f);
         panelVisible = !panelVisible;
         if(panelVisible)
         {
-            newPosition -= delta;
+            OpenPanel();
         }
         else
         {
-            newPosition += delta;
+            ClosePanel();
         }
+    }
+
+    /// <summary>
+    /// Opens the shop panel.
+    /// </summary>
+    public void OpenPanel()
+    {
+        RectTransform rectTransform = (RectTransform)transform;
+        Vector3 delta = new Vector3(rectTransform.rect.width, 0.0f);
+        newPosition -= delta;
+    }
+
+    /// <summary>
+    /// Closes the shop panel.
+    /// </summary>
+    public void ClosePanel()
+    {
+        RectTransform rectTransform = (RectTransform)transform;
+        Vector3 delta = new Vector3(rectTransform.rect.width, 0.0f);
+        newPosition += delta;
+
+        if(TowerSpawner.current.selectedTower)
+        {
+            Player.current.AddGold(TowerSpawner.current.selectedTower.GetComponent<TowerBehaviour>().attributes.cost);
+            TowerSpawner.current.DeselectTower();
+        }
+
     }
 }
