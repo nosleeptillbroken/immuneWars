@@ -1,11 +1,15 @@
-﻿using UnityEngine;
+﻿// CreepPath.cs
+// General-purpose (currently not used) script for defining a path of points to be followed by a creep.
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 /// <summary>
 /// Specifies a path (or paths) that creeps can follow.
 /// </summary>
-public class CreepPath : MonoBehaviour {
+public class CreepPath : MonoBehaviour
+{
 
     public List<Vector3> points = new List<Vector3>();
 

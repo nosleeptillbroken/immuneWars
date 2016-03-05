@@ -1,21 +1,36 @@
-﻿using UnityEngine;
+﻿// CameraController.cs
+// Script allows for RTS-style camera movement, rotation, and zoom.
+
+using UnityEngine;
 using System.Collections;
 
 public class CameraController : MonoBehaviour {
 
     // Pan Properties
     [Header("Panning")]
-    public float panThreshold = 16; // The number of px on each side of the screen that will count towards panning the screen
+    [Tooltip("Enables whether hovering the mouse near a screen edge pans the camera in that direction.")]
+    public bool enableEdgePanning = true;
+    [Tooltip("Distance from the edge of the screen before edge panning will occur.")]
+    public float edgePanThreshold = 16; // The number of px on each side of the screen that will count towards panning the screen
     public float panSpeed = 32; // The speed at which the camera pans
+
+    [Tooltip("Enables camera restriction within a box defined by two points.")]
+    public bool cameraBoundsRestriction = false;
+    public Vector3 minimumBounds = Vector3.zero;
+    public Vector3 maximumBounds = Vector3.zero;
 
     // Rotation Properties
     [Header("Rotation")]
+
+    public bool enableRotation = true;
     public float rotationSensitivity = 90;
     public float rotationSpeed = 45; // The speed at which the camera rotates during zoom
                                     //public float rotationThreshold = 8; // The threshold at which rotation stops. larger number = more narrow range of rotation
 
     // Zoom Properties
     [Header("Zoom")]
+
+    public bool enableZoom = true;
     public float zoomSensitivity = 18;
     public float zoomSpeed = 4;
 
@@ -31,8 +46,7 @@ public class CameraController : MonoBehaviour {
     
 
     Quaternion currRot = Quaternion.identity;
-
-
+    
     bool freeRotate = false;
     float xDeg = 0;
     float yDeg = 0;
@@ -75,6 +89,7 @@ public class CameraController : MonoBehaviour {
             freeRotate = false;
         }
 
+		// If freely rotating follow the change in mousePosition with camera rotation
         if (freeRotate)
         {
             xDeg -= deltaMouseY * Time.deltaTime * rotationSensitivity;
@@ -83,7 +98,6 @@ public class CameraController : MonoBehaviour {
         }
         else if (Input.GetMouseButton(2))
         {
-            
             // Set rotation to identity so that translation is planar
             transform.rotation = Quaternion.identity;
             // Translate camera according to mouse delta
@@ -103,26 +117,26 @@ public class CameraController : MonoBehaviour {
             {
                 sprintMult = 2.0f;
             }
-            if (cursorX < panThreshold || Input.GetKey(KeyCode.A))
+            if ((cursorX < edgePanThreshold && enableEdgePanning) || Input.GetKey(KeyCode.A))
             {
                 transform.rotation = Quaternion.identity;
                 transform.Translate(Vector3.right * -panSpeed * Time.deltaTime * sprintMult);
                 transform.rotation = currRot;
             }
-            else if (cursorX >= Screen.width - panThreshold || Input.GetKey(KeyCode.D))
+            else if ((cursorX >= Screen.width - edgePanThreshold && enableEdgePanning) || Input.GetKey(KeyCode.D))
             {
                 transform.rotation = Quaternion.identity;
                 transform.Translate(Vector3.right * panSpeed * Time.deltaTime * sprintMult);
                 transform.rotation = currRot;
             }
 
-            if (cursorY < panThreshold || Input.GetKey(KeyCode.S))
+            if ((cursorY < edgePanThreshold && enableEdgePanning) || Input.GetKey(KeyCode.S))
             {
                 transform.rotation = Quaternion.identity;
                 transform.Translate(Vector3.forward * -panSpeed * Time.deltaTime * sprintMult);
                 transform.rotation = currRot;
             }
-            else if (cursorY >= Screen.height - panThreshold || Input.GetKey(KeyCode.W))
+            else if ((cursorY >= Screen.height - edgePanThreshold && enableEdgePanning) || Input.GetKey(KeyCode.W))
             {
                 transform.rotation = Quaternion.identity;
                 transform.Translate(Vector3.forward * panSpeed * Time.deltaTime * sprintMult);
@@ -130,8 +144,10 @@ public class CameraController : MonoBehaviour {
             }
         }
 
+		// Get mouse scroll wheel input
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        if(scroll != 0)
+		// If scroll wheel moved zoom camera in relation
+		if(scroll != 0)
         {
             zoom += zoomSensitivity * Time.deltaTime * -scroll;
         }
@@ -139,10 +155,13 @@ public class CameraController : MonoBehaviour {
 
     }
 
+	// LateUpdate is called at the end of every frame, after update
     void LateUpdate()
     {
         float zoomPercent = Mathf.Clamp(Time.deltaTime * zoomSpeed, 0.0f, 1.0f);
-        zoomLerp = Mathf.Lerp(zoomLerp, zoom, zoomPercent);
+		
+		// Adjust the zoom, rotation, y and z coordinates of the camera according to changes this frame
+		zoomLerp = Mathf.Lerp(zoomLerp, zoom, zoomPercent);
         if (!freeRotate)
         {
             transform.rotation = Quaternion.Slerp(zoomedInRot, zoomedOutRot, zoomLerp);
@@ -150,7 +169,19 @@ public class CameraController : MonoBehaviour {
         Vector3 hpos = transform.position;
         hpos.y = Mathf.Lerp(zoomedInHeight, zoomedOutHeight, zoomLerp);
         hpos.z += (zoom - zoomLerp) * zoomSensitivity * Time.deltaTime;
+
         transform.position = hpos;
+		
+		// Bound the camera position so it cannot fly away from the play area
+        if(cameraBoundsRestriction)
+        {
+            Vector3 clampPos;
+            clampPos.x = Mathf.Clamp(hpos.x, minimumBounds.x, maximumBounds.x);
+            clampPos.y = Mathf.Clamp(hpos.y, minimumBounds.y, maximumBounds.y);
+            clampPos.z = Mathf.Clamp(hpos.z, minimumBounds.z, maximumBounds.z);
+
+            transform.position = clampPos;
+        }
 
     }
 }
