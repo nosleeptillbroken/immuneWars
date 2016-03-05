@@ -11,9 +11,13 @@ public class WaveCountdown : MonoBehaviour {
     private float _countdownTime;
     private float _remainingTime;
 
+    void Awake()
+    {
+        slider = GetComponent<Slider>();
+    }
+
 	// Use this for initialization
 	void Start () {
-        slider = GetComponent<Slider>();
 	}
 	
 	// Update is called once per frame
