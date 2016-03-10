@@ -40,7 +40,12 @@ public class TowerBehaviour : MonoBehaviour
     
     // current targeting mode used by the tower
     public TargetingMode targetingMode = TargetingMode.Distance;
-    public int sortOrder = 1;
+    public bool sortDescending = false;
+
+    public int GetSortOrder()
+    {
+        return sortDescending ? -1 : 1;
+    }
 
     // time since last shot
     private float elapsedTime = 0.0f;
@@ -274,7 +279,7 @@ public class TowerBehaviour : MonoBehaviour
         // sort the array according to distance
         targets.Sort
         (
-            (l, r) => (Vector3.Distance(l.transform.position, transform.position).CompareTo(Vector3.Distance(r.transform.position, transform.position)) * sortOrder)
+            (l, r) => (Vector3.Distance(l.transform.position, transform.position).CompareTo(Vector3.Distance(r.transform.position, transform.position)) * GetSortOrder())
         );
     }
 
@@ -286,7 +291,7 @@ public class TowerBehaviour : MonoBehaviour
         // sort the array according to health
         targets.Sort
         (
-            (l, r) => (l.health.CompareTo(r.health) * sortOrder)
+            (l, r) => (l.health.CompareTo(r.health) * GetSortOrder())
         );
     }
 
@@ -298,7 +303,7 @@ public class TowerBehaviour : MonoBehaviour
         // sort the array according to distance
         targets.Sort
         (
-            (l, r) => (l.leakDamage.CompareTo(r.leakDamage) * sortOrder)
+            (l, r) => (l.leakDamage.CompareTo(r.leakDamage) * GetSortOrder())
         );
     }
 
@@ -310,7 +315,7 @@ public class TowerBehaviour : MonoBehaviour
         // sort the array according to distance
         targets.Sort
         (
-            (l, r) => (l.speed.CompareTo(r.speed) * sortOrder)
+            (l, r) => (l.speed.CompareTo(r.speed) * GetSortOrder())
         );
     }
 

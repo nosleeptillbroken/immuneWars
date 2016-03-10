@@ -23,16 +23,16 @@ public class CreepSpawn : MonoBehaviour
 
     public WaveList[] levelList; // an array of waves will create the level
 
-	// public int creepCount;
-	public float spawnWait; // time to wait between spawns
-	public float startWait; // time to wait before first spawn of level
-	public float waveWait; // time to wait in between waves
+    // public int creepCount;
+    public float spawnWait; // time to wait between spawns
+    public float startWait; // time to wait before first spawn of level
+    public float waveWait; // time to wait in between waves
 
-	void Start ()
-	{
-		StartCoroutine (SpawnWaves ());
+    void Start()
+    {
+        StartCoroutine(SpawnWaves());
         Player.instance.killsToWin += GetNumberOfCreeps();
-	}
+    }
 
     /// <summary>
     /// Gets the number of creeps to be spawned in this level.
@@ -41,9 +41,9 @@ public class CreepSpawn : MonoBehaviour
     public int GetNumberOfCreeps()
     {
         int result = 0;
-        foreach(WaveList wl in levelList)
+        foreach (WaveList wl in levelList)
         {
-            foreach(CreepPair cp in wl.waveList)
+            foreach (CreepPair cp in wl.waveList)
             {
                 result += cp.number;
             }
@@ -51,21 +51,23 @@ public class CreepSpawn : MonoBehaviour
         return result;
     }
 
-	/// Waits for startWait seconds
-	/// Iterates through every waveList in levelList
-	/// Iterates through every CreepPair in every waveList
-	/// Instantiates number creeps of type creep as defined by every CreepPair
-	/// Waits after Instantiating every creep spawnWait seconds
-	/// Waits waveWait seconds after every waveList finishes iteration
-	
-	IEnumerator SpawnWaves ()
-	{
+    /// Waits for startWait seconds
+    /// Iterates through every waveList in levelList
+    /// Iterates through every CreepPair in every waveList
+    /// Instantiates number creeps of type creep as defined by every CreepPair
+    /// Waits after Instantiating every creep spawnWait seconds
+    /// Waits waveWait seconds after every waveList finishes iteration
+
+    IEnumerator SpawnWaves()
+    {
         GameObject waveCountdownObj = GameObject.Find("Wave Countdown");
+        WaveCountdown waveCountdown = null;
 
-        WaveCountdown waveCountdown = waveCountdownObj.GetComponent<WaveCountdown>();
-        waveCountdown.gameObject.SetActive(false);
+        if(waveCountdownObj) waveCountdown = waveCountdownObj.GetComponent<WaveCountdown>();
 
-        yield return new WaitForSeconds (startWait);
+        StopWaveCountdown(waveCountdown);
+
+        yield return new WaitForSeconds(startWait);
         for (int i = 0; i < levelList.Length; i++) // for every wave in the level
         {
             for (int j = 0; j < levelList[i].waveList.Length; j++) // for every creep type listed in the wave
@@ -74,19 +76,36 @@ public class CreepSpawn : MonoBehaviour
                 {
                     Vector3 spawnPosition = transform.position;
                     Quaternion spawnRotation = Quaternion.identity;
-                    Instantiate (levelList[i].waveList[j].creep, spawnPosition, spawnRotation); // spawn wave for this wave, of this type
-                    yield return new WaitForSeconds (spawnWait); // wait before spawning next creep
+                    Instantiate(levelList[i].waveList[j].creep, spawnPosition, spawnRotation); // spawn wave for this wave, of this type
+                    yield return new WaitForSeconds(spawnWait); // wait before spawning next creep
                 }
-
-                waveCountdown.gameObject.SetActive(true);
-                waveCountdown.BeginCountdown(waveWait);
-                waveCountdown.GetComponentInChildren<Text>().text = "Wave " + (j+2) + " in:";
+                StartWaveCountdown(waveCountdown, j+2);
                 yield return new WaitForSeconds(waveWait); // wait before starting next wave
-                waveCountdown.gameObject.SetActive(false);
+                StopWaveCountdown(waveCountdown);
             }
         }
         // fall out the bottom
         Debug.Log("Spawning Finished");
         // Debug.Break();
-	}
+    }
+
+    public void StartWaveCountdown(WaveCountdown countdown, int wave)
+    {
+        if (countdown)
+        {
+            Debug.LogWarning("StartWaveCountdown: No wave countdown script available.");
+            countdown.gameObject.SetActive(true);
+            countdown.BeginCountdown(waveWait);
+            countdown.GetComponentInChildren<Text>().text = "Wave " + wave + " in:";
+        }
+    }
+
+    public void StopWaveCountdown(WaveCountdown countdown)
+    {
+        if (countdown)
+        {
+            Debug.LogWarning("StopWaveCountdown: No wave countdown script available.");
+            countdown.gameObject.SetActive(false);
+        }
+    }
 }

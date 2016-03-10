@@ -8,7 +8,6 @@ public class TowerShop : MonoBehaviour {
 
     [Header("Animation")]
     public float animationSpeed = 5.0f;
-    bool panelVisible = false;
     Vector3 newPosition;
 
     [Header("Layout")]
@@ -58,33 +57,11 @@ public class TowerShop : MonoBehaviour {
             i++;
         }
 	}
-	
-    // Called every frame.
-	void Update ()
-    {
-	
-	}
 
     // Called every frame after Update.
     void LateUpdate()
     {
         GetComponent<RectTransform>().anchoredPosition = Vector3.Lerp(GetComponent<RectTransform>().anchoredPosition, newPosition, Time.deltaTime * animationSpeed);
-    }
-
-    /// <summary>
-    /// Toggles the panel between open and close.
-    /// </summary>
-    public void TogglePanel()
-    {
-        panelVisible = !panelVisible;
-        if(panelVisible)
-        {
-            OpenPanel();
-        }
-        else
-        {
-            ClosePanel();
-        }
     }
 
     /// <summary>
@@ -106,10 +83,10 @@ public class TowerShop : MonoBehaviour {
         Vector3 delta = new Vector3(rectTransform.rect.width, 0.0f);
         newPosition += delta;
 
-        if(TowerSpawner.instance.selectedTower)
+        if(TowerManager.instance.selectedTower)
         {
-            Player.instance.AddGold(TowerSpawner.instance.selectedTower.GetComponent<TowerBehaviour>().attributes.cost);
-            TowerSpawner.instance.DeselectTower();
+            Player.instance.AddGold(TowerManager.instance.selectedTower.GetComponent<TowerBehaviour>().attributes.cost);
+            TowerManager.instance.DeselectTower();
         }
 
     }

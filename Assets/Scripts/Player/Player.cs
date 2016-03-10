@@ -25,8 +25,10 @@ public class Player : Singleton<Player>
     // maximum amount of gold the player can have
     public int maxGold = int.MaxValue;
 
+    // amount of gold the player starts with
+    public int startingGold = 30;
+
     // current gold the player has
-    [SerializeField]
     private int _currentGold = 0;
     public int currentGold { get { return _currentGold; } }
 
@@ -86,9 +88,10 @@ public class Player : Singleton<Player>
     /// </summary>
     public int killsToWin = 0;    
     
-    private int score = 0;
+    private int killScoreMult = 10;      
     private int totalKills = 0;     //Number of enemies killed by the player.
-    private int totalMissed = 0;    //Number of enemies leaked, added with total kills for win condition.
+    private int missScoreMult = 10;
+    private int totalMisses = 0;    //Number of enemies leaked, added with total kills for win condition.
     
     #region MonoBehaviour
 
@@ -112,22 +115,44 @@ public class Player : Singleton<Player>
         if(_currentHealth == 0) _currentHealth = maxHealth;
         healthBar.maxValue = maxHealth;
         healthBar.minValue = 0;
-	}
+
+        ResetState();
+
+    }
 	
 	// Update is called once per frame
 	void Update ()
     {
         // Health bar displayed reflects current health
         healthBar.value = currentHealth;
-        scoreText.text = "Score: " + score.ToString();        //Adjust the player's score killing enemies.
-        killsText.text = "Kills: " + totalKills.ToString();   //Adjust the player's total kills.
+        scoreText.text = "Score: " + (totalKills * killScoreMult).ToString(); //Adjust the player's score killing enemies.
+        killsText.text = "Kills: " + totalKills.ToString(); //Adjust the player's total kills.
         
         // Update text on the gold display
-        goldText.GetComponentInChildren<Text>().text = (infiniteGold ? "∞" : currentGold.ToString());        
+        goldText.GetComponentInChildren<Text>().text = (infiniteGold ? "∞" : currentGold.ToString());    
+        
+        if(Debug.isDebugBuild && Input.GetButtonDown("Debug Next Level"))
+        {
+            NextLevel();
+        }    
     }
 
     #endregion
     
+    public void CheckStatus()
+    {
+        if (currentHealth <= 0 && loseFlag == false) // If player health is zero
+        {
+            loseFlag = true;
+            OnLose();
+        }
+        else if ((totalKills + totalMisses) >= killsToWin && winFlag == false) //Game Win State.
+        {
+            winFlag = true;
+            OnWin();
+        }
+    }
+
     #region Messages
 
     /// <summary>
@@ -137,7 +162,7 @@ public class Player : Singleton<Player>
     {
 
         // Enable game win screen
-        Debug.Log("Game Won");
+        Debug.Log("Player Won");
         gameWin.SetActive(true);
 
         DisableInteractables();
@@ -150,10 +175,8 @@ public class Player : Singleton<Player>
     {
 
         // Display game over menu
-        Debug.Log("Game Lost");
+        Debug.Log("Player Lost");
         gameOver.SetActive(true);
-
-        DisableInteractables();
     }
 
     /// <summary>
@@ -161,7 +184,6 @@ public class Player : Singleton<Player>
     /// </summary>
     void OnKillCreep()
     {
-        score += 10;
         totalKills += 1;
 
         CheckStatus();
@@ -172,8 +194,7 @@ public class Player : Singleton<Player>
     /// </summary>
     void OnMissCreep()
     {
-        totalMissed += 1;
-        killsToWin -= 1;
+        totalMisses += 1;
 
         CheckStatus();
     }
@@ -184,23 +205,10 @@ public class Player : Singleton<Player>
     void OnLevelChanged()
     {
         ResetInteractables();
+        ResetState();
     }
 
     #endregion
-
-    public void CheckStatus()
-    {
-        if ((totalKills) >= killsToWin && winFlag == false) //Game Win State.
-        {
-            winFlag = true;
-            OnWin();
-        }
-        else if (currentHealth <= 0 && loseFlag == false) // If player health is zero
-        {
-            loseFlag = true;
-            OnLose();
-        }
-    }
 
     /// <summary>
     /// Add health to the player. If the resulting health does not exceed max health, add health and return true. Else, add up to max health and return false.
@@ -280,12 +288,28 @@ public class Player : Singleton<Player>
     }
 
     /// <summary>
+    /// Resets player state to initial values
+    /// </summary>
+    public void ResetState()
+    {
+        winFlag = false;
+        loseFlag = false;
+
+        _currentHealth = maxHealth;
+        _currentGold = startingGold;
+
+        killsToWin = 0;
+
+        totalKills = 0;
+        totalMisses = 0;
+    }
+
+    /// <summary>
     /// Transition to the next level
     /// </summary>
     /// <param name="sceneName"></param>
     public void NextLevel()
     {
-        GameManager.instance.NextLevel();
     }
 
     /// <summary>
@@ -293,12 +317,10 @@ public class Player : Singleton<Player>
     /// </summary>
     public void ReloadCurrentLevel()
     {
-        GameManager.instance.ReloadScene();
     }
 
     public void ReturnToMainMenu()
     {
-        GameManager.instance.LoadScene("Main Menu");
     }
 
     /// <summary>
@@ -310,20 +332,18 @@ public class Player : Singleton<Player>
         resultsScreen.SetActive(true);      
 
         //More values can be added in the future for different creep types.
-        int CKV = 10;   //Creep Kill Value
-        int CKVtotal = CKV * totalKills;
-        int CMV = -50;  //Creep Miss Value
-        int CMVtotal = CMV * totalMissed;
+        int killScore = killScoreMult * totalKills;
+        int missScore = missScoreMult * totalMisses;
 
         //Text for total creeps killed, and associated score.
         Text SSkills = GameObject.Find("KilledAmount").GetComponent<Text>();
-        SSkills.text = totalKills + " x " + CKV + " = " + CKVtotal;
+        SSkills.text = totalKills + " x " + killScoreMult + " = " + killScore;
         //Text for total creeps killed, and associated deduction.
         Text SSmissed = GameObject.Find("MissedAmount").GetComponent<Text>();
-        SSmissed.text = totalMissed + " x (" + CMV + ") = " + CMVtotal;
+        SSmissed.text = totalMisses + " x (" + missScoreMult + ") = " + missScore;
         //Total Score.
         Text SStotal = GameObject.Find("TotalAmount").GetComponent<Text>();
-        SStotal.text = (CKVtotal + CMVtotal).ToString();
+        SStotal.text = (killScore + missScore).ToString();
     }
 
     /// <summary>
@@ -339,24 +359,15 @@ public class Player : Singleton<Player>
         healthBar.gameObject.SetActive(true);
     
         goldText.transform.parent.gameObject.SetActive(true);
-        
-        TowerSpawner.instance.gameObject.SetActive(true);
-        TowerSelector.instance.DeselectTower();
-        
-        TowerSelector.instance.gameObject.SetActive(true);
-        TowerSpawner.instance.DeselectTower();
+
+        TowerManager.instance.SetSelectTowersMode();
 
         // reset results menus
         gameOver.SetActive(false);
         gameWin.SetActive(false);
         resultsScreen.SetActive(false);
 
-        // Hide the tower ghost
-        GameObject towerGhost = GameObject.Find("Tower Ghost");
-        if (towerGhost)
-        {
-            towerGhost.SetActive(false);
-        }
+        TowerManager.instance.SetSelectTowersMode();
     }
 
     /// <summary>
@@ -377,8 +388,7 @@ public class Player : Singleton<Player>
         goldText.transform.parent.gameObject.SetActive(false);
         
         // Disable tower spawner and tower selector
-        TowerSpawner.instance.gameObject.SetActive(false);
-        TowerSelector.instance.gameObject.SetActive(false);
+        TowerManager.instance.gameObject.SetActive(false);
 
         // Hide the tower ghost
         GameObject towerGhost = GameObject.Find("Tower Ghost");

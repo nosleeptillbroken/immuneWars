@@ -9,6 +9,19 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     protected Singleton() { }
 
+    void Awake()
+    {
+        if(gameObject == instance.gameObject)
+        {
+            DontDestroyOnLoad(this);
+        }
+    }
+
+    public static bool HasInstance()
+    {
+        return _instance != null;
+    }
+
     public static T instance
     {
         get
@@ -43,8 +56,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("Using singleton " +
-                            _instance.gameObject.name);
+                        Debug.Log("Using singleton " + typeof(T));
                     }
 
                 }

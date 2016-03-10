@@ -5,7 +5,8 @@ using UnityEngine.UI;
 public class TowerSelectionPanel : MonoBehaviour
 {
 
-    public TowerBehaviour selectedTower { get { return TowerSelector.instance.selectedTower; } }
+    public GameObject selectedTower { get { return TowerManager.instance.selectedTower; } }
+    public TowerBehaviour selectedTowerBehaviour { get { return selectedTower ? selectedTower.GetComponent<TowerBehaviour>() : null; } }
 
     private Text displayNameUI;
     private Dropdown targetingModeUI;
@@ -18,10 +19,10 @@ public class TowerSelectionPanel : MonoBehaviour
     /// </summary>
     public void DestroySelectedTower()
     {
-        if(TowerSelector.instance && selectedTower)
+        if(TowerManager.instance && selectedTower)
         {
             Destroy(selectedTower.gameObject);
-            TowerSelector.instance.DeselectTower();
+            TowerManager.instance.DeselectTower();
         }
     }
 
@@ -30,18 +31,19 @@ public class TowerSelectionPanel : MonoBehaviour
     /// </summary>
     public void SellSelectedTower()
     {
-        if(TowerSelector.instance)
+        if(TowerManager.instance)
         {
-            Player.instance.AddGold(selectedTower.attributes.cost + selectedTower.upgradeAttributes.cost);
+            Player.instance.AddGold(selectedTowerBehaviour.attributes.cost + selectedTowerBehaviour.upgradeAttributes.cost);
             DestroySelectedTower();
         }
     }
 
     public void UpgradeSelectedTower(int path)
     {
-        if(TowerSelector.instance && selectedTower && Player.instance.RemoveGold(selectedTower.attributes.cost))
+        if(TowerManager.instance && selectedTower && Player.instance.RemoveGold(selectedTowerBehaviour.attributes.cost))
         {
-            selectedTower.Upgrade(path);
+            selectedTowerBehaviour.Upgrade(path);
+            UpdateDisplayInformation();
         }
     }
 
@@ -50,63 +52,88 @@ public class TowerSelectionPanel : MonoBehaviour
     /// </summary>
     public void UpdateDisplayInformation()
     {
-        if(!HasComponents())
+        if (!HasComponents())
         {
             GetComponents();
         }
 
-        TowerAttributes compositeAttributes = selectedTower.attributes + selectedTower.upgradeAttributes;
-        
-        displayNameUI.text = compositeAttributes.displayName;
-
-        targetingModeUI.value = (int)selectedTower.targetingMode;
-
-        sortOrderUI.gameObject.GetComponentInChildren<Text>().text = (selectedTower.sortOrder > 0) ? "<" : ">";
-        int i = 0;
-        foreach (Button btn in upgradeButtonsUI)
+        if (selectedTower)
         {
-            if (selectedTower.CanUpgrade(i))
+            TowerAttributes compositeAttributes = selectedTowerBehaviour.attributes + selectedTowerBehaviour.upgradeAttributes;
+
+            displayNameUI.text = compositeAttributes.displayName;
+
+            targetingModeUI.value = (int)selectedTowerBehaviour.targetingMode;
+
+            sortOrderUI.isOn = selectedTowerBehaviour.sortDescending;
+            sortOrderUI.gameObject.GetComponentInChildren<Text>().text = sortOrderUI.isOn ? ">" : "<";
+
+            int i = 0;
+            foreach (Button btn in upgradeButtonsUI)
             {
-                btn.transform.FindChild("Name").GetComponent<Text>().text = selectedTower.GetNextUpgrade(i).displayName;
-                btn.transform.FindChild("Cost").gameObject.SetActive(true);
-                btn.transform.FindChild("Cost").GetComponent<Text>().text = "Cost: " + selectedTower.GetNextUpgrade(i).cost;
-                if (Player.instance.currentGold >= selectedTower.GetNextUpgrade(i).cost)
+                if (selectedTowerBehaviour.CanUpgrade(i))
                 {
-                    btn.interactable = true;
+                    btn.transform.FindChild("Name").GetComponent<Text>().text = selectedTowerBehaviour.GetNextUpgrade(i).displayName;
+                    btn.transform.FindChild("Cost").gameObject.SetActive(true);
+                    btn.transform.FindChild("Cost").GetComponent<Text>().text = "Cost: " + selectedTowerBehaviour.GetNextUpgrade(i).cost;
+                    if (Player.instance.currentGold >= selectedTowerBehaviour.GetNextUpgrade(i).cost)
+                    {
+                        btn.interactable = true;
+                    }
+                    else
+                    {
+                        btn.interactable = false;
+                    }
                 }
                 else
                 {
+                    btn.transform.FindChild("Name").GetComponent<Text>().text = "Complete";
+                    btn.transform.FindChild("Cost").gameObject.SetActive(false);
                     btn.interactable = false;
                 }
+                i += 1;
             }
-            else
-            {
-                btn.transform.FindChild("Name").GetComponent<Text>().text = "Complete";
-                btn.transform.FindChild("Cost").gameObject.SetActive(false);
-                btn.interactable = false;
-            }
-            i += 1;
+        }
+    }
+
+
+    /// <summary>
+    /// Updates the targeting mode according to the targeting dropdown.
+    /// </summary>
+    public void UpdateTargetingMode()
+    {
+        if (selectedTower)
+        {
+            selectedTowerBehaviour.targetingMode = (TowerBehaviour.TargetingMode)targetingModeUI.value;
+            UpdateDisplayInformation();
         }
     }
 
     /// <summary>
-    /// Updates the information for the tower and its attributes using the information from the selection panel.
+    /// Updates the sort order according to the sorting toggle.
     /// </summary>
-    public void UpdateTowerInformation()
+    public void UpdateSortOrder()
     {
-        selectedTower.targetingMode = (TowerBehaviour.TargetingMode)targetingModeUI.value;
-        selectedTower.sortOrder = sortOrderUI.isOn ? 1 : -1;
+        if (selectedTower)
+        {
+            selectedTowerBehaviour.sortDescending = sortOrderUI.isOn;
+            UpdateDisplayInformation();
+        }
     }
 
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
     public void UpdateTooltipUpgradeInformation(int id)
     {
-        if (upgradeButtonsUI[id] && upgradeButtonsUI[id].interactable)
+        if (selectedTower && upgradeButtonsUI[id] && upgradeButtonsUI[id].interactable)
         {
             Tooltip.current.ForceShow();
 
-            TowerAttributes attr = selectedTower.attributes + selectedTower.upgradeAttributes;
-            TowerAttributes upAttr = selectedTower.GetNextUpgrade(id);
+            TowerAttributes attr = selectedTowerBehaviour.attributes + selectedTowerBehaviour.upgradeAttributes;
+            TowerAttributes upAttr = selectedTowerBehaviour.GetNextUpgrade(id);
             Tooltip.current.SetText("<b>" + upAttr.displayName + "</b>\n" + TowerAttributes.GetUpgradeTooltip(attr, upAttr));
         }
         else
@@ -121,12 +148,16 @@ public class TowerSelectionPanel : MonoBehaviour
         GetComponents();
     }
 
-    //
-    void Update()
+    void OnEnable()
     {
         UpdateDisplayInformation();
     }
 
+    void OnSelectedTowerChange()
+    {
+        UpdateDisplayInformation();
+    }
+    
     bool HasComponents()
     {
         return (displayNameUI != null && targetingModeUI != null && sortOrderUI != null);

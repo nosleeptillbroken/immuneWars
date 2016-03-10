@@ -36,9 +36,14 @@ public class ShopButton : MonoBehaviour
     {
         UnityEngine.Events.UnityAction selectTower = () =>
         {
+            if (TowerManager.instance.selectedTower != null)
+            {
+                Player.instance.AddGold(TowerManager.instance.selectedTower.GetComponent<TowerBehaviour>().attributes.cost);
+                TowerManager.instance.DeselectTower();
+            }
             if (Player.instance.RemoveGold(tower.GetComponent<TowerBehaviour>().attributes.cost))
             {
-                TowerSpawner.instance.SelectTower(tower);
+                TowerManager.instance.SelectTower(tower);
             }
         };
 

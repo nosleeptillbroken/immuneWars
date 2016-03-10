@@ -64,38 +64,23 @@ public class Missile : MonoBehaviour
 			// Call the function TakeDamage(10) in the hit object, if any
 			// Call the specific bullet, otherwise all enemies take damage. take not for future sessions
 			//transform.position = Vector3.Lerp (transform.position, bulletman, _TurretScript.speed * Time.deltaTime);
-			other.gameObject.SendMessage("TakeDamage", attributes.damage, SendMessageOptions.DontRequireReceiver);
 
             CreepEffect effect = other.gameObject.GetComponent<CreepEffect>();
-            if(effect == null)
-            {
-                effect = other.gameObject.AddComponent<CreepEffect>();
-                if(attributes.applyBurn)
-                {
-                    effect.burnCount = attributes.burnCount;
-                    effect.burnDamage = attributes.burnDamage;
-                    effect.burnTime = attributes.burnTime;
-                }
-                if(attributes.applySlow)
-                {
-                    effect.slowFactor = attributes.slowFactor;
-                    effect.slowTime = attributes.slowTime;
-                }
-            }
-            else
-            {
+            if(effect == null)  effect = other.gameObject.AddComponent<CreepEffect>();
+            
+            effect.damage += attributes.damage;
 
-                if (attributes.applyBurn)
-                {
-                    effect.burnCount = Mathf.Max(effect.burnCount, attributes.burnCount);
-                    effect.burnDamage = Mathf.Max(effect.burnDamage,attributes.burnDamage);
-                    effect.burnTime = Mathf.Min(effect.burnTime, attributes.burnTime);
-                }
-                if (attributes.applySlow)
-                {
-                    effect.slowFactor = Mathf.Min(effect.slowFactor,attributes.slowFactor);
-                    effect.slowTime = Mathf.Max(effect.slowTime, attributes.slowTime);
-                }
+            if (attributes.applyBurn)
+            {
+                effect.burnCount = Mathf.Max(effect.burnCount, attributes.burnCount);
+                effect.burnDamage = Mathf.Max(effect.burnDamage, attributes.burnDamage);
+                effect.burnTime = (effect.burnTime > 0) ? Mathf.Min(effect.burnTime, attributes.burnTime) : attributes.burnTime;
+            }
+
+            if (attributes.applySlow)
+            {
+                effect.slowFactor = (effect.slowFactor > 0) ? Mathf.Min(effect.slowFactor, attributes.slowFactor) : attributes.slowFactor;
+                effect.slowTime = Mathf.Max(effect.slowTime, attributes.slowTime);
             }
 		}
 		Destroy(gameObject); // Destroy this object after collision

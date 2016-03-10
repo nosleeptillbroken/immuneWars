@@ -350,18 +350,6 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 595383271}
-    - target: {fileID: 11459532, guid: aae854f7291c38045a5a794985bc0998, type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartGame
-      objectReference: {fileID: 0}
-    - target: {fileID: 11459532, guid: aae854f7291c38045a5a794985bc0998, type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11459532, guid: aae854f7291c38045a5a794985bc0998, type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: aae854f7291c38045a5a794985bc0998, type: 2}
   m_IsPrefabParent: 0
@@ -374,6 +362,10 @@ Prefab:
     m_Modifications:
     - target: {fileID: 11439900, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
       propertyPath: levels.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 11439900, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
+      propertyPath: levelScenes.Array.size
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 482798, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
@@ -406,11 +398,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 482798, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 11439900, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
       propertyPath: startingLevel
-      value: Test Level
+      value: Main Menu
       objectReference: {fileID: 0}
     - target: {fileID: 11439900, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
       propertyPath: levels.Array.data[0]
@@ -422,6 +414,18 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11439900, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
       propertyPath: levels.Array.data[2]
+      value: Level 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 11439900, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
+      propertyPath: levelScenes.Array.data[0]
+      value: Level 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11439900, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
+      propertyPath: levelScenes.Array.data[1]
+      value: Level 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11439900, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
+      propertyPath: levelScenes.Array.data[2]
       value: Level 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []

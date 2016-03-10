@@ -78,7 +78,7 @@ public class CameraController : MonoBehaviour {
 
         // Free movement w/ Middle Mouse Click
         // If middle mouse button is pressed
-        if(Input.GetMouseButtonDown(1))
+        if(Input.GetButton("Rotate Camera"))
         {
             xDeg = transform.rotation.eulerAngles.x;
             yDeg = transform.rotation.eulerAngles.y;
@@ -96,7 +96,7 @@ public class CameraController : MonoBehaviour {
             yDeg += deltaMouseX * Time.deltaTime * rotationSensitivity;
             transform.rotation = Quaternion.Euler(xDeg, yDeg, 0);
         }
-        else if (Input.GetMouseButton(2))
+        else if (Input.GetButton("Pan Camera"))
         {
             // Set rotation to identity so that translation is planar
             transform.rotation = Quaternion.identity;
@@ -117,26 +117,26 @@ public class CameraController : MonoBehaviour {
             {
                 sprintMult = 2.0f;
             }
-            if ((cursorX < edgePanThreshold && enableEdgePanning) || Input.GetKey(KeyCode.A))
+            if ((cursorX < edgePanThreshold && enableEdgePanning) || Input.GetAxisRaw("Horizontal") < 0)
             {
                 transform.rotation = Quaternion.identity;
                 transform.Translate(Vector3.right * -panSpeed * Time.deltaTime * sprintMult);
                 transform.rotation = currRot;
             }
-            else if ((cursorX >= Screen.width - edgePanThreshold && enableEdgePanning) || Input.GetKey(KeyCode.D))
+            else if ((cursorX >= Screen.width - edgePanThreshold && enableEdgePanning) || Input.GetAxisRaw("Horizontal") > 0)
             {
                 transform.rotation = Quaternion.identity;
                 transform.Translate(Vector3.right * panSpeed * Time.deltaTime * sprintMult);
                 transform.rotation = currRot;
             }
 
-            if ((cursorY < edgePanThreshold && enableEdgePanning) || Input.GetKey(KeyCode.S))
+            if ((cursorY < edgePanThreshold && enableEdgePanning) || Input.GetAxisRaw("Vertical") < 0)
             {
                 transform.rotation = Quaternion.identity;
                 transform.Translate(Vector3.forward * -panSpeed * Time.deltaTime * sprintMult);
                 transform.rotation = currRot;
             }
-            else if ((cursorY >= Screen.height - edgePanThreshold && enableEdgePanning) || Input.GetKey(KeyCode.W))
+            else if ((cursorY >= Screen.height - edgePanThreshold && enableEdgePanning) || Input.GetAxisRaw("Vertical") > 0)
             {
                 transform.rotation = Quaternion.identity;
                 transform.Translate(Vector3.forward * panSpeed * Time.deltaTime * sprintMult);
@@ -145,7 +145,7 @@ public class CameraController : MonoBehaviour {
         }
 
 		// Get mouse scroll wheel input
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        float scroll = Input.GetAxis("Zoom Camera");
 		// If scroll wheel moved zoom camera in relation
 		if(scroll != 0)
         {

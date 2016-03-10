@@ -21,7 +21,7 @@ public class PauseMenu : MonoBehaviour
     public bool paused { get { return _paused; } }
 
     private bool selectorPausedState = false;
-    private bool spawnerPausedState = false;
+    private bool managerPausedState = false;
     
 	void Start()
 	{
@@ -49,11 +49,9 @@ public class PauseMenu : MonoBehaviour
     //
     public void PauseGame()
     {
-        spawnerPausedState = TowerSpawner.instance.gameObject.activeInHierarchy;
-        selectorPausedState = TowerSelector.instance.gameObject.activeInHierarchy;
+        managerPausedState = TowerManager.instance.gameObject.activeInHierarchy;
 
-        TowerSpawner.instance.gameObject.SetActive(false);
-        TowerSelector.instance.gameObject.SetActive(false);
+        TowerManager.instance.gameObject.SetActive(false);
 
         pausePanel.SetActive(true);
         _paused = true;
@@ -64,9 +62,7 @@ public class PauseMenu : MonoBehaviour
 	//	Alternative method to close pause panel
 	public void ResumeGame()
     {
-
-        TowerSpawner.instance.gameObject.SetActive(spawnerPausedState);
-        TowerSelector.instance.gameObject.SetActive(selectorPausedState);
+        TowerManager.instance.gameObject.SetActive(managerPausedState);
 
         pausePanel.SetActive(false);
         _paused = false;

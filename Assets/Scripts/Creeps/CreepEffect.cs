@@ -3,6 +3,10 @@ using System.Collections;
 
 public class CreepEffect : MonoBehaviour {
 
+    [Header("General")]
+
+    public int damage = 0;
+
     [Header("Creep Slowing")]
 
     public bool applySlow = false;
@@ -53,8 +57,17 @@ public class CreepEffect : MonoBehaviour {
 	//
 	void Update ()
     {
+        bool remainingEffects = false;
+
+        if(damage > 0)
+        {
+            creep.health -= damage;
+            damage = 0;
+        }
+
         if (burnCount > 0)
         {
+            remainingEffects = true;
             elapsedBurnTime += Time.deltaTime;
 
             if (elapsedBurnTime > burnTime)
@@ -67,6 +80,7 @@ public class CreepEffect : MonoBehaviour {
 
         if(slowTime > 0.0f)
         {
+            remainingEffects = true;
             creep.speed = originalSpeed * slowFactor;
             slowTime -= Time.deltaTime;
         }
@@ -75,7 +89,7 @@ public class CreepEffect : MonoBehaviour {
             creep.speed = originalSpeed;
         }
         
-        if(burnCount <= 0 && slowTime <= 0.0f)
+        if(remainingEffects == false)
         {
             Destroy(this);
         }

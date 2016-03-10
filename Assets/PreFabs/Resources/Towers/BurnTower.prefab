@@ -176,7 +176,7 @@ MonoBehaviour:
     slowTime: 0
     slowFactor: 0
     applyBurn: 1
-    burnTime: 1
+    burnTime: 2
     burnCount: 5
     burnDamage: 5
     mesh: {fileID: 0}
@@ -201,7 +201,7 @@ MonoBehaviour:
   targets: []
   currentTarget: {fileID: 0}
   targetingMode: 0
-  sortOrder: 1
+  sortDescending: 0
   upgradeTree:
   - list:
     - displayName: Fast
@@ -401,7 +401,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: attributes.burnTime
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: attributes.burnCount

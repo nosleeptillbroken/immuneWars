@@ -78,7 +78,7 @@ public class Creep : MonoBehaviour
     /// Called whenever enemy takes damage
     /// </summary>
     /// <param name="damage">How much damage the enemy will take</param>
-	void TakeDamage (int damage)
+	void OnApplyDamage (int damage)
     {
 		health -= damage;
     }
