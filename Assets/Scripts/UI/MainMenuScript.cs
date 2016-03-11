@@ -20,6 +20,11 @@ public class MainMenuScript : MonoBehaviour
 		exitButton = exitButton.GetComponent<Button>();
 	}
 
+    public void StartGame()
+    {
+        StateManager.instance.SetState(StateManager.GameState.InGame, "Level 1");
+    }
+
 	// call when exit Button is pressed
 	public void ExitGame()
 	{
@@ -44,15 +49,5 @@ public class MainMenuScript : MonoBehaviour
         exitButton.gameObject.SetActive(true);
     }
 
-    /*
-		Currently only loads "Test Level"
-		Consider taking an string input parameter
-		This way we can increase modularity and usefulness of script
-	*/
-
-    public void StartLevel(string levelName)
-	{
-		SceneManager.LoadScene(levelName);
-	}
 
 }

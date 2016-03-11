@@ -19,7 +19,7 @@ public class Player : Singleton<Player>
     [SerializeField]
     private int _currentHealth = 0;
     public int currentHealth { get { return _currentHealth; } }
-    
+
     [Header("Gold")] ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // maximum amount of gold the player can have
@@ -38,7 +38,7 @@ public class Player : Singleton<Player>
     public bool infiniteGold = false;
 
     [Header("Interface")] ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
+
 
     /// <summary>
     /// The GameObject that contains the game over UI dialog.
@@ -75,7 +75,6 @@ public class Player : Singleton<Player>
     /// </summary>
     public Text scoreText;
 
-
     // One-time flags for win and loss
 
     private bool winFlag = false;
@@ -86,20 +85,24 @@ public class Player : Singleton<Player>
     /// <summary>
     /// Number of enemies that must be killed to win the level.
     /// </summary>
-    public int killsToWin = 0;    
-    
-    private int killScoreMult = 10;      
+    public int killsToWin = 0;
+
+    private int killScoreMult = 10;
     private int totalKills = 0;     //Number of enemies killed by the player.
     private int missScoreMult = 10;
     private int totalMisses = 0;    //Number of enemies leaked, added with total kills for win condition.
-    
+
+    [Header("Level Loading")]
+    public int currentLevel = 0;
+    public string[] levels;
+
     #region MonoBehaviour
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
-		// If they were not linked in editor find the Health Bar and Game Over objects for the scene
-        if(!healthBar) healthBar = GameObject.Find("Health Display").GetComponent<Slider>();
+        // If they were not linked in editor find the Health Bar and Game Over objects for the scene
+        if (!healthBar) healthBar = GameObject.Find("Health Display").GetComponent<Slider>();
         if (!goldText) goldText = GameObject.Find("Gold Display").GetComponent<Text>();
 
         if (!gameOver) gameOver = GameObject.Find("Game Over");
@@ -112,33 +115,33 @@ public class Player : Singleton<Player>
 
         // Get a reference to the tower spawner
         // set health to max at beginning
-        if(_currentHealth == 0) _currentHealth = maxHealth;
+        if (_currentHealth == 0) _currentHealth = maxHealth;
         healthBar.maxValue = maxHealth;
         healthBar.minValue = 0;
 
         ResetState();
 
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
         // Health bar displayed reflects current health
         healthBar.value = currentHealth;
         scoreText.text = "Score: " + (totalKills * killScoreMult).ToString(); //Adjust the player's score killing enemies.
         killsText.text = "Kills: " + totalKills.ToString(); //Adjust the player's total kills.
-        
+
         // Update text on the gold display
-        goldText.GetComponentInChildren<Text>().text = (infiniteGold ? "∞" : currentGold.ToString());    
-        
-        if(Debug.isDebugBuild && Input.GetButtonDown("Debug Next Level"))
+        goldText.GetComponentInChildren<Text>().text = (infiniteGold ? "∞" : currentGold.ToString());
+
+        if (Debug.isDebugBuild && Input.GetButtonDown("Debug Next Level"))
         {
             NextLevel();
-        }    
+        }
     }
 
     #endregion
-    
+
     public void CheckStatus()
     {
         if (currentHealth <= 0 && loseFlag == false) // If player health is zero
@@ -204,8 +207,6 @@ public class Player : Singleton<Player>
     /// </summary>
     void OnLevelChanged()
     {
-        ResetInteractables();
-        ResetState();
     }
 
     #endregion
@@ -247,7 +248,7 @@ public class Player : Singleton<Player>
     /// <returns>If the gold does not exceed max gold, return true and add gold. Else, add up to max gold and return false.</returns>
     public bool AddGold(int amount)
     {
-        if(infiniteGold)
+        if (infiniteGold)
         {
             return true;
         }
@@ -271,12 +272,12 @@ public class Player : Singleton<Player>
     /// <returns></returns>
     public bool RemoveGold(int amount)
     {
-        if(infiniteGold)
+        if (infiniteGold)
         {
             return true;
         }
 
-        if(currentGold - amount >= 0)
+        if (currentGold - amount >= 0)
         {
             _currentGold -= amount;
             return true;
@@ -310,6 +311,15 @@ public class Player : Singleton<Player>
     /// <param name="sceneName"></param>
     public void NextLevel()
     {
+        currentLevel += 1;
+        if (currentLevel < levels.Length)
+        {
+            StateManager.instance.SetSubState(levels[currentLevel]);
+        }
+        else
+        {
+            ReturnToMainMenu();
+        }
     }
 
     /// <summary>
@@ -317,10 +327,12 @@ public class Player : Singleton<Player>
     /// </summary>
     public void ReloadCurrentLevel()
     {
+        StateManager.instance.SetSubState("Level " + currentLevel);
     }
 
     public void ReturnToMainMenu()
     {
+        StateManager.instance.SetState(StateManager.GameState.MainMenu);
     }
 
     /// <summary>
@@ -329,7 +341,7 @@ public class Player : Singleton<Player>
     public void DisplayScoreScreen()
     {
         //Activate score screen.
-        resultsScreen.SetActive(true);      
+        resultsScreen.SetActive(true);
 
         //More values can be added in the future for different creep types.
         int killScore = killScoreMult * totalKills;
@@ -355,19 +367,18 @@ public class Player : Singleton<Player>
         {
             Camera.main.GetComponent<CameraController>().enabled = true;
         }
-        
+
         healthBar.gameObject.SetActive(true);
-    
+
         goldText.transform.parent.gameObject.SetActive(true);
 
+        TowerManager.instance.gameObject.SetActive(true);
         TowerManager.instance.SetSelectTowersMode();
 
         // reset results menus
         gameOver.SetActive(false);
         gameWin.SetActive(false);
         resultsScreen.SetActive(false);
-
-        TowerManager.instance.SetSelectTowersMode();
     }
 
     /// <summary>
@@ -386,7 +397,7 @@ public class Player : Singleton<Player>
 
         // Disable gold display
         goldText.transform.parent.gameObject.SetActive(false);
-        
+
         // Disable tower spawner and tower selector
         TowerManager.instance.gameObject.SetActive(false);
 
@@ -396,5 +407,27 @@ public class Player : Singleton<Player>
         {
             towerGhost.SetActive(false);
         }
+    }
+
+    void OnLoadState()
+    {
+        Debug.Log("Loaded InGame State Player");
+    }
+
+    void OnUnloadState()
+    {
+        Debug.Log("Unloaded InGame State Player");
+    }
+
+    void OnLoadSubState()
+    {
+        Debug.Log("Loaded SubState Player");
+    }
+
+    void OnUnloadSubState()
+    {
+        Debug.Log("Unloaded SubState Player");
+        ResetInteractables();
+        ResetState();
     }
 }

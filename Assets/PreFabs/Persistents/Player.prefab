@@ -39,10 +39,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 917775aeb063c134ab6f98dab74f6456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPersistant: 0
   maxHealth: 25
   _currentHealth: 0
   maxGold: 2147483647
-  _currentGold: 30
+  startingGold: 30
   infiniteGold: 0
   gameOver: {fileID: 0}
   gameWin: {fileID: 0}
@@ -52,13 +53,34 @@ MonoBehaviour:
   killsText: {fileID: 0}
   scoreText: {fileID: 0}
   killsToWin: 0
+  currentLevel: 0
+  levels:
+  - Level 1
+  - Level 2
+  - Level 3
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: levels.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: levels.Array.data[0]
+      value: Level 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: levels.Array.data[1]
+      value: Level 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: levels.Array.data[2]
+      value: Level 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 187012}

@@ -1,75 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
+public class Singleton<Instance> : MonoBehaviour where Instance : Singleton<Instance>
 {
-    private static T _instance;
+    public static Instance instance;
+    public bool isPersistant;
 
-    private static object _lock = new object();
-
-    protected Singleton() { }
-
-    void Awake()
+    public virtual void Awake()
     {
-        if(gameObject == instance.gameObject)
+        if (isPersistant)
         {
-            DontDestroyOnLoad(this);
-        }
-    }
-
-    public static bool HasInstance()
-    {
-        return _instance != null;
-    }
-
-    public static T instance
-    {
-        get
-        {
-            if (_applicationIsQuitting)
+            if (!instance)
             {
-                Debug.LogWarning("'" + typeof(T) + "' singleton already destroyed on quit. Returning null.");
-                return null;
+                instance = this as Instance;
             }
-
-            lock (_lock)
-            {
-                if (_instance == null)
-                {
-                    _instance = (T)FindObjectOfType(typeof(T));
-
-                    if (FindObjectsOfType(typeof(T)).Length > 1)
-                    {
-                        Debug.LogError("More than one '" + typeof(T) + "' singleton created.");
-                        return _instance;
-                    }
-
-                    if (_instance == null)
-                    {
-                        GameObject singleton = new GameObject();
-                        _instance = singleton.AddComponent<T>();
-                        singleton.name = "(Singleton) " + typeof(T).ToString();
-
-                        DontDestroyOnLoad(singleton);
-
-                        Debug.Log("'" + typeof(T) + "' singleton is needed, so " + singleton +  " was created with DontDestroyOnLoad.");
-                    }
-                    else
-                    {
-                        Debug.Log("Using singleton " + typeof(T));
-                    }
-
-                }
-
-                return _instance;
+            else {
+                DestroyObject(gameObject);
             }
+            DontDestroyOnLoad(gameObject);
         }
-    }
-
-    private static bool _applicationIsQuitting = false;
-
-    public void OnDestroy()
-    {
-        _applicationIsQuitting = true;
+        else {
+            instance = this as Instance;
+        }
     }
 }

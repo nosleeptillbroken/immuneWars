@@ -24,6 +24,11 @@ public class TowerManager : Singleton<TowerManager>
     public GameObject towerPlacementGhost = null;
 
     /// <summary>
+    /// The GameObject that highlights the tower when it is selected.
+    /// </summary>
+    public GameObject towerSelectionHighlight = null;
+
+    /// <summary>
     /// The UI panel that appears when a tower is selected.
     /// </summary>
     public GameObject towerSelectionPanel = null;
@@ -86,16 +91,14 @@ public class TowerManager : Singleton<TowerManager>
             this.selectedTower = selectedTower;
             if(placeTowers)
             {
-                InitializeTowerGhost(this.selectedTower);
+                InitializeTowerGhost();
             }
             else
             {
-                transform.position = selectedTower.transform.position + (selectedTower.transform.up * 0.01f);
-                transform.rotation = selectedTower.transform.rotation;
-                foreach (Transform child in transform)
-                {
-                    child.gameObject.SetActive(true);
-                }
+                towerSelectionHighlight.transform.position = selectedTower.transform.position + (selectedTower.transform.up * 0.01f);
+                towerSelectionHighlight.transform.rotation = selectedTower.transform.rotation;
+                towerSelectionHighlight.SetActive(true);
+
                 if (towerSelectionPanel)
                 {
                     towerSelectionPanel.SetActive(true);
@@ -137,11 +140,20 @@ public class TowerManager : Singleton<TowerManager>
     public void DeselectTower()
     {
         selectedTower = null;
-        if (towerPlacementGhost != null) Destroy(towerPlacementGhost.gameObject);
-        if (towerSelectionPanel != null) towerSelectionPanel.SetActive(false);
-        foreach (Transform child in transform)
+
+        if (towerPlacementGhost != null)
         {
-            child.gameObject.SetActive(false);
+            towerPlacementGhost.SetActive(false);
+        }
+
+        if (towerSelectionHighlight != null)
+        {
+            towerSelectionHighlight.SetActive(false);
+        }
+
+        if (towerSelectionPanel != null)
+        {
+            towerSelectionPanel.SetActive(false);
         }
     }
 
@@ -193,6 +205,7 @@ public class TowerManager : Singleton<TowerManager>
                         // Orient the ghost so it's facing in the normal direction of the surface
                         Quaternion YY = Quaternion.FromToRotation(Vector3.up, Vector3.forward);
                         towerPlacementGhost.transform.rotation = Quaternion.LookRotation(hit.normal) * YY;
+                        towerPlacementGhost.transform.GetChild(0).rotation = Quaternion.AngleAxis(90, Vector3.right);
 
                         // Load the new tower's prefab
                         GameObject newTowerObj = selectedTower;
@@ -212,7 +225,10 @@ public class TowerManager : Singleton<TowerManager>
                             if (!collidesWithtower && hit.point.y > minYHeight)
                             {
                                 // set ghost color to green to indicate tower can be placed
-                                towerPlacementGhost.GetComponent<MeshRenderer>().material.color = new Color(0, 0.75f, 0, 0.5f);
+                                Color canPlace = new Color(0, 0.75f, 0, 0.5f);
+
+                                towerPlacementGhost.GetComponent<MeshRenderer>().material.color = canPlace;
+                                towerPlacementGhost.transform.GetChild(0).GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", canPlace);
 
                                 // if mouse button is pressed and mouse is not over any GUI elements
                                 if (Input.GetButtonDown("Place/Select Tower") && !EventSystem.current.IsPointerOverGameObject())
@@ -223,16 +239,22 @@ public class TowerManager : Singleton<TowerManager>
                                     newTower.transform.rotation = towerPlacementGhost.transform.rotation;
 
                                     // Deselect tower
-                                    SelectTower(null);
+                                    DeselectTower();
                                 }
                             }
                             else // otherwise
                             {
                                 // set ghost color to red
-                                towerPlacementGhost.GetComponent<Renderer>().material.color = new Color(0.75f, 0, 0, 0.5f);
+                                Color cannotPlace = new Color(0.75f, 0, 0, 0.5f);
+
+                                towerPlacementGhost.GetComponent<MeshRenderer>().material.color = cannotPlace;
+                                towerPlacementGhost.transform.GetChild(0).GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", cannotPlace);
                             }
                         }
                     }
+
+                    // turn off ghost if no tower is selected
+                    successfulRay = successfulRay && selectedTower;
 
                     // Turn off ghost if ray does not hit any objects
                     towerPlacementGhost.SetActive(successfulRay);
@@ -285,39 +307,18 @@ public class TowerManager : Singleton<TowerManager>
             }
         }
     }
-    
-    #region Tower Ghost
 
-    public void InitializeTowerGhost(GameObject ghostTower)
+    #region TowerGhost
+
+    void InitializeTowerGhost()
     {
-        if (ghostTower == null) return;
+        TowerBehaviour selectedTowerBehaviour = selectedTower.GetComponent<TowerBehaviour>();
 
-        // Destroy the old ghost
-        if (towerPlacementGhost != null) Destroy(towerPlacementGhost.gameObject);
+        towerPlacementGhost.GetComponent<MeshFilter>().mesh = selectedTower.GetComponent<MeshFilter>().sharedMesh;
 
-        // Load the ghost from the tower prefab
-        towerPlacementGhost = Instantiate(ghostTower);
-
-        // Destroy tower components so it's not functional
-        Destroy(towerPlacementGhost.GetComponent<TowerBehaviour>());
-        Destroy(towerPlacementGhost.GetComponent<Rigidbody>());
-        Destroy(towerPlacementGhost.GetComponent<CapsuleCollider>());
-
-        // Destroy children of the tower ghost
-        foreach (Transform child in towerPlacementGhost.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        // Load the ghost material
-        towerPlacementGhost.GetComponent<MeshRenderer>().material = Resources.Load("Ghost") as Material;
-        // Set it to the transparentfx layer
-        towerPlacementGhost.layer = 1;
-        // Remove the tag
-        towerPlacementGhost.tag = "Untagged";
-
-        // Set the name of the object to Tower Ghost
-        towerPlacementGhost.name = "Tower Ghost";
+        GameObject radiusCircle = towerPlacementGhost.transform.GetChild(0).gameObject;
+        radiusCircle.transform.localScale = Vector3.one * selectedTowerBehaviour.attributes.range * 2.0f;
+        radiusCircle.transform.localPosition = selectedTower.transform.FindChild("RangeVolume").transform.localPosition + new Vector3(0.0f, 0.01f, 0.0f);
     }
 
     #endregion
