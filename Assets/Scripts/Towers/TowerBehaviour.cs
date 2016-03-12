@@ -402,14 +402,6 @@ public class TowerBehaviour : MonoBehaviour
 
     void LateUpdate()
     {
-        if (currentTarget)
-        {
-            // rotate towards selected object 
-            Quaternion newRotation = Quaternion.LookRotation(currentTarget.position - transform.position, Vector3.forward);
-            newRotation.x = 0.0f;
-            newRotation.z = 0.0f;
-            transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * 8);
-        }
     }
 
     void OnDrawGizmos()

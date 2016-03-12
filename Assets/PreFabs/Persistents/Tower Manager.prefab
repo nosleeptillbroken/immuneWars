@@ -413,13 +413,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPersistant: 0
   selectedTower: {fileID: 0}
-  minYHeight: 0
   towerRangeCircle: {fileID: 190222}
   towerPlacementGhost: {fileID: 157048}
   towerSelectionHighlight: {fileID: 168218}
   towerSelectionPanel: {fileID: 0}
   towerShop: {fileID: 0}
-  _towerMode: 0
+  minYHeight: -2
+  angleTolerance: 5
+  splatTextureTolerance: 0.8
 --- !u!119 &11952834
 Projector:
   m_ObjectHideFlags: 1

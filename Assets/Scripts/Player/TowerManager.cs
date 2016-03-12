@@ -12,10 +12,6 @@ public class TowerManager : Singleton<TowerManager>
     /// </summary>
     public GameObject selectedTower = null;
 
-    /// <summary>
-    /// Minimum Y value towers can be placed at
-    /// </summary>
-    public float minYHeight = 0.0f;
 
     /// <summary>
     /// The circle that indicates the tower's range.
@@ -42,11 +38,28 @@ public class TowerManager : Singleton<TowerManager>
     /// </summary>
     public GameObject towerShop = null;
 
+    [Header("Placement Restrictions")]
+
+    /// <summary>
+    /// Minimum Y value towers can be placed at
+    /// </summary>
+    public float minYHeight = 0.0f;
+
+    /// <summary>
+    /// The difference in angle that the surface normal can be from global up.
+    /// </summary>
+    [Range(0.0f,360.0f)] public float angleTolerance = 5.0f;
+
+    /// <summary>
+    /// The strength (or greater) the tower placement splat texture (texture 0) must be for the tower to be placeable.
+    /// </summary>
+    [Range(0.0f,1.0f)] public float splatTextureTolerance = 0.75f;
+
     #endregion
 
     #region Tower Modes
 
-    [SerializeField] private bool _towerMode = false;
+    private bool _towerMode = false;
     public bool towerMode { get { return _towerMode; } }
     public bool placeTowers { get { return _towerMode; } }
     public bool selectTowers { get { return !_towerMode; } }
@@ -219,6 +232,7 @@ public class TowerManager : Singleton<TowerManager>
 
                         // Check if the tower would collide with any other towers
                         bool collidesWithtower = false;
+                        bool canPlacePoint = false;
                         if (newTowerObj != null)
                         {
                             // Get tower's collider component
@@ -227,9 +241,23 @@ public class TowerManager : Singleton<TowerManager>
                             // Casts a sphere at the collision point that is the same radius as the tower's collider
                             // Returns true if colliding with tower
                             collidesWithtower = Physics.CheckSphere(hit.point, capCollider.radius * newTowerObj.transform.localScale.z, ~LayerMask.GetMask("Terrain")/*ignore terrain colliders*/, QueryTriggerInteraction.Ignore/*ignore range volumes*/);
+                            
+                            // check that the angle of the tower is within 45 degrees of the global up
+                            canPlacePoint = Mathf.Acos(Vector3.Dot(hit.normal, Vector3.up)) < (angleTolerance * Mathf.Deg2Rad);
 
+                            // check if the point is above the minimum y value
+                            canPlacePoint = canPlacePoint && (hit.point.y > minYHeight);
+
+                            // if the ray hit a terrain component
+                            Terrain terrain = hit.collider.gameObject.GetComponent<Terrain>();
+                            if(terrain)
+                            {
+                                // if the splat texture is mostly the tower placement texture
+                                canPlacePoint = canPlacePoint && (GetTerrainValue(terrain, hit.point, 0) >= splatTextureTolerance);
+                            }
+                            
                             // if tower does not collide
-                            if (!collidesWithtower && hit.point.y > minYHeight)
+                            if (!collidesWithtower && canPlacePoint)
                             {
                                 // set ghost color to green to indicate tower can be placed
                                 Color canPlace = new Color(0, 0.75f, 0, 0.5f);
@@ -336,6 +364,22 @@ public class TowerManager : Singleton<TowerManager>
             }
         }
     }
+
+    #region Terrain Placement
+
+    float GetTerrainValue(Terrain terrain, Vector3 worldPos, int splatTextureId)
+    {
+        TerrainData terrainData = terrain.terrainData;
+        Vector3 terrainPos = terrain.transform.position;
+        int mapX = (int)(((worldPos.x - terrainPos.x) / terrainData.size.x) * terrainData.alphamapWidth);
+        int mapZ = (int)(((worldPos.z - terrainPos.z) / terrainData.size.z) * terrainData.alphamapHeight);
+
+        float[,,] splatmapData = terrainData.GetAlphamaps(mapX, mapZ, 1, 1);
+
+        return (splatTextureId < splatmapData.GetLength(2)) ? splatmapData[0, 0, splatTextureId] : 0.0f;
+    }
+
+    #endregion
 
     #region TowerGhost
 
