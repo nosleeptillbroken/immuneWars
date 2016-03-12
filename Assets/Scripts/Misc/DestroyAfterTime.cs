@@ -2,12 +2,15 @@
 using System.Collections;
 
 public class DestroyAfterTime : MonoBehaviour {
+
     public float time;
 	//Universal script to destroy objects after a set time. you can define the time in the inspector
-	void Start () {
-        StartCoroutine(deathClock());
+	void Start ()
+    {
+        StartCoroutine(DestroyClock());
 	}
-    IEnumerator deathClock()
+
+    IEnumerator DestroyClock()
     {
         yield return new WaitForSeconds(time);
         Destroy(this.gameObject);

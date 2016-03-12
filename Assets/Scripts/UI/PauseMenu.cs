@@ -20,7 +20,6 @@ public class PauseMenu : MonoBehaviour
 	private bool _paused = false;
     public bool paused { get { return _paused; } }
 
-    private bool selectorPausedState = false;
     private bool managerPausedState = false;
     
 	void Start()

@@ -17,6 +17,10 @@ public class TowerManager : Singleton<TowerManager>
     /// </summary>
     public float minYHeight = 0.0f;
 
+    /// <summary>
+    /// The circle that indicates the tower's range.
+    /// </summary>
+    public GameObject towerRangeCircle = null;
 
     /// <summary>
     /// GameObject of the tower ghost. This is generated at runtime.
@@ -95,6 +99,10 @@ public class TowerManager : Singleton<TowerManager>
             }
             else
             {
+
+                towerRangeCircle.transform.position = selectedTower.transform.position + (selectedTower.transform.up * 0.01f);
+                towerSelectionHighlight.SetActive(true);
+
                 towerSelectionHighlight.transform.position = selectedTower.transform.position + (selectedTower.transform.up * 0.01f);
                 towerSelectionHighlight.transform.rotation = selectedTower.transform.rotation;
                 towerSelectionHighlight.SetActive(true);
@@ -205,7 +213,6 @@ public class TowerManager : Singleton<TowerManager>
                         // Orient the ghost so it's facing in the normal direction of the surface
                         Quaternion YY = Quaternion.FromToRotation(Vector3.up, Vector3.forward);
                         towerPlacementGhost.transform.rotation = Quaternion.LookRotation(hit.normal) * YY;
-                        towerPlacementGhost.transform.GetChild(0).rotation = Quaternion.AngleAxis(90, Vector3.right);
 
                         // Load the new tower's prefab
                         GameObject newTowerObj = selectedTower;
@@ -228,7 +235,7 @@ public class TowerManager : Singleton<TowerManager>
                                 Color canPlace = new Color(0, 0.75f, 0, 0.5f);
 
                                 towerPlacementGhost.GetComponent<MeshRenderer>().material.color = canPlace;
-                                towerPlacementGhost.transform.GetChild(0).GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", canPlace);
+                                towerRangeCircle.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", canPlace);
 
                                 // if mouse button is pressed and mouse is not over any GUI elements
                                 if (Input.GetButtonDown("Place/Select Tower") && !EventSystem.current.IsPointerOverGameObject())
@@ -248,7 +255,7 @@ public class TowerManager : Singleton<TowerManager>
                                 Color cannotPlace = new Color(0.75f, 0, 0, 0.5f);
 
                                 towerPlacementGhost.GetComponent<MeshRenderer>().material.color = cannotPlace;
-                                towerPlacementGhost.transform.GetChild(0).GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", cannotPlace);
+                                towerRangeCircle.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", cannotPlace);
                             }
                         }
                     }
@@ -258,6 +265,17 @@ public class TowerManager : Singleton<TowerManager>
 
                     // Turn off ghost if ray does not hit any objects
                     towerPlacementGhost.SetActive(successfulRay);
+
+                    // set the tower range circle to active if there is a selected tower
+                    towerRangeCircle.SetActive(selectedTower != null);
+
+                    if (selectedTower)
+                    {
+                        // update position and scale of the tower range circle
+                        TowerBehaviour selectedTowerBehaviour = selectedTower.GetComponent<TowerBehaviour>();
+                        towerRangeCircle.transform.localScale = Vector3.one * (selectedTowerBehaviour.compositeAttributes.range) * 2.0f;
+                        towerRangeCircle.transform.position = hit.point + new Vector3(0.0f, 0.01f, 0.0f);
+                    }
                 }
             }
             else if (Input.GetButtonDown("Place/Select Tower") && !EventSystem.current.IsPointerOverGameObject())
@@ -305,6 +323,17 @@ public class TowerManager : Singleton<TowerManager>
                 panelPosition.z = 0.0f;
                 towerSelectionPanel.transform.position = panelPosition;
             }
+
+            // set the tower range circle to active if there is a selected tower
+            towerRangeCircle.SetActive(selectedTower != null);
+
+            if (selectedTower)
+            {
+                towerRangeCircle.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", Color.green);
+                TowerBehaviour selectedTowerBehaviour = selectedTower.GetComponent<TowerBehaviour>();
+                towerRangeCircle.transform.localScale = Vector3.one * selectedTowerBehaviour.compositeAttributes.range * 2.0f;
+                towerRangeCircle.transform.position = selectedTower.transform.FindChild("RangeVolume").transform.position + new Vector3(0.0f, 0.01f, 0.0f);
+            }
         }
     }
 
@@ -315,10 +344,9 @@ public class TowerManager : Singleton<TowerManager>
         TowerBehaviour selectedTowerBehaviour = selectedTower.GetComponent<TowerBehaviour>();
 
         towerPlacementGhost.GetComponent<MeshFilter>().mesh = selectedTower.GetComponent<MeshFilter>().sharedMesh;
-
-        GameObject radiusCircle = towerPlacementGhost.transform.GetChild(0).gameObject;
-        radiusCircle.transform.localScale = Vector3.one * selectedTowerBehaviour.attributes.range * 2.0f;
-        radiusCircle.transform.localPosition = selectedTower.transform.FindChild("RangeVolume").transform.localPosition + new Vector3(0.0f, 0.01f, 0.0f);
+        
+        towerRangeCircle.transform.localScale = Vector3.one * selectedTowerBehaviour.attributes.range * 2.0f;
+        towerRangeCircle.transform.localPosition = selectedTower.transform.FindChild("RangeVolume").transform.localPosition + new Vector3(0.0f, 0.01f, 0.0f);
     }
 
     #endregion

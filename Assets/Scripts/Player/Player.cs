@@ -16,8 +16,7 @@ public class Player : Singleton<Player>
     /// </summary>
     public int maxHealth = 50;
 
-    [SerializeField]
-    private int _currentHealth = 0;
+    [SerializeField] private int _currentHealth = 0;
     public int currentHealth { get { return _currentHealth; } }
 
     [Header("Gold")] ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,13 +83,15 @@ public class Player : Singleton<Player>
 
     /// <summary>
     /// Number of enemies that must be killed to win the level.
-    /// </summary>
-    public int killsToWin = 0;
+    /// </summary> 
+
+    //Number of enemies killed by the player.
+    private int totalKills = 0;
+    //Number of enemies leaked, added with total kills for win condition.   
+    private int totalMisses = 0;    
 
     private int killScoreMult = 10;
-    private int totalKills = 0;     //Number of enemies killed by the player.
     private int missScoreMult = 10;
-    private int totalMisses = 0;    //Number of enemies leaked, added with total kills for win condition.
 
     [Header("Level Loading")]
     public int currentLevel = 0;
@@ -142,14 +143,19 @@ public class Player : Singleton<Player>
 
     #endregion
 
+    /// <summary>
+    /// Checks if the player has lost (player has no health) or won (all creeps killed/despawned and player still has health)
+    /// </summary>
     public void CheckStatus()
     {
-        if (currentHealth <= 0 && loseFlag == false) // If player health is zero
+        // If player health is zero
+        if (currentHealth <= 0 && loseFlag == false)
         {
             loseFlag = true;
             OnLose();
         }
-        else if ((totalKills + totalMisses) >= killsToWin && winFlag == false) //Game Win State.
+        // If player health is nonzero and total kills and misses is greater than / equal to level creeps
+        else if ((totalKills + totalMisses) >= CreepSpawner.GetLevelTotalCreeps() && loseFlag == false && winFlag == false )
         {
             winFlag = true;
             OnWin();
@@ -203,9 +209,44 @@ public class Player : Singleton<Player>
     }
 
     /// <summary>
-    /// Called when the GameManager loads a new level
+    /// Called when the state this GameObject is in is loaded.
     /// </summary>
-    void OnLevelChanged()
+    void OnLoadState()
+    {
+        Debug.Log("Loaded InGame State Player");
+    }
+
+    /// <summary>
+    /// Called when the state this GameObject in is about to be unloaded.
+    /// </summary>
+    void OnUnloadState()
+    {
+        Debug.Log("Unloaded InGame State Player");
+    }
+
+    /// <summary>
+    /// Called when the substate this GameObject is in is loaded.
+    /// </summary>
+    void OnLoadSubState()
+    {
+        Debug.Log("Loaded SubState Player");
+        ResetState();
+    }
+
+    /// <summary>
+    /// Called when the substate this GameObject is in is about to be unloaded.
+    /// </summary>
+    void OnUnloadSubState()
+    {
+        Debug.Log("Unloaded SubState Player");
+        ResetInteractables();
+        ResetState();
+    }
+
+    /// <summary>
+    /// Called if a new creep spawner is created.
+    /// </summary>
+    void OnNewCreepSpawner()
     {
     }
 
@@ -299,8 +340,6 @@ public class Player : Singleton<Player>
         _currentHealth = maxHealth;
         _currentGold = startingGold;
 
-        killsToWin = 0;
-
         totalKills = 0;
         totalMisses = 0;
     }
@@ -323,13 +362,16 @@ public class Player : Singleton<Player>
     }
 
     /// <summary>
-    /// Function reloads current level, selected from gameover menu.
+    /// Reloads current level, selected from the InGame pause menu.
     /// </summary>
     public void ReloadCurrentLevel()
     {
         StateManager.instance.SetSubState("Level " + currentLevel);
     }
 
+    /// <summary>
+    /// Returns to the MainMenu, selected from the InGame pause menu.
+    /// </summary>
     public void ReturnToMainMenu()
     {
         StateManager.instance.SetState(StateManager.GameState.MainMenu);
@@ -400,34 +442,5 @@ public class Player : Singleton<Player>
 
         // Disable tower spawner and tower selector
         TowerManager.instance.gameObject.SetActive(false);
-
-        // Hide the tower ghost
-        GameObject towerGhost = GameObject.Find("Tower Ghost");
-        if (towerGhost)
-        {
-            towerGhost.SetActive(false);
-        }
-    }
-
-    void OnLoadState()
-    {
-        Debug.Log("Loaded InGame State Player");
-    }
-
-    void OnUnloadState()
-    {
-        Debug.Log("Unloaded InGame State Player");
-    }
-
-    void OnLoadSubState()
-    {
-        Debug.Log("Loaded SubState Player");
-    }
-
-    void OnUnloadSubState()
-    {
-        Debug.Log("Unloaded SubState Player");
-        ResetInteractables();
-        ResetState();
     }
 }

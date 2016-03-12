@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class Creep : MonoBehaviour
 {
+    public CreepSpawner spawner = null;
+
     private GameObject goldDrop;
     public int goldValue; //This is the Creep's worth. See in inspector.
     
@@ -81,6 +83,10 @@ public class Creep : MonoBehaviour
 	void OnApplyDamage (int damage)
     {
 		health -= damage;
+        if (health <= 0)
+        {
+            OnDeath();
+        }
     }
 
     // Update
@@ -94,27 +100,6 @@ public class Creep : MonoBehaviour
         if (health > 0 && health < startingHealth)
         {
             healthBarRenderer.enabled = true; //begin rendering health bar once creep takes damage for first time
-        }
-        else if (health <= 0)
-        {
-            /*
-             * This is where I do the logic for the player's gold. Because of the way OnDestroy works, if you were to, let's say, exit the game mid level and there were still
-             * the text elements on the screen, Unity wouldn't be able to clean the mup properly and they would stick around the next iteration of the game.
-             * This way, things happen properly, and only after the creep has been destroyed.
-            */
-
-            GameObject goldDropObject = Resources.Load("Effects/Gold Drop") as GameObject;
-            goldDrop = Instantiate(goldDropObject);
-            goldDrop.transform.position = transform.position;
-            goldDrop.transform.rotation = Camera.main.transform.rotation;
-
-            goldDrop.SetActive(true); //By default, the 'GoldDrop' gameObject is set to false so it's animation doesn't play. this activates the object, and also the DestroyByTime script on the go.
-            goldDrop.transform.position = transform.position;
-            goldDrop.GetComponent<TextMesh>().text = "+" + goldValue + " Gold";
-            Player.instance.AddGold(goldValue); //increments the player's gold by the set gold value associated with the creep
-            Player.instance.SendMessage("OnKillCreep", null, SendMessageOptions.DontRequireReceiver);
-
-            Destroy(gameObject);
         }
 
         //rescale healthBar
@@ -133,9 +118,30 @@ public class Creep : MonoBehaviour
         healthBar.transform.rotation = healthBarRot; 
     }
 
+    //
+    void OnDeath()
+    {
+        GameObject goldDropObject = Resources.Load("Effects/Gold Drop") as GameObject;
+        goldDrop = Instantiate(goldDropObject);
+        goldDrop.transform.position = transform.position;
+        goldDrop.transform.rotation = Camera.main.transform.rotation;
+
+        //By default, the 'GoldDrop' gameObject is set to false so it's animation doesn't play. this activates the object, and also the DestroyByTime script on the go.
+        goldDrop.SetActive(true); 
+        goldDrop.transform.position = transform.position;
+        goldDrop.GetComponent<TextMesh>().text = "+" + goldValue + " Gold";
+
+        Player.instance.AddGold(goldValue); //increments the player's gold by the set gold value associated with the creep
+        Player.instance.SendMessage("OnKillCreep", null, SendMessageOptions.DontRequireReceiver);
+        spawner.SendMessage("OnCreepDeath", null, SendMessageOptions.DontRequireReceiver);
+
+        Destroy(gameObject);
+    }
+
     // OnTriggerEnter
     void OnDespawn()
     {
+        spawner.SendMessage("OnCreepDespawn", null, SendMessageOptions.DontRequireReceiver);
         Player.instance.SendMessage("RemoveHealth", leakDamage, SendMessageOptions.DontRequireReceiver);
         Player.instance.SendMessage("OnMissCreep", null, SendMessageOptions.DontRequireReceiver);
         Destroy(gameObject);

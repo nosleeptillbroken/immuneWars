@@ -21,6 +21,7 @@ public class TowerBehaviour : MonoBehaviour
     // the tower attributes for this tower
     public TowerAttributes attributes = null;
     public TowerAttributes upgradeAttributes = new TowerAttributes();
+    public TowerAttributes compositeAttributes { get { return attributes + upgradeAttributes; } }
 
     // list of potential targets
     public List<Creep> targets = new List<Creep>();
@@ -123,7 +124,6 @@ public class TowerBehaviour : MonoBehaviour
 
     void ApplyAttributes()
     {
-        TowerAttributes compositeAttributes = attributes + upgradeAttributes;
         rangeVolume.GetComponent<SphereCollider>().radius = compositeAttributes.range;
     }
 

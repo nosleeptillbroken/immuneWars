@@ -8,7 +8,6 @@ public class WaveCountdown : MonoBehaviour {
 
     private bool countdown = false;
 
-    private float _countdownTime;
     private float _remainingTime;
 
     void Awake()
@@ -32,7 +31,7 @@ public class WaveCountdown : MonoBehaviour {
     public void BeginCountdown(float time)
     {
         countdown = true;
-        slider.maxValue = _countdownTime = time;
+        slider.maxValue = time;
         slider.value = _remainingTime = time;
     }
 }

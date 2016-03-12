@@ -61,7 +61,7 @@ public class CreepEffect : MonoBehaviour {
 
         if(damage > 0)
         {
-            creep.health -= damage;
+            creep.SendMessage("OnApplyDamage", damage);
             damage = 0;
         }
 
@@ -72,7 +72,7 @@ public class CreepEffect : MonoBehaviour {
 
             if (elapsedBurnTime > burnTime)
             {
-                creep.health -= burnDamage;
+                creep.SendMessage("OnApplyDamage", burnDamage);
                 burnCount -= 1;
                 elapsedBurnTime = 0;
             }

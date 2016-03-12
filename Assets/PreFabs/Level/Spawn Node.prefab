@@ -39,12 +39,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b04e0b3be5f8894ca1726d62407c288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelList:
-  - waveList:
+  waveList:
+  - creepList:
     - creep: {fileID: 138346, guid: f1f3730f36d1ab741b0be2371ef0696f, type: 2}
-      number: 5
+      number: 2
+    - creep: {fileID: 138346, guid: 02dfe676f2184c44aa08a979b607f775, type: 2}
+      number: 2
+  - creepList:
+    - creep: {fileID: 138346, guid: 40b4d32d849810d4fad73f8ba9188028, type: 2}
+      number: 2
+    - creep: {fileID: 138346, guid: 5571547684fad2f4f858d4ebe766c94c, type: 2}
+      number: 2
   spawnWait: 1
-  startWait: 10
+  startWait: 5
   waveWait: 10
 --- !u!1001 &100100000
 Prefab:

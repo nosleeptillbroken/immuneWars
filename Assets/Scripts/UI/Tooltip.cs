@@ -77,7 +77,6 @@ public class Tooltip : MonoBehaviour
             transform.FindChild("Panel").gameObject.SetActive(displayTooltip & displayOverride);
             
             CanvasScaler canvasScaler = GetComponentInParent<CanvasScaler>();
-            RectTransform canvasTransform = canvas.GetComponent<RectTransform>();
 
             Vector2 mousePosition = Input.mousePosition;
 
