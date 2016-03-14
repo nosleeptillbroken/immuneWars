@@ -44,7 +44,7 @@ MonoBehaviour:
   _currentHealth: 0
   maxGold: 2147483647
   startingGold: 30
-  infiniteGold: 1
+  infiniteGold: 0
   gameOver: {fileID: 0}
   gameWin: {fileID: 0}
   resultsScreen: {fileID: 0}
@@ -52,9 +52,6 @@ MonoBehaviour:
   goldText: {fileID: 0}
   killsText: {fileID: 0}
   scoreText: {fileID: 0}
-  killsToWin: 0
-  totalKills: 0
-  totalMisses: 0
   currentLevel: 0
   levels:
   - Level 1

@@ -80,16 +80,16 @@ public class TowerManager : Singleton<TowerManager>
     //
     public void SetPlaceTowersMode()
     {
+        if (_towerMode != true) towerShop.SendMessage("OpenPanel", null, SendMessageOptions.DontRequireReceiver);
         DeselectTower();
-        if(_towerMode != true) towerShop.SendMessage("OpenPanel", null, SendMessageOptions.DontRequireReceiver);
         _towerMode = true;
     }
 
     //
     public void SetSelectTowersMode()
     {
-        DeselectTower();
         if (_towerMode != false) towerShop.SendMessage("ClosePanel", null, SendMessageOptions.DontRequireReceiver);
+        DeselectTower();
         _towerMode = false;
     }
 
@@ -175,6 +175,11 @@ public class TowerManager : Singleton<TowerManager>
         if (towerSelectionPanel != null)
         {
             towerSelectionPanel.SetActive(false);
+        }
+        
+        if (towerRangeCircle != null)
+        {
+            towerRangeCircle.SetActive(false);
         }
     }
 
