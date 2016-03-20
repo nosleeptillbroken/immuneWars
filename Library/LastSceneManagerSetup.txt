@@ -1,7 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/StateScenes/InGame.unity
+- path: Assets/Scenes/InitialState.unity
   isLoaded: 1
   isActive: 1
-- path: Assets/Scenes/StateScenes/InGame/Level 2.unity
-  isLoaded: 1
-  isActive: 0

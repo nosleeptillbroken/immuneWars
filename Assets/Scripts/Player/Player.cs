@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class Player : Singleton<Player>
+public class Player : MonoSingleton<Player>
 {
 
     [Header("Health")] ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

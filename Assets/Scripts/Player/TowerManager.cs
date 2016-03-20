@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
-public class TowerManager : Singleton<TowerManager>
+public class TowerManager : MonoSingleton<TowerManager>
 {
     #region Variables
 

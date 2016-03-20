@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
-public class StateManager : Singleton<StateManager>
+public class StateManager : MonoSingleton<StateManager>
 {
 
     public enum GameState { None, MainMenu, Overworld, InGame };

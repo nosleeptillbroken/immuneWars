@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class Creep : MonoBehaviour
 {
-    public CreepSpawner spawner = null;
+    public GameObject spawner = null;
 
     private GameObject goldDrop;
     public int goldValue; //This is the Creep's worth. See in inspector.

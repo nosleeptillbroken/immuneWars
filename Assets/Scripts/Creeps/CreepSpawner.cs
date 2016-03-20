@@ -70,6 +70,12 @@ public class CreepSpawner : MonoBehaviour
     private int _livingCreepsInWave = 0;
     
     /// <summary>
+    /// The current wave the spawner is on.
+    /// </summary>
+    public int currentWave { get { return _currentWave; } }
+    private int _currentWave = 0;
+
+    /// <summary>
     /// Button that starts next wave.
     /// </summary>
     private Button startNextWaveButton = null;
@@ -100,18 +106,35 @@ public class CreepSpawner : MonoBehaviour
         StartCoroutine(SpawnWaves());
     }
 
+    private static int _totalLevelCreeps = 0;
+
     /// <summary>
     /// Gets the number of creeps to be spawned by all spawners in this level.
     /// </summary>
     /// <returns></returns>
     public static int GetLevelTotalCreeps()
     {
-        int res = 0;
+        int result = 0;
+        
+        // if the creep's spawner is not a CreepSpawner, it will not be correctly counted in the level's total creeps
+        foreach(Creep creep in FindObjectsOfType<Creep>())
+        {
+            // add 1 to make it counted so we don't have an early win from killing creeps spawned through other means
+            if(creep.spawner && !creep.spawner.GetComponent<CreepSpawner>())
+            {
+                result += 1;
+            }
+        }
+
+        // for the rest of the level creeps, count the number of creeps in each spawner's waves.
         foreach(CreepSpawner spawner in FindObjectsOfType<CreepSpawner>())
         {
-            res += spawner.GetTotalCreeps();
+            result += spawner.GetTotalCreeps();
         }
-        return res;
+
+        _totalLevelCreeps = Mathf.Max(result, _totalLevelCreeps);
+
+        return _totalLevelCreeps;
     }
 
     /// <summary>
@@ -139,7 +162,6 @@ public class CreepSpawner : MonoBehaviour
     /// Waits waveWait seconds after every waveList finishes iteration
     IEnumerator SpawnWaves()
     {
-        
 
         yield return new WaitUntil(()=> _startNextWave || (autoNextWaveToggle && autoNextWaveToggle.isOn));
 
@@ -156,6 +178,7 @@ public class CreepSpawner : MonoBehaviour
                 _livingCreepsInWave += cw.number;
             }
 
+            _currentWave += 1;
             OnWaveStart();
 
             for (int j = 0; j < waveList[i].creepList.Count; j++) // for every creep type listed in the wave
@@ -168,7 +191,7 @@ public class CreepSpawner : MonoBehaviour
                     // spawn wave for this wave, of this type
                     GameObject newCreep = Instantiate(waveList[i].creepList[j].creep, spawnPosition, spawnRotation) as GameObject;
                     // set the creep's spawner so it can notify when it has died or despawned
-                    newCreep.GetComponent<Creep>().spawner = this;
+                    newCreep.GetComponent<Creep>().spawner = this.gameObject;
 
                     yield return new WaitForSeconds(spawnWait); // wait before spawning next creep
                 }
@@ -204,7 +227,7 @@ public class CreepSpawner : MonoBehaviour
     /// </summary>
     void OnLevelStart()
     {
-
+        _totalLevelCreeps = 0;
     }
 
     /// <summary>
