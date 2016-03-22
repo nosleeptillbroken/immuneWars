@@ -1521,31 +1521,6 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 122286, guid: e6ca29acf5f4ade4fa2eeae519590902, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11403352, guid: e6ca29acf5f4ade4fa2eeae519590902, type: 2}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: abb05728ba9cb471a8ad33e5a2e6ce55,
-        type: 3}
-    - target: {fileID: 22432514, guid: e6ca29acf5f4ade4fa2eeae519590902, type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 22432514, guid: e6ca29acf5f4ade4fa2eeae519590902, type: 2}
-      propertyPath: m_SizeDelta.x
-      value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 22432514, guid: e6ca29acf5f4ade4fa2eeae519590902, type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 22432514, guid: e6ca29acf5f4ade4fa2eeae519590902, type: 2}
-      propertyPath: m_SizeDelta.y
-      value: -2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e6ca29acf5f4ade4fa2eeae519590902, type: 2}
   m_IsPrefabParent: 0
