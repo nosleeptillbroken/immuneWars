@@ -27,6 +27,7 @@ GameObject:
   - 224: {fileID: 22428316}
   - 222: {fileID: 22218792}
   - 114: {fileID: 11444052}
+  - 114: {fileID: 11420942}
   m_Layer: 0
   m_Name: Missed Text
   m_TagString: Untagged
@@ -61,6 +62,7 @@ GameObject:
   - 224: {fileID: 22480490}
   - 222: {fileID: 22250350}
   - 114: {fileID: 11478778}
+  - 114: {fileID: 11422616}
   m_Layer: 0
   m_Name: Continue Text
   m_TagString: Untagged
@@ -128,6 +130,7 @@ GameObject:
   - 224: {fileID: 22446880}
   - 222: {fileID: 22285430}
   - 114: {fileID: 11400744}
+  - 114: {fileID: 11485740}
   m_Layer: 0
   m_Name: Header Text
   m_TagString: Untagged
@@ -145,6 +148,7 @@ GameObject:
   - 224: {fileID: 22480114}
   - 222: {fileID: 22274870}
   - 114: {fileID: 11490388}
+  - 114: {fileID: 11493674}
   m_Layer: 0
   m_Name: Total Text
   m_TagString: Untagged
@@ -179,6 +183,7 @@ GameObject:
   - 224: {fileID: 22471358}
   - 222: {fileID: 22286736}
   - 114: {fileID: 11406702}
+  - 114: {fileID: 11494504}
   m_Layer: 0
   m_Name: Kills Text
   m_TagString: Untagged
@@ -329,6 +334,30 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11420942
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 105172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc1e32537c25c9243bc0a577df82f5fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  langKey: creepsMissed
+--- !u!114 &11422616
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 108490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc1e32537c25c9243bc0a577df82f5fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  langKey: nextLvlBtn
 --- !u!114 &11423454
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -540,6 +569,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11485740
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 160358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc1e32537c25c9243bc0a577df82f5fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  langKey: resultSTitle
 --- !u!114 &11489466
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -606,6 +647,30 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'Total Score: '
+--- !u!114 &11493674
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 161910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc1e32537c25c9243bc0a577df82f5fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  langKey: totalScore
+--- !u!114 &11494504
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 191930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc1e32537c25c9243bc0a577df82f5fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  langKey: creepsKilled
 --- !u!222 &22213660
 CanvasRenderer:
   m_ObjectHideFlags: 1

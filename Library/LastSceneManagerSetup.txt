@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/StateScenes/InGame/Level 1.unity
+- path: C:/Users/John/Documents/Unity Projects/GAME1012_Lab6/Assets/MyAssets/Scenes/Level1.unity
   isLoaded: 1
   isActive: 1

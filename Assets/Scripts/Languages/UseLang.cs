@@ -7,7 +7,7 @@ public class UseLang : MonoBehaviour {
 
     private Text txt;
 
-    void Awake()
+    void Start()
     {
         txt = gameObject.GetComponent<Text>();
         txt.text = LangData.Instance.Retrieve(langKey);

@@ -14,8 +14,10 @@ public class ShopButton : MonoBehaviour
         button = GetComponent<Button>();
         if (tower != null)
         {
-            transform.FindChild("Name").GetComponent<Text>().text = tower.GetComponent<TowerBehaviour>().attributes.displayName;
-            transform.FindChild("Cost").GetComponent<Text>().text = "Cost: " + tower.GetComponent<TowerBehaviour>().attributes.cost;
+            transform.FindChild("Name").GetComponent<Text>().text =
+                LangData.Instance.Retrieve(tower.GetComponent<TowerBehaviour>().attributes.displayName);
+            transform.FindChild("Cost").GetComponent<Text>().text =
+                LangData.Instance.Retrieve("cost") + tower.GetComponent<TowerBehaviour>().attributes.cost;
         }
         AddListener();
     }
