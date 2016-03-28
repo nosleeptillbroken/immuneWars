@@ -3,10 +3,58 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
+//function to safely hold language objects
+class Language
+{
+    // data for each language
+    private string name;
+    private string key;
+
+    // public constructor for each language
+    // if things are screwed up with the parameters it defaults to english
+    public Language(string newName, string newKey)
+    {
+        if (newName != null)
+        {
+            name = newName;
+        }
+        else
+        {
+            Debug.Log("Do not call with empty name string");
+            name = "English";
+        }
+
+        if (newKey != null)
+        {
+            key = newKey;
+        }
+        else
+        {
+            Debug.Log("Do not call with an empty key");
+            key = "eng";
+        }
+    }
+
+    // getters so that data is protected and accessible
+    public string Name
+    {
+        get{ return name; }
+    }
+
+    public string Key
+    {
+        get{ return key; }
+    }
+
+}
+
 public class LangData {
     private static LangData instance = null;
-    private string[] langPaths = {"./Assets/Languages/eng.iwl", "./Assets/Languages/frn.iwl"};
-    private string langPath;
+    private const string path = "./Assets/Languages/";
+    private const string ext = ".iwl";
+    private List<Language> languages = new List<Language>();
+    private int currentLangIndex = 0;
+
 
     public Dictionary<string, string> current;
 
@@ -14,8 +62,10 @@ public class LangData {
     private LangData()
     {
         current = new Dictionary<string, string>();
-        langPath = langPaths[0];
+        PopulateLanguages();
         LoadLang();
+        Debug.Log(languages.Count);
+        ChangeLang(1);
     }
 
     // ensures one and only one instance of LangData
@@ -29,6 +79,21 @@ public class LangData {
         }
     }
 
+    private void PopulateLanguages()
+    {
+        foreach (string fileName in Directory.GetFiles(path, "*.iwl"))
+        {
+            StreamReader file = 
+                new StreamReader(@fileName);
+            string langName = file.ReadLine();
+            Debug.Log(fileName.Length + ',' + fileName.LastIndexOf('/'));
+            Language newLang = new Language(langName, 
+                                   fileName.Substring(fileName.LastIndexOf('/') + 1, 3));
+            languages.Add(newLang);
+        }
+
+    }
+
     // Reads selected language file
     // Splits line entries into keys and values
     // Stores the results in Dictionary current
@@ -37,22 +102,18 @@ public class LangData {
         string line;
         string key;
         string value;
-
+        string fullPath = path + languages[currentLangIndex].Key + ext;
         int splitIndex;
 
         StreamReader file = 
-            new StreamReader(@langPath);
+            new StreamReader(@fullPath);
         while((line = file.ReadLine()) != null)
         {
-            Debug.Log(line);
-            splitIndex = line.IndexOf('=', 1);
-            Debug.Log(splitIndex);
+            splitIndex = (line.Length >= 3) && line.Contains("=") ? line.IndexOf('=', 1) : 0;
             if (splitIndex >= 1)
             {
                 key = line.Substring(0, splitIndex);
                 value = line.Substring(splitIndex + 1, line.Length - (splitIndex + 1));
-                Debug.Log(key + "," + value);
-                Debug.Log(this.current);
                 this.current.Add(key, value);
             }
         }
@@ -125,20 +186,25 @@ public class LangData {
     }
     */
 
-    public void ChangeLang (string newPath)
+    public void ChangeLang (int newLangIndex)
     {
-        foreach (string path in langPaths)
+        if ((newLangIndex >= 0) && (newLangIndex <= languages.Count - 1)
+            && (newLangIndex != currentLangIndex))
         {
-            if (path.Contains(newPath + ".iwl"))
-            {
-                langPath = path;
-                LoadLang();
-                StateManager.instance.SetState(StateManager.instance.currentState); // once a reload function has been enabled, 
-            }
-            else
-            {
-                Debug.Log("Path to language file not found.");
-            }
+            currentLangIndex = newLangIndex;
+            current.Clear();
+            LoadLang();
+            StateManager.instance.SetState(StateManager.instance.currentState); // once a reload function has been enabled, 
+        }
+        else if (newLangIndex == currentLangIndex)
+        {
+            Debug.Log("That language is already selected.");
+        }
+        else
+        {
+            Debug.Log("Path to language file not found.");
+            Debug.Log(newLangIndex);
+
         }
     }
 }
