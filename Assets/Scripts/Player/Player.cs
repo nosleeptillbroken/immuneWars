@@ -345,6 +345,22 @@ public class Player : MonoSingleton<Player>
     }
 
     /// <summary>
+    /// Returns to the Overworld, selected from score screen.
+    /// </summary>
+    public void ReturnToOverworld()
+    {
+        StateManager.instance.SetState(StateManager.GameState.Overworld);
+    }
+
+    /// <summary>
+    /// Starts the level of the selected tower.
+    /// </summary>
+    public void StartLevel(string levelName)
+    {
+        StateManager.instance.SetState(StateManager.GameState.InGame, levelName);
+    }
+
+    /// <summary>
     /// Transition to the next level
     /// </summary>
     /// <param name="sceneName"></param>

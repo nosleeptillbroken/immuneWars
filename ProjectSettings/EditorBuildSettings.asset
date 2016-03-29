@@ -10,6 +10,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/StateScenes/MainMenu.unity
   - enabled: 1
+    path: Assets/Scenes/StateScenes/Overworld.unity
+  - enabled: 1
     path: Assets/Scenes/StateScenes/InGame.unity
   - enabled: 1
     path: Assets/Scenes/StateScenes/InGame/Level 1.unity

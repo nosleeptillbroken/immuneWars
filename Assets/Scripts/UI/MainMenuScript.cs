@@ -22,7 +22,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void StartGame()
     {
-        StateManager.instance.SetState(StateManager.GameState.InGame, "Level 1");
+        StateManager.instance.SetState(StateManager.GameState.InGame,"Level 1");
     }
 
 	// call when exit Button is pressed
