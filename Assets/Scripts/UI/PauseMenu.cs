@@ -10,12 +10,14 @@ public class PauseMenu : MonoBehaviour
 	//	Pause Menu Objects
 	public GameObject pausePanel;
 	public GameObject quitConfirmPanel;
+    public GameObject settingsMenuPanel;
 
     [Header("Interface Buttons")]
 	//	Pause Menu Buttons
 	public Button resume;
 	public Button restart;
 	public Button menu;
+    public Button settings;
 
 	private bool _paused = false;
     public bool paused { get { return _paused; } }
@@ -93,6 +95,12 @@ public class PauseMenu : MonoBehaviour
 		quitConfirmPanel.SetActive(false);
 		pausePanel.SetActive(true);
 	}
+
+    // Opens Settings Window
+    public void OpenSettings()
+    {
+        settingsMenuPanel.SetActive(true);
+    }
 
 }
 	
