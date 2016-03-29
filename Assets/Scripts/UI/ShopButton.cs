@@ -59,4 +59,11 @@ public class ShopButton : MonoBehaviour
         Tooltip.current.SetText("<b>" + attr.displayName + "</b>\n" + attr.description + "\n" + "<color=orange>Cost: " + attr.cost + "</color>");
     }
 
+    public void OnLanguageChange()
+    {
+        transform.FindChild("Name").GetComponent<Text>().text =
+            LangData.Instance.Retrieve("towerName" + tower.GetComponent<TowerBehaviour>().attributes.displayName);
+        transform.FindChild("Cost").GetComponent<Text>().text =
+            LangData.Instance.Retrieve("cost") + tower.GetComponent<TowerBehaviour>().attributes.cost;
+    }
 }

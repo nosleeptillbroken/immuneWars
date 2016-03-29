@@ -12,4 +12,9 @@ public class UseLang : MonoBehaviour {
         txt = gameObject.GetComponent<Text>();
         txt.text = LangData.Instance.Retrieve(langKey);
     }
+
+    public void OnLanguageChange()
+    {
+        txt.text = LangData.Instance.Retrieve(langKey);
+    }
 }
