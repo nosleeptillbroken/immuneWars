@@ -46,7 +46,7 @@ public class CreepEffect : MonoBehaviour {
 
     [Header("Creep Heal")]
 
-    public bool applyHeal = true;
+    public bool applyHeal = false;
 
     /// <summary>
     /// Time between target heals, in seconds.
