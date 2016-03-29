@@ -6,6 +6,7 @@ public class CreepEffect : MonoBehaviour {
     [Header("General")]
 
     public int damage = 0;
+    //public int heal = 5;
 
     [Header("Creep Slowing")]
 
@@ -43,6 +44,22 @@ public class CreepEffect : MonoBehaviour {
     /// </summary>
     public int burnDamage = 0;
 
+    [Header("Creep Heal")]
+
+    public bool applyHeal = true;
+
+    /// <summary>
+    /// Time between target heals, in seconds.
+    /// </summary>
+    public float healTime = 1.5f;
+
+    private float elapsedHealTime = 0.0f;
+
+    /// <summary>
+    /// health to inflict on the target each burn.
+    /// </summary>
+    public int healAmount = -5; //uses math logic to add to health. (two negatives make a positive durr)
+
     //
     private Creep creep = null;
 
@@ -53,16 +70,19 @@ public class CreepEffect : MonoBehaviour {
 
         originalSpeed = creep.speed;
 	}
-	
+
 	//
 	void Update ()
     {
         bool remainingEffects = false;
 
+
+
         if(damage > 0)
         {
             creep.SendMessage("OnApplyDamage", damage);
             damage = 0;
+           // Debug.Log("ouch");
         }
 
         if (burnCount > 0)
@@ -75,6 +95,18 @@ public class CreepEffect : MonoBehaviour {
                 creep.SendMessage("OnApplyDamage", burnDamage);
                 burnCount -= 1;
                 elapsedBurnTime = 0;
+            }
+        }
+
+        if (applyHeal == true)
+        {
+            remainingEffects = true;
+            elapsedHealTime += Time.deltaTime;
+
+            if (elapsedHealTime > healTime)
+            {
+                creep.SendMessage("OnApplyDamage", healAmount); //heal amount gets passed into the 'damage' var inside the Creep.cs script.
+                elapsedHealTime = 0;
             }
         }
 
