@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class Creep : MonoBehaviour
 {
     public GameObject spawner = null;
@@ -18,11 +19,28 @@ public class Creep : MonoBehaviour
     private MeshRenderer healthBarRenderer; //for enabling and disabling renderer
     private Vector3 healthBarScale; //to scale properly
 
-    // Target for despawning
-    private Transform target;
 
-    // The navmesh agent for this 
-    NavMeshAgent agent;
+    /// <summary>
+    /// The navmesh agent for this creep.
+    /// </summary>
+    private NavMeshAgent agent;
+
+    /// <summary>
+    /// The creep's current target on the path. If the target is the last target in its tree, the creep will despawn when it reaches it.
+    /// </summary>
+    public CreepTarget target
+    {
+        get
+        {
+            return _target;
+        }
+        set
+        {
+            _target = value;
+            agent.SetDestination(_target.transform.position);
+        }
+    }
+    private CreepTarget _target = null;
 
     /// <summary>
     /// How much health the unit currently has.
@@ -45,6 +63,11 @@ public class Creep : MonoBehaviour
     /// </summary>
     public float acceleration { get { return GetComponent<NavMeshAgent>().acceleration; } set { GetComponent<NavMeshAgent>().acceleration = value; } }
 
+    void Awake ()
+    {
+        agent = GetComponent<NavMeshAgent>();
+    }
+
     // Use this for initialization
     void Start ()
     {
@@ -58,22 +81,7 @@ public class Creep : MonoBehaviour
         healthBarRenderer = healthBar.GetComponent<MeshRenderer>(); //associate renderer for healthbar
         healthBarRenderer.enabled = false; //make invisible from start
         startingHealth = health; //store full health value
-        
-        // The creep is referenced with the NavMesh so it can interact.
-        agent = GetComponent<NavMeshAgent>();
 
-        // Creeps are instantiated each wave, and references are made to the despawn point for pathing.
-        GameObject despawnGameObject = GameObject.FindWithTag("Despawn");
-
-        if (despawnGameObject != null)
-        {
-            target = despawnGameObject.transform;
-        }
-        if (despawnGameObject == null)
-        {
-            Debug.Log("Cannot find despawn object");
-        }
-        
     }
 
     /// <summary>
@@ -92,11 +100,6 @@ public class Creep : MonoBehaviour
     // Update
 	void Update ()
     {
-        if (agent && target)
-        {
-            agent.SetDestination(target.position);
-        }
-
         if (health > 0 && health < startingHealth)
         {
             healthBarRenderer.enabled = true; //begin rendering health bar once creep takes damage for first time
