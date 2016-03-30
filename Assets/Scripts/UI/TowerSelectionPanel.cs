@@ -74,9 +74,13 @@ public class TowerSelectionPanel : MonoBehaviour
             {
                 if (selectedTowerBehaviour.CanUpgrade(i))
                 {
-                    btn.transform.FindChild("Name").GetComponent<Text>().text = selectedTowerBehaviour.GetNextUpgrade(i).displayName;
+                    Debug.Log(selectedTowerBehaviour.GetNextUpgrade(i).displayName);
+                    Debug.Break();
+                    btn.transform.FindChild("Name").GetComponent<Text>().text =  
+                        LangData.Instance.Retrieve(selectedTowerBehaviour.GetNextUpgrade(i).displayName);
                     btn.transform.FindChild("Cost").gameObject.SetActive(true);
-                    btn.transform.FindChild("Cost").GetComponent<Text>().text = "Cost: " + selectedTowerBehaviour.GetNextUpgrade(i).cost;
+                    btn.transform.FindChild("Cost").GetComponent<Text>().text = LangData.Instance.Retrieve("cost") 
+                        + selectedTowerBehaviour.GetNextUpgrade(i).cost;
                     if (Player.instance.currentGold >= selectedTowerBehaviour.GetNextUpgrade(i).cost)
                     {
                         btn.interactable = true;
@@ -88,7 +92,7 @@ public class TowerSelectionPanel : MonoBehaviour
                 }
                 else
                 {
-                    btn.transform.FindChild("Name").GetComponent<Text>().text = "Complete";
+                    btn.transform.FindChild("Name").GetComponent<Text>().text = LangData.Instance.Retrieve("complete");
                     btn.transform.FindChild("Cost").gameObject.SetActive(false);
                     btn.interactable = false;
                 }
