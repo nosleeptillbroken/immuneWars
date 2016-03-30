@@ -74,8 +74,6 @@ public class TowerSelectionPanel : MonoBehaviour
             {
                 if (selectedTowerBehaviour.CanUpgrade(i))
                 {
-                    Debug.Log(selectedTowerBehaviour.GetNextUpgrade(i).displayName);
-                    Debug.Break();
                     btn.transform.FindChild("Name").GetComponent<Text>().text =  
                         LangData.Instance.Retrieve(selectedTowerBehaviour.GetNextUpgrade(i).displayName);
                     btn.transform.FindChild("Cost").gameObject.SetActive(true);

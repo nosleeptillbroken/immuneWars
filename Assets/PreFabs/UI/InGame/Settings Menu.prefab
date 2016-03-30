@@ -173,6 +173,7 @@ GameObject:
   - 224: {fileID: 22413688}
   - 222: {fileID: 22238202}
   - 114: {fileID: 11478926}
+  - 114: {fileID: 11481074}
   m_Layer: 5
   m_Name: DropShadow
   m_TagString: Untagged
@@ -1452,6 +1453,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11481074
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 132072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc1e32537c25c9243bc0a577df82f5fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  langKey: settingTitle
 --- !u!114 &11481090
 MonoBehaviour:
   m_ObjectHideFlags: 1

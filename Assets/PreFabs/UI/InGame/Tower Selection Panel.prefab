@@ -827,7 +827,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc1e32537c25c9243bc0a577df82f5fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  langKey: Fast
+  langKey: 'Fast '
 --- !u!114 &11425238
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1865,7 +1865,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc1e32537c25c9243bc0a577df82f5fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  langKey: Fierce
+  langKey: 'Fierce '
 --- !u!222 &22201656
 CanvasRenderer:
   m_ObjectHideFlags: 1
