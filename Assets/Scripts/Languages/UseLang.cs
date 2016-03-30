@@ -13,6 +13,11 @@ public class UseLang : MonoBehaviour {
         txt.text = LangData.Instance.Retrieve(langKey);
     }
 
+    void OnEnable()
+    {
+        txt.text = LangData.Instance.Retrieve(langKey);
+    }
+
     public void OnLanguageChange()
     {
         txt.text = LangData.Instance.Retrieve(langKey);

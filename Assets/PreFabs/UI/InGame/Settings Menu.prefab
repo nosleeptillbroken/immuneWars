@@ -190,6 +190,7 @@ GameObject:
   - 224: {fileID: 22449854}
   - 222: {fileID: 22271138}
   - 114: {fileID: 11442892}
+  - 114: {fileID: 11432494}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -861,6 +862,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myDropdown: {fileID: 11492684}
+--- !u!114 &11432494
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 133138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc1e32537c25c9243bc0a577df82f5fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  langKey: applyBtn
 --- !u!114 &11433060
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1025,7 +1038,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc1e32537c25c9243bc0a577df82f5fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  langKey: 
+  langKey: languageTitle
 --- !u!114 &11451744
 MonoBehaviour:
   m_ObjectHideFlags: 1

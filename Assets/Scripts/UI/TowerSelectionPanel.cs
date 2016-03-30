@@ -60,8 +60,9 @@ public class TowerSelectionPanel : MonoBehaviour
         if (selectedTower)
         {
             TowerAttributes compositeAttributes = selectedTowerBehaviour.attributes + selectedTowerBehaviour.upgradeAttributes;
-
-            displayNameUI.text = compositeAttributes.displayName;
+            Debug.Log(selectedTowerBehaviour.attributes.displayName);
+            Debug.Log(selectedTowerBehaviour.upgradeAttributes.displayName);
+            displayNameUI.text = LangData.Instance.Retrieve(compositeAttributes.displayName);
 
             targetingModeUI.value = (int)selectedTowerBehaviour.targetingMode;
 
