@@ -29,6 +29,11 @@ public class TowerBehaviour : MonoBehaviour
     public Transform currentTarget = null;
 
     /// <summary>
+    /// Multiplier for Upgrade Costs
+    /// </summary>
+    public int upgradeMulti = 0;
+
+    /// <summary>
     /// Enum containing the different targeting modes available.
     /// </summary>
     public enum TargetingMode
@@ -68,7 +73,9 @@ public class TowerBehaviour : MonoBehaviour
         if(path < upgradeLevels.Count)
         {
             int currentLevel = upgradeLevels[path];
-            if(currentLevel < upgradeTree[path].list.Count - 1)
+            // This line increments the upgrade multiplier
+            upgradeMulti++;
+            if (currentLevel < upgradeTree[path].list.Count - 1)
             {
                 upgradeLevels[path] += 1;
                 ApplyAttributes(path);

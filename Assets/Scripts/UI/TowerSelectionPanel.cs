@@ -12,6 +12,8 @@ public class TowerSelectionPanel : MonoBehaviour
     private Dropdown targetingModeUI;
     private Toggle sortOrderUI;
 
+    public int upgradeCost = 5;
+
     public Button[] upgradeButtonsUI;
 
     /// <summary>
@@ -40,7 +42,16 @@ public class TowerSelectionPanel : MonoBehaviour
 
     public void UpgradeSelectedTower(int path)
     {
-        if(TowerManager.instance && selectedTower && Player.instance.RemoveGold(selectedTowerBehaviour.attributes.cost))
+
+        /// <summary>
+        /// These Debug Statements confirm all the upgrade money math
+        /// </summary>
+        Debug.Log(selectedTowerBehaviour.attributes.cost + (selectedTowerBehaviour.upgradeMulti * upgradeCost));
+        Debug.Log(selectedTowerBehaviour.attributes.cost);
+        Debug.Log(selectedTowerBehaviour.upgradeMulti);
+        Debug.Log(upgradeCost);
+
+        if (TowerManager.instance && selectedTower && Player.instance.RemoveGold(selectedTowerBehaviour.attributes.cost + (/*Counter starting at 0*/selectedTowerBehaviour.upgradeMulti * /*Fixed Upgrade cost, adjustable in Inspector*/upgradeCost)))
         {
             selectedTowerBehaviour.Upgrade(path);
             UpdateDisplayInformation();
