@@ -86,7 +86,7 @@ public class TowerSelectionPanel : MonoBehaviour
                 {
                     btn.transform.FindChild("Name").GetComponent<Text>().text = selectedTowerBehaviour.GetNextUpgrade(i).displayName;
                     btn.transform.FindChild("Cost").gameObject.SetActive(true);
-                    btn.transform.FindChild("Cost").GetComponent<Text>().text = "Cost: " + selectedTowerBehaviour.GetNextUpgrade(i).cost;
+                    btn.transform.FindChild("Cost").GetComponent<Text>().text = "Cost: " + (selectedTowerBehaviour.attributes.cost + (/*Counter starting at 0*/selectedTowerBehaviour.upgradeMulti * /*Fixed Upgrade cost, adjustable in Inspector*/upgradeCost));
                     if (Player.instance.currentGold >= selectedTowerBehaviour.GetNextUpgrade(i).cost)
                     {
                         btn.interactable = true;
