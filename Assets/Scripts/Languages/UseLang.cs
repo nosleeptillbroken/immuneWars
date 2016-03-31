@@ -10,7 +10,7 @@ public class UseLang : MonoBehaviour {
 
     // Find the text object to store in txt
     // and set the attached component 
-    void Start()
+    void Awake()
     {
         txt = gameObject.GetComponent<Text>();
         txt.text = LangData.Instance.Retrieve(langKey);
