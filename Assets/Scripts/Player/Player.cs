@@ -110,9 +110,9 @@ public class Player : MonoSingleton<Player>
         if (!gameWin) gameWin = GameObject.Find("Game Win");
         if (!resultsScreen) resultsScreen = GameObject.Find("Results Screen");
 
-        gameOver.SetActive(false);
-        gameWin.SetActive(false);
-        resultsScreen.SetActive(false);
+        if (gameOver) gameOver.SetActive(false);
+        if (gameWin) gameWin.SetActive(false);
+        if (resultsScreen) resultsScreen.SetActive(false);
 
         // Get a reference to the tower spawner
         // set health to max at beginning
@@ -133,7 +133,10 @@ public class Player : MonoSingleton<Player>
         killsText.text = "Kills: " + totalKills.ToString(); //Adjust the player's total kills.
 
         // Update text on the gold display
-        goldText.GetComponentInChildren<Text>().text = (infiniteGold ? "∞" : currentGold.ToString());
+        if (goldText)
+        {
+            goldText.GetComponentInChildren<Text>().text = (infiniteGold ? "∞" : currentGold.ToString());
+        }
 
         if (Debug.isDebugBuild && Input.GetButtonDown("Debug Next Level"))
         {

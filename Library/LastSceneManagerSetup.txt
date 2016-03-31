@@ -1,4 +1,7 @@
 sceneSetups:
-- path: Assets/Scenes/InitialState.unity
+- path: Assets/Scenes/StateScenes/Overworld.unity
+  isLoaded: 1
+  isActive: 0
+- path: Assets/Scenes/StateScenes/Overworld/Human Body.unity
   isLoaded: 1
   isActive: 1

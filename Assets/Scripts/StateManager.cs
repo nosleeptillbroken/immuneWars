@@ -10,6 +10,10 @@ public class StateManager : MonoSingleton<StateManager>
 
     //
 
+    public GameState initialState = GameState.None;
+
+    //
+
     private GameState _currentState = GameState.None;
     private GameState _previousState = GameState.None;
 
@@ -33,7 +37,10 @@ public class StateManager : MonoSingleton<StateManager>
     void Start()
     {
         DontDestroyOnLoad(this.gameObject);
-        SetState(GameState.MainMenu);
+        if (initialState != GameState.None)
+        {
+            SetState(initialState);
+        }
     }
 
     //
