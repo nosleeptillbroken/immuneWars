@@ -10,12 +10,14 @@ public class PauseMenu : MonoBehaviour
 	//	Pause Menu Objects
 	public GameObject pausePanel;
 	public GameObject quitConfirmPanel;
+    public GameObject settingsMenuPanel;
 
     [Header("Interface Buttons")]
 	//	Pause Menu Buttons
 	public Button resume;
 	public Button restart;
 	public Button menu;
+    public Button settings;
 
 	private bool _paused = false;
     public bool paused { get { return _paused; } }
@@ -36,7 +38,14 @@ public class PauseMenu : MonoBehaviour
 		{
 			if(_paused == true)		//	If the game is already paused, then unpause and resume play.
 			{
-                ResumeGame();
+                if (settingsMenuPanel.activeInHierarchy)
+                {
+                    CloseSettings();
+                }
+                else
+                {
+                    ResumeGame();
+                }
 			}
 			else //		If the game is NOT paused, then pause the game.
 			{
@@ -94,5 +103,16 @@ public class PauseMenu : MonoBehaviour
 		pausePanel.SetActive(true);
 	}
 
+    // Opens Settings Window
+    public void OpenSettings()
+    {
+        settingsMenuPanel.SetActive(true);
+    }
+
+    // Closes Settings Window
+    public void CloseSettings()
+    {
+        settingsMenuPanel.SetActive(false);
+    }
 }
 	

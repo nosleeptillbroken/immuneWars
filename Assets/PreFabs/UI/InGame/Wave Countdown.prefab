@@ -42,6 +42,7 @@ GameObject:
   - 224: {fileID: 22478740}
   - 222: {fileID: 22282482}
   - 114: {fileID: 11472232}
+  - 114: {fileID: 11499398}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -332,6 +333,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11499398
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 119458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc1e32537c25c9243bc0a577df82f5fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  langKey: waveCount
 --- !u!222 &22225702
 CanvasRenderer:
   m_ObjectHideFlags: 1

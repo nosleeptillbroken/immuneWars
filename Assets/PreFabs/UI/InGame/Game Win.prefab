@@ -28,6 +28,7 @@ GameObject:
   - 224: {fileID: 22427220}
   - 222: {fileID: 22244722}
   - 114: {fileID: 11436382}
+  - 114: {fileID: 11450068}
   m_Layer: 0
   m_Name: View Score Text
   m_TagString: Untagged
@@ -77,6 +78,7 @@ GameObject:
   - 224: {fileID: 22416698}
   - 222: {fileID: 22274670}
   - 114: {fileID: 11471214}
+  - 114: {fileID: 11438748}
   m_Layer: 0
   m_Name: Game Win Text
   m_TagString: Untagged
@@ -144,6 +146,30 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: View Level Score
+--- !u!114 &11438748
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 173974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc1e32537c25c9243bc0a577df82f5fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  langKey: win
+--- !u!114 &11450068
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 126480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc1e32537c25c9243bc0a577df82f5fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  langKey: scoreBtn
 --- !u!114 &11471214
 MonoBehaviour:
   m_ObjectHideFlags: 1
