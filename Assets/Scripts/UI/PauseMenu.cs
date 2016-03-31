@@ -81,6 +81,7 @@ public class PauseMenu : MonoBehaviour
 	public void RestartLevel()
 	{
         Player.instance.ReloadCurrentLevel();
+        Time.timeScale = 1.0f;
 	}
 
 	//	Brings up confirmation Window asking user if they're sure they wish to quit.
@@ -90,11 +91,18 @@ public class PauseMenu : MonoBehaviour
 		pausePanel.SetActive(false);
 	}
 
-	//	Takes player back to the Main Menu
-	public void ConfirmQuit()
+    //	Takes player back to the Main Menu
+    public void ConfirmQuitMenu()
+    {
+        Player.instance.ReturnToMainMenu();
+        Time.timeScale = 1.0f;
+    }
+
+    public void ConfirmQuitOverworld()
 	{
-		SceneManager.LoadScene("Title Screen");
-	}
+        Player.instance.ReturnToOverworld();
+        Time.timeScale = 1.0f;
+    }
 
 	// Closes Prompt - Re-displays Pause Menu
 	public void CancelQuit()

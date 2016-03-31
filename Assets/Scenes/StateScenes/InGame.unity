@@ -1877,6 +1877,10 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 79605841}
+    - target: {fileID: 11453698, guid: c8bac60954a9f1a4ab88a2dd252f0af2, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ReturnToOverworld
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c8bac60954a9f1a4ab88a2dd252f0af2, type: 2}
   m_IsPrefabParent: 0
@@ -2107,6 +2111,10 @@ Prefab:
       propertyPath: settingsMenuPanel
       value: 
       objectReference: {fileID: 709949607}
+    - target: {fileID: 11492430, guid: 8f6e598009c104043a8fa38288457601, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ConfirmQuitOverworld
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8f6e598009c104043a8fa38288457601, type: 2}
   m_IsPrefabParent: 0

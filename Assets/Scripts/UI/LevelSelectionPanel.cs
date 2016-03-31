@@ -10,8 +10,10 @@ public class LevelSelectionPanel : MonoBehaviour
 
     private Text displayNameUI;
     private Text difficultyUI;
+    private Text completedUI;
 
-    public Button[] upgradeButtonsUI;
+    public Button startButton;
+    public Button cancelButton;
 
     /// <summary>
     /// Updates the information displayed on the selection panel with the information from the tower and its attributes.
@@ -27,7 +29,14 @@ public class LevelSelectionPanel : MonoBehaviour
         {
             displayNameUI.text = LangData.Instance.Retrieve(selectedLevelData.nameKey);
             difficultyUI.text = LangData.Instance.Retrieve("difficulty") + LangData.Instance.Retrieve(selectedLevelData.difficulty.ToString());
+            completedUI.text = selectedLevelData.completed ? LangData.Instance.Retrieve("completionStatus") : "";
+            startButton.interactable = selectedLevelData.canStart;
         }
+        else
+        {
+            startButton.interactable = false;
+        }
+
     }
 
     //
@@ -59,6 +68,10 @@ public class LevelSelectionPanel : MonoBehaviour
     {
         displayNameUI = transform.FindChild("Name").GetComponent<Text>();
         difficultyUI = transform.FindChild("Difficulty").GetComponent<Text>();
+        completedUI = transform.FindChild("Completed").GetComponent<Text>();
+
+        startButton = transform.FindChild("Start Level").GetComponent<Button>();
+        cancelButton = transform.FindChild("Cancel").GetComponent<Button>();
     }
 
     public void StartLevel()

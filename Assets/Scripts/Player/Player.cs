@@ -94,8 +94,7 @@ public class Player : MonoSingleton<Player>
     private int missScoreMult = 10;
 
     [Header("Level Loading")]
-    public int currentLevel = 0;
-    public string[] levels;
+    public string currentLevel;
 
     #region MonoBehaviour
 
@@ -140,7 +139,7 @@ public class Player : MonoSingleton<Player>
 
         if (Debug.isDebugBuild && Input.GetButtonDown("Debug Next Level"))
         {
-            NextLevel();
+            ReturnToOverworld();
         }
     }
 
@@ -176,6 +175,9 @@ public class Player : MonoSingleton<Player>
         // Enable game win screen
         Debug.Log("Player Won");
         gameWin.SetActive(true);
+
+        StateManager.instance.SetBool(currentLevel + " complete", true);
+        Debug.Log(currentLevel + " complete");
 
         DisableInteractables();
     }
@@ -216,7 +218,6 @@ public class Player : MonoSingleton<Player>
     /// </summary>
     void OnLoadState()
     {
-        Debug.Log("Loaded InGame State Player");
     }
 
     /// <summary>
@@ -224,7 +225,6 @@ public class Player : MonoSingleton<Player>
     /// </summary>
     void OnUnloadState()
     {
-        Debug.Log("Unloaded InGame State Player");
     }
 
     /// <summary>
@@ -232,7 +232,7 @@ public class Player : MonoSingleton<Player>
     /// </summary>
     void OnLoadSubState()
     {
-        Debug.Log("Loaded SubState Player");
+        currentLevel = StateManager.instance.currentSubState;
         ResetState();
     }
 
@@ -241,7 +241,6 @@ public class Player : MonoSingleton<Player>
     /// </summary>
     void OnUnloadSubState()
     {
-        Debug.Log("Unloaded SubState Player");
         ResetInteractables();
         ResetState();
     }
@@ -351,17 +350,9 @@ public class Player : MonoSingleton<Player>
     /// Transition to the next level
     /// </summary>
     /// <param name="sceneName"></param>
-    public void NextLevel()
+    public void ReturnToOverworld()
     {
-        currentLevel += 1;
-        if (currentLevel < levels.Length)
-        {
-            StateManager.instance.SetSubState(levels[currentLevel]);
-        }
-        else
-        {
-            ReturnToMainMenu();
-        }
+        StateManager.instance.SetState(StateManager.GameState.Overworld);
     }
 
     /// <summary>
@@ -369,7 +360,7 @@ public class Player : MonoSingleton<Player>
     /// </summary>
     public void ReloadCurrentLevel()
     {
-        StateManager.instance.SetSubState("Level " + currentLevel);
+        StateManager.instance.SetState(StateManager.GameState.InGame, StateManager.instance.currentSubState);
     }
 
     /// <summary>
@@ -413,17 +404,26 @@ public class Player : MonoSingleton<Player>
             Camera.main.GetComponent<CameraController>().enabled = true;
         }
 
-        healthBar.gameObject.SetActive(true);
+        if (healthBar)
+        {
+            healthBar.gameObject.SetActive(true);
+        }
 
-        goldText.transform.parent.gameObject.SetActive(true);
+        if (goldText)
+        {
+            goldText.transform.parent.gameObject.SetActive(true);
+        }
 
-        TowerManager.instance.gameObject.SetActive(true);
-        TowerManager.instance.SetSelectTowersMode();
+        if (TowerManager.HasInstance())
+        {
+            TowerManager.instance.gameObject.SetActive(true);
+            TowerManager.instance.SetSelectTowersMode();
+        }
 
         // reset results menus
-        gameOver.SetActive(false);
-        gameWin.SetActive(false);
-        resultsScreen.SetActive(false);
+        if (gameOver) gameOver.SetActive(false);
+        if (gameWin) gameWin.SetActive(false);
+        if (resultsScreen) resultsScreen.SetActive(false);
     }
 
     /// <summary>

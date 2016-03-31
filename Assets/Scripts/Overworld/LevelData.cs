@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class LevelData : MonoBehaviour {
 
@@ -32,4 +32,36 @@ public class LevelData : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// The levels still required to complete in order to play this level.
+    /// </summary>
+    public LevelData[] incomplete
+    {
+        get
+        {
+            List<LevelData> res = new List<LevelData>();
+            foreach(LevelData level in completeRequired)
+            {
+                if(level.completed == false)
+                {
+                    res.Add(level);
+                }
+            }
+            return res.ToArray();
+        }
+    }
+
+    void OnLoadState()
+    {
+        Debug.Log("Load LevelData in SubState");
+
+        completed = StateManager.instance.HasBool(level + " complete") ? StateManager.instance.GetBool(level + " complete") : false;
+        Debug.Log(level + " complete : " + completed);
+
+    }
+
+    void OnUnloadState()
+    {
+        Debug.Log("Unload LevelData in SubState");
+    }
 }

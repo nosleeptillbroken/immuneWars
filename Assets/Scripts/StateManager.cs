@@ -30,6 +30,13 @@ public class StateManager : MonoSingleton<StateManager>
 
     //
 
+    [SerializeField] private Dictionary<string, string> _persistentStrings = new Dictionary<string, string>(127);
+    [SerializeField] private Dictionary<string, int> _persistentInts = new Dictionary<string, int>(127);
+    [SerializeField] private Dictionary<string, bool> _persistentBools = new Dictionary<string, bool>(127);
+    [SerializeField] private Dictionary<string, float> _persistentFloats = new Dictionary<string, float>(127);
+
+    //
+
     [SerializeField] private List<GameObject> statePersistents = new List<GameObject>();
 
     //
@@ -82,19 +89,29 @@ public class StateManager : MonoSingleton<StateManager>
     /// <param name="newSubState"></param>
     public void SetSubState(string newSubState)
     {
-        UnloadSubState();
+        if (_currentSubState != null)
+        {
+            UnloadSubState();
+        }
+
         _previousSubState = _currentSubState;
         _currentSubState = newSubState;
-        LoadSubState(newSubState);
+
+        if (_currentSubState != null)
+        {
+            StartCoroutine("LoadSubState", newSubState);
+        }
     }
 
     // Load a SubState
-    void LoadSubState(string newSubState)
+    IEnumerator LoadSubState(object newSubState)
     {
-        SceneManager.LoadScene(newSubState);
+        AsyncOperation async = SceneManager.LoadSceneAsync((string)newSubState);
+        yield return async;
+
         foreach (Transform trans in FindObjectsOfType<Transform>())
         {
-            trans.gameObject.SendMessage("OnLoadSubState", null, SendMessageOptions.DontRequireReceiver);
+            trans.SendMessage("OnLoadSubState", null, SendMessageOptions.DontRequireReceiver);
         }
     }
     
@@ -102,12 +119,16 @@ public class StateManager : MonoSingleton<StateManager>
     {
         foreach (Transform trans in FindObjectsOfType<Transform>())
         {
-            trans.gameObject.SendMessage("OnUnloadSubState", null, SendMessageOptions.DontRequireReceiver);
+            trans.SendMessage("OnUnloadSubState", null, SendMessageOptions.DontRequireReceiver);
         }
         SceneManager.UnloadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     #endregion
+
+    //
+
+    #region State Loading
 
     IEnumerator LoadState(object[] args)
     {
@@ -128,13 +149,13 @@ public class StateManager : MonoSingleton<StateManager>
                 DontDestroyOnLoad(trans.gameObject);
                 statePersistents.Add(trans.gameObject);
             }
-            trans.gameObject.SendMessage("OnLoadState", null, SendMessageOptions.DontRequireReceiver);
+            trans.SendMessage("OnLoadState", null, SendMessageOptions.DontRequireReceiver);
         }
 
         // If a SubState was specified, load the SubState
         if (newSubState != null)
         {
-            LoadSubState(newSubState);
+            SetSubState(newSubState);
         }
 
     }
@@ -170,4 +191,275 @@ public class StateManager : MonoSingleton<StateManager>
         statePersistents.Clear();
     }
 
+    #endregion
+
+    //
+
+    #region Persistent Data
+
+    /// <summary>
+    /// Sets a string flag that persists between state changes.
+    /// </summary>
+    /// <param name="key">The access key</param>
+    /// <param name="val">The string value</param>
+    public void SetString(string key, string val)
+    {
+        _persistentStrings[key] = val;
+    }
+
+    /// <summary>
+    /// Gets a persistent string flag.
+    /// </summary>
+    /// <param name="key">The access key</param>
+    /// <returns>The string value</returns>
+    public string GetString(string key)
+    {
+        return _persistentStrings[key];
+    }
+
+    public bool HasString(string key)
+    {
+        return _persistentStrings.ContainsKey(key);
+    }
+
+    /// <summary>
+    /// Sets a integer flag that persists between state changes.
+    /// </summary>
+    /// <param name="key">The access key</param>
+    /// <param name="val">The integer value</param>
+    public void SetInt(string key, int val)
+    {
+        _persistentInts[key] = val;
+    }
+
+    /// <summary>
+    /// Gets a persistent integer flag.
+    /// </summary>
+    /// <param name="key">The access key</param>
+    /// <returns>The integer value</returns>
+    public int GetInt(string key)
+    {
+        return _persistentInts[key];
+    }
+
+    public bool HasInt(string key)
+    {
+        return _persistentInts.ContainsKey(key);
+    }
+
+    /// <summary>
+    /// Sets a boolean flag that persists between state changes.
+    /// </summary>
+    /// <param name="key">The access key</param>
+    /// <param name="val">The boolean value</param>
+    public void SetBool(string key, bool val)
+    {
+        _persistentBools[key] = val;
+    }
+
+    /// <summary>
+    /// Gets a persistent boolean flag.
+    /// </summary>
+    /// <param name="key">The access key</param>
+    /// <returns>The boolean value</returns>
+    public bool GetBool(string key)
+    {
+        return _persistentBools[key];
+    }
+
+    public bool HasBool(string key)
+    {
+        return _persistentBools.ContainsKey(key);
+    }
+
+    /// <summary>
+    /// Sets a float flag that persists between state changes.
+    /// </summary>
+    /// <param name="key">The access key</param>
+    /// <param name="val">The float value</param>
+    public void SetFloat(string key, float val)
+    {
+        _persistentFloats[key] = val;
+    }
+
+    /// <summary>
+    /// Gets a persistent float flag.
+    /// </summary>
+    /// <param name="key">The access key</param>
+    /// <returns>The float value</returns>
+    public float GetFloat(string key)
+    {
+        return _persistentFloats[key];
+    }
+
+    public bool HasFloat(string key)
+    {
+        return _persistentFloats.ContainsKey(key);
+    }
+
+    ///// <summary>
+    ///// Sets a persistent object. This operation is potentially unsafe.
+    ///// </summary>
+    ///// <param name="key">The access key.</param>
+    ///// <param name="val">The object value.</param>
+    //public void SetObject(string key, object val)
+    //{
+    //    _persistentObjects[key] = val;
+    //}
+
+    ///// <summary>
+    ///// Get a persistent object. This operation is potentially unsafe.
+    ///// </summary>
+    ///// <param name="key">The access key.</param>
+    ///// <returns>The object value.</returns>
+    //public object GetObject(string key)
+    //{
+    //    return _persistentObjects[key];
+    //}
+
+    ///// <summary>
+    ///// Sets a persistent object array. This operation is potentially unsafe.
+    ///// </summary>
+    ///// <param name="key">The access key.</param>
+    ///// <param name="val">The array value.</param>
+    //public void SetObjectArray(string key, object[] val)
+    //{
+    //    SetValHelper("arr", key, val);
+    //}
+
+    ///// <summary>
+    ///// Get a persistent object array. This operation is potentially unsafe.
+    ///// </summary>
+    ///// <param name="key">The access key.</param>
+    ///// <returns>The array value.</returns>
+    //public object GetObjectArray(string key)
+    //{
+    //    return GetValHelper("arr", key);
+    //}
+
+    /// <summary>
+    /// Saves persistent data to a file.
+    /// </summary>
+    /// <param name="file">The path to the file. Creates the file if it doesn't exist.</param>
+    /// <returns>Whether or not saving was successful.</returns>
+    public bool SaveDataToFile(string file)
+    {
+        System.IO.BinaryWriter writer = new System.IO.BinaryWriter(System.IO.File.Open(file, System.IO.FileMode.OpenOrCreate));
+
+        writer.Write(_persistentStrings.Count);
+        foreach(KeyValuePair<string, string> entry in _persistentStrings)
+        {
+            writer.Write(entry.Key);
+            writer.Write(entry.Value);
+        }
+
+        writer.Write(_persistentInts.Count);
+        foreach (KeyValuePair<string, int> entry in _persistentInts)
+        {
+            writer.Write(entry.Key);
+            writer.Write(entry.Value);
+        }
+
+        writer.Write(_persistentBools.Count);
+        foreach (KeyValuePair<string, bool> entry in _persistentBools)
+        {
+            writer.Write(entry.Key);
+            writer.Write(entry.Value);
+        }
+
+        writer.Write(_persistentFloats.Count);
+        foreach (KeyValuePair<string, float> entry in _persistentFloats)
+        {
+            writer.Write(entry.Key);
+            writer.Write(entry.Value);
+        }
+
+        writer.Close();
+
+        return true;
+    }
+
+    /// <summary>
+    /// Loads persistent data from a file.
+    /// </summary>
+    /// <param name="file">The path to the file.</param>
+    /// <param name="additive">Whether or not the file exists AND loading was successful.</param>
+    public bool LoadDataFromFile(string file, bool additive = false)
+    {
+        System.IO.FileInfo readFile = new System.IO.FileInfo(file);
+
+        System.IO.BinaryReader reader = new System.IO.BinaryReader(System.IO.File.Open(file, System.IO.FileMode.Open));
+
+        if (readFile.Length <= 0)
+        {
+            Debug.LogWarning("Data file '" + file + "' is empty; No action taken.");
+            return false;
+        }
+        else
+        {
+            try
+            {
+                if (additive == false)
+                {
+                    _persistentStrings.Clear();
+                    _persistentInts.Clear();
+                    _persistentBools.Clear();
+                    _persistentFloats.Clear();
+                }
+
+                int numPairs = 0;
+
+                // strings
+                numPairs = reader.ReadInt32();
+                for (int i = 0; i < numPairs; ++i)
+                {
+                    string tkey = reader.ReadString();
+                    string tval = reader.ReadString();
+                    _persistentStrings[tkey] = tval;
+                    Debug.Log(tkey + ": " + tval);
+                }
+
+                // ints
+                numPairs = reader.ReadInt32();
+                for (int i = 0; i < numPairs; ++i)
+                {
+                    string tkey = reader.ReadString();
+                    int tval = reader.ReadInt32();
+                    _persistentInts[tkey] = tval;
+                    Debug.Log(tkey + ": " + tval);
+                }
+
+                // bools
+                numPairs = reader.ReadInt32();
+                for (int i = 0; i < numPairs; ++i)
+                {
+                    string tkey = reader.ReadString();
+                    bool tval = reader.ReadBoolean();
+                    _persistentBools[tkey] = tval;
+                    Debug.Log(tkey + ": " + tval);
+                }
+
+                // floats
+                numPairs = reader.ReadInt32();
+                for (int i = 0; i < numPairs; ++i)
+                {
+                    string tkey = reader.ReadString();
+                    float tval = reader.ReadSingle();
+                    _persistentFloats[tkey] = tval;
+                    Debug.Log(tkey + ": " + tval);
+                }
+            }
+            catch(System.IO.IOException e)
+            {
+                Debug.LogWarning(e.Message);
+                reader.Close();
+                return false;
+            }
+        }
+
+        reader.Close();
+        return true;
+    }
+
+    #endregion
 }
