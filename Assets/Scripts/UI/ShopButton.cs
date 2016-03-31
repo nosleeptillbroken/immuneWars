@@ -62,7 +62,7 @@ public class ShopButton : MonoBehaviour
     public void OnLanguageChange()
     {
         transform.FindChild("Name").GetComponent<Text>().text =
-            LangData.Instance.Retrieve("towerName" + tower.GetComponent<TowerBehaviour>().attributes.displayName);
+            LangData.Instance.Retrieve(tower.GetComponent<TowerBehaviour>().attributes.displayName);
         transform.FindChild("Cost").GetComponent<Text>().text =
             LangData.Instance.Retrieve("cost") + tower.GetComponent<TowerBehaviour>().attributes.cost;
     }

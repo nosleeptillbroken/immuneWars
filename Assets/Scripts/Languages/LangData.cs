@@ -14,7 +14,7 @@ class Language
     // if things are screwed up with the parameters it defaults to english
     public Language(string newName, string newKey)
     {
-        if (newName != null)
+        /*if (newName != null)
         {
             name = newName;
         }
@@ -22,9 +22,9 @@ class Language
         {
             Debug.Log("Do not call with empty name string");
             name = "English";
-        }
-
-        if (newKey != null)
+        }*/
+        name = (newName != null) ? newName : "English";
+        /*if (newKey != null)
         {
             key = newKey;
         }
@@ -32,7 +32,8 @@ class Language
         {
             Debug.Log("Do not call with an empty key");
             key = "eng";
-        }
+        }*/
+        key = (newKey != null) ? newKey : "eng";
     }
 
     // getters so that data is protected and accessible

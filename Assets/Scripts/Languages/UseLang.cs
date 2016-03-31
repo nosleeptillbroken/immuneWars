@@ -2,11 +2,14 @@
 using UnityEngine.UI;
 using System.Collections;
 
+// Script for accessing LangData through the editor
 public class UseLang : MonoBehaviour {
-    public string langKey;
 
+    public string langKey;
     private Text txt;
 
+    // Find the text object to store in txt
+    // and set the attached component 
     void Start()
     {
         txt = gameObject.GetComponent<Text>();
