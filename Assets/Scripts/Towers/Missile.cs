@@ -82,8 +82,9 @@ public class Missile : MonoBehaviour
                 effect.slowFactor = (effect.slowFactor > 0) ? Mathf.Min(effect.slowFactor, attributes.slowFactor) : attributes.slowFactor;
                 effect.slowTime = Mathf.Max(effect.slowTime, attributes.slowTime);
             }
-		}
-		Destroy(gameObject); // Destroy this object after collision
+
+            Destroy(gameObject); // Destroy this object after collision
+        }
 	}
 	
 }

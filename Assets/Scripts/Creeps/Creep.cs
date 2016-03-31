@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class Creep : MonoBehaviour
 {
     public GameObject spawner = null;
@@ -18,22 +19,56 @@ public class Creep : MonoBehaviour
     private MeshRenderer healthBarRenderer; //for enabling and disabling renderer
     private Vector3 healthBarScale; //to scale properly
 
-    // Target for despawning
-    private Transform target;
+    /// <summary>
+    /// The navmesh agent for this creep.
+    /// </summary>
+    private NavMeshAgent agent;
 
-    // The navmesh agent for this 
-    NavMeshAgent agent;
+    /// <summary>
+    /// The creep's current target on the path. If the target is the last target in its tree, the creep will despawn when it reaches it.
+    /// </summary>
+    public CreepTarget target
+    {
+        get
+        {
+            return _target;
+        }
+        set
+        {
+            _target = value;
+            agent.SetDestination(_target.transform.position);
+        }
+    }
+    private CreepTarget _target = null;
 
     /// <summary>
     /// How much health the unit currently has.
     /// </summary>
 	public int health = 50;
-    private float startingHealth;
+    private int startingHealth;
 
     /// <summary>
     /// How much damage the unit inflicts when it successfully leaks through.
     /// </summary>
     public int leakDamage = 1;
+
+    [Header("Creep Heal")]
+    [SerializeField]
+    private bool applyHeal = false;
+
+    /// <summary>
+    /// Time between target burns, in seconds.
+    /// </summary>
+    public float healTime = 0.5f;
+
+    private float elapsedHealTime = 0.0f;
+
+    /// <summary>
+    /// Damage to inflict on the target each burn.
+    /// </summary>
+    ///
+    [SerializeField]
+    private int heal = 0;
 
     /// <summary>
     /// The current speed of the creep.
@@ -44,6 +79,11 @@ public class Creep : MonoBehaviour
     /// The current acceleration of the creep.
     /// </summary>
     public float acceleration { get { return GetComponent<NavMeshAgent>().acceleration; } set { GetComponent<NavMeshAgent>().acceleration = value; } }
+
+    void Awake ()
+    {
+        agent = GetComponent<NavMeshAgent>();
+    }
 
     // Use this for initialization
     void Start ()
@@ -58,45 +98,35 @@ public class Creep : MonoBehaviour
         healthBarRenderer = healthBar.GetComponent<MeshRenderer>(); //associate renderer for healthbar
         healthBarRenderer.enabled = false; //make invisible from start
         startingHealth = health; //store full health value
-        
-        // The creep is referenced with the NavMesh so it can interact.
-        agent = GetComponent<NavMeshAgent>();
 
-        // Creeps are instantiated each wave, and references are made to the despawn point for pathing.
-        GameObject despawnGameObject = GameObject.FindWithTag("Despawn");
-
-        if (despawnGameObject != null)
-        {
-            target = despawnGameObject.transform;
-        }
-        if (despawnGameObject == null)
-        {
-            Debug.Log("Cannot find despawn object");
-        }
-        
     }
 
     /// <summary>
     /// Called whenever enemy takes damage
     /// </summary>
-    /// <param name="damage">How much damage the enemy will take</param>
-	void OnApplyDamage (int damage)
+    /// <param name="amount">How much damage the enemy will take</param>
+	void OnApplyDamage (int amount)
     {
-		health -= damage;
+		health -= amount;
         if (health <= 0)
         {
             OnDeath();
         }
     }
 
-    // Update
-	void Update ()
+    /// <summary>
+    /// Called whenever enemy recieves healing
+    /// /// </summary>
+    /// <param name="amount">How much health the enemy will receive</param>
+	void OnApplyHeal(int amount)
     {
-        if (agent && target)
-        {
-            agent.SetDestination(target.position);
-        }
+        health += amount;
+        health = Mathf.Min(startingHealth, health);
+    }
 
+    // Update
+    void Update ()
+    {
         if (health > 0 && health < startingHealth)
         {
             healthBarRenderer.enabled = true; //begin rendering health bar once creep takes damage for first time
@@ -108,6 +138,17 @@ public class Creep : MonoBehaviour
 
         healthBar.transform.localScale = newScale;
         healthBarRenderer.material.color = newColor;
+
+        if (applyHeal == true)
+        {
+            elapsedHealTime += Time.deltaTime;
+            if (elapsedHealTime > healTime)
+            {
+                this.SendMessage("OnApplyHeal", heal);
+
+                elapsedHealTime = 0;
+            }
+        }
 
     }
 

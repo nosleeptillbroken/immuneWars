@@ -19,7 +19,7 @@ public class CreepWave // allows for the creation of a 2 dimensional array of Cr
     public List<WaveCreep> creepList;
 }
 
-public class CreepSpawner : MonoBehaviour
+public class CreepSpawner : CreepTarget
 {
 
     public List<CreepWave> waveList; // an array of waves will create the level
@@ -189,9 +189,11 @@ public class CreepSpawner : MonoBehaviour
                     Quaternion spawnRotation = Quaternion.identity;
 
                     // spawn wave for this wave, of this type
-                    GameObject newCreep = Instantiate(waveList[i].creepList[j].creep, spawnPosition, spawnRotation) as GameObject;
+                    GameObject newCreepObject = Instantiate(waveList[i].creepList[j].creep, spawnPosition, spawnRotation) as GameObject;
+                    Creep newCreep = newCreepObject.GetComponent<Creep>();
                     // set the creep's spawner so it can notify when it has died or despawned
-                    newCreep.GetComponent<Creep>().spawner = this.gameObject;
+                    newCreep.spawner = this.gameObject;
+                    DirectToNextNode(newCreep);
 
                     yield return new WaitForSeconds(spawnWait); // wait before spawning next creep
                 }

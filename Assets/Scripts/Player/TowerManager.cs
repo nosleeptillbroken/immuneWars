@@ -219,7 +219,7 @@ public class TowerManager : MonoSingleton<TowerManager>
                 RaycastHit hit;
 
                 // If raycast collides
-                bool successfulRay = Physics.Raycast(ray, out hit, Mathf.Infinity, ~LayerMask.GetMask("Towers", "Creeps"));
+                bool successfulRay = Physics.Raycast(ray, out hit, Mathf.Infinity, ~LayerMask.GetMask("Towers", "Creeps", "Paths"));
 
                 if (towerPlacementGhost != null)
                 {
