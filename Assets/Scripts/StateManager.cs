@@ -411,8 +411,17 @@ public class StateManager : MonoSingleton<StateManager>
     public bool LoadDataFromFile(string file, bool additive = false)
     {
         System.IO.FileInfo readFile = new System.IO.FileInfo(file);
+        System.IO.BinaryReader reader;
 
-        System.IO.BinaryReader reader = new System.IO.BinaryReader(System.IO.File.Open(file, System.IO.FileMode.Open));
+        try
+        {
+            reader = new System.IO.BinaryReader(System.IO.File.Open(file, System.IO.FileMode.Open));
+        }
+        catch (System.IO.FileNotFoundException e)
+        {
+            Debug.LogWarning("File '" + file + "' not found; Loading nothing.");
+            return false;
+        }
 
         if (readFile.Length <= 0)
         {

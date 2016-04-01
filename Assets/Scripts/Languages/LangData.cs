@@ -191,21 +191,15 @@ public class LangData {
         if ((newLangIndex >= 0) && (newLangIndex <= languages.Count - 1)
             && (newLangIndex != currentLangIndex))
         {
-            UseLang[] langGetters = GameObject.FindObjectsOfType<UseLang>();
-            ShopButton[] shopButtons = GameObject.FindObjectsOfType<ShopButton>();
+            Transform[] langGetters = GameObject.FindObjectsOfType<Transform>();
 
             currentLangIndex = newLangIndex;
             current.Clear();
             LoadLang();
             // StateManager.instance.SetState(StateManager.instance.currentState); possibly not using this
-            foreach (UseLang textObject in langGetters)
+            foreach (Transform textObject in langGetters)
             {
-                textObject.SendMessage("OnLanguageChange");
-            }
-
-            foreach (ShopButton buttonObject in shopButtons)
-            {
-                buttonObject.SendMessage("OnLanguageChange");
+                textObject.SendMessage("OnLanguageChange", null, SendMessageOptions.DontRequireReceiver);
             }
         }
         else if (newLangIndex == currentLangIndex)

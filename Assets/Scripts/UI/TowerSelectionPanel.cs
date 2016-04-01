@@ -145,6 +145,11 @@ public class TowerSelectionPanel : MonoBehaviour
         }
     }
 
+    void OnLanguageChange()
+    {
+        UpdateDisplayInformation();
+    }
+
     //
     void Start()
     {

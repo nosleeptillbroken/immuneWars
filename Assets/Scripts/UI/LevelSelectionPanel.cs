@@ -63,6 +63,11 @@ public class LevelSelectionPanel : MonoBehaviour
         return (displayNameUI != null && difficultyUI != null);
     }
 
+    void OnLanguageChange()
+    {
+        UpdateDisplayInformation();
+    }
+
     //
     void GetComponents()
     {
