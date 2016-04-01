@@ -9,10 +9,9 @@ using UnityEngine.UI;
 public class Creep : MonoBehaviour
 {
     public GameObject spawner = null;
-
     private GameObject goldDrop;
     public int goldValue; //This is the Creep's worth. See in inspector.
-    
+ 
     //Vars for the health bar
     private GameObject healthBar; //link to the health bar game object
     private Quaternion healthBarRot; //var for storing the initial rotation of the health bar
@@ -40,6 +39,12 @@ public class Creep : MonoBehaviour
         }
     }
     private CreepTarget _target = null;
+
+    [SerializeField]
+    private bool isHydra = false;
+    [SerializeField]
+    private int hydraSpawnAmount;
+    public GameObject _hydraChild;
 
     /// <summary>
     /// How much health the unit currently has.
@@ -123,10 +128,31 @@ public class Creep : MonoBehaviour
         health += amount;
         health = Mathf.Min(startingHealth, health);
     }
+    void Hydra()
+    {
+        if (isHydra == true && health <= 0)
+        {
+            for (int i = 0; i <= hydraSpawnAmount; i++)
+            {
+                Vector3 spawnPosition = transform.position + new Vector3(Random.Range(1.0f,2.0f),1.0f,Random.Range(1.0f,3.0f));
+                Quaternion spawnRotation = Quaternion.identity;
+
+
+                GameObject newCreepObject = Instantiate(_hydraChild, spawnPosition, spawnRotation) as GameObject;
+                Creep newCreep = newCreepObject.GetComponent<Creep>();
+                // set the creep's spawner so it can notify when it has died or despawned
+                spawner = this.gameObject;
+                agent.enabled = true;
+                agent.SetDestination(target.transform.position);
+                //DirectToNextNode(newCreep);
+            }
+        }
+    }
 
     // Update
     void Update ()
     {
+        
         if (health > 0 && health < startingHealth)
         {
             healthBarRenderer.enabled = true; //begin rendering health bar once creep takes damage for first time
@@ -150,6 +176,8 @@ public class Creep : MonoBehaviour
             }
         }
 
+
+
     }
 
     // LateUpdate
@@ -162,6 +190,7 @@ public class Creep : MonoBehaviour
     //
     void OnDeath()
     {
+        
         GameObject goldDropObject = Resources.Load("Effects/Gold Drop") as GameObject;
         goldDrop = Instantiate(goldDropObject);
         goldDrop.transform.position = transform.position;
@@ -174,15 +203,16 @@ public class Creep : MonoBehaviour
 
         Player.instance.AddGold(goldValue); //increments the player's gold by the set gold value associated with the creep
         Player.instance.SendMessage("OnKillCreep", null, SendMessageOptions.DontRequireReceiver);
-        spawner.SendMessage("OnCreepDeath", null, SendMessageOptions.DontRequireReceiver);
+        //spawner.SendMessage("OnCreepDeath", null, SendMessageOptions.DontRequireReceiver);
 
         Destroy(gameObject);
+        Hydra();
     }
 
     // OnTriggerEnter
     void OnDespawn()
     {
-        spawner.SendMessage("OnCreepDespawn", null, SendMessageOptions.DontRequireReceiver);
+        //spawner.SendMessage("OnCreepDespawn", null, SendMessageOptions.DontRequireReceiver);
         Player.instance.SendMessage("RemoveHealth", leakDamage, SendMessageOptions.DontRequireReceiver);
         Player.instance.SendMessage("OnMissCreep", null, SendMessageOptions.DontRequireReceiver);
         Destroy(gameObject);

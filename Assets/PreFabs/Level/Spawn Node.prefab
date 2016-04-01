@@ -44,7 +44,7 @@ MonoBehaviour:
   _children: []
   waveList:
   - creepList:
-    - creep: {fileID: 138346, guid: f1f3730f36d1ab741b0be2371ef0696f, type: 2}
+    - creep: {fileID: 138346, guid: e0e74b349daeee6448f16919ac37b6e8, type: 2}
       number: 2
     - creep: {fileID: 138346, guid: 02dfe676f2184c44aa08a979b607f775, type: 2}
       number: 2
