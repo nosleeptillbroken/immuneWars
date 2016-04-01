@@ -211,12 +211,18 @@ public class StateManager : MonoSingleton<StateManager>
     /// Gets a persistent string flag.
     /// </summary>
     /// <param name="key">The access key</param>
+    /// <param name="defaultVal">The default value if the key-value pair does not exist.</param>
     /// <returns>The string value</returns>
-    public string GetString(string key)
+    public string GetString(string key, string defaultVal = null)
     {
-        return _persistentStrings[key];
+        return HasString(key) ? _persistentStrings[key] : defaultVal;
     }
 
+    /// <summary>
+    /// Returns whether or not there is a string value with this key.
+    /// </summary>
+    /// <param name="key">The access key.</param>
+    /// <returns></returns>
     public bool HasString(string key)
     {
         return _persistentStrings.ContainsKey(key);
@@ -236,12 +242,18 @@ public class StateManager : MonoSingleton<StateManager>
     /// Gets a persistent integer flag.
     /// </summary>
     /// <param name="key">The access key</param>
+    /// <param name="defaultVal">The default value if the key-value pair does not exist.</param>
     /// <returns>The integer value</returns>
-    public int GetInt(string key)
+    public int GetInt(string key, int defaultVal = 0)
     {
-        return _persistentInts[key];
+        return HasInt(key) ? _persistentInts[key] : defaultVal;
     }
 
+    /// <summary>
+    /// Returns whether or not there is a integer value with this key.
+    /// </summary>
+    /// <param name="key">The access key.</param>
+    /// <returns></returns>
     public bool HasInt(string key)
     {
         return _persistentInts.ContainsKey(key);
@@ -261,12 +273,18 @@ public class StateManager : MonoSingleton<StateManager>
     /// Gets a persistent boolean flag.
     /// </summary>
     /// <param name="key">The access key</param>
+    /// <param name="defaultVal">The default value if the key-value pair does not exist.</param>
     /// <returns>The boolean value</returns>
-    public bool GetBool(string key)
+    public bool GetBool(string key, bool defaultVal = false)
     {
-        return _persistentBools[key];
+        return HasBool(key) ? _persistentBools[key] : defaultVal;
     }
 
+    /// <summary>
+    /// Returns whether or not there is a bool value with this key.
+    /// </summary>
+    /// <param name="key">The access key.</param>
+    /// <returns></returns>
     public bool HasBool(string key)
     {
         return _persistentBools.ContainsKey(key);
@@ -286,12 +304,18 @@ public class StateManager : MonoSingleton<StateManager>
     /// Gets a persistent float flag.
     /// </summary>
     /// <param name="key">The access key</param>
+    /// <param name="defaultVal">The default value if the key-value pair does not exist.</param>
     /// <returns>The float value</returns>
-    public float GetFloat(string key)
+    public float GetFloat(string key, float defaultVal = 0.0f)
     {
-        return _persistentFloats[key];
+        return HasFloat(key) ? _persistentFloats[key] : defaultVal;
     }
 
+    /// <summary>
+    /// Returns whether or not there is a float value with this key.
+    /// </summary>
+    /// <param name="key">The access key.</param>
+    /// <returns></returns>
     public bool HasFloat(string key)
     {
         return _persistentFloats.ContainsKey(key);

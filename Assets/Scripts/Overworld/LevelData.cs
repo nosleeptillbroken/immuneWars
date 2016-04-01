@@ -55,7 +55,7 @@ public class LevelData : MonoBehaviour {
     {
         Debug.Log("Load LevelData in SubState");
 
-        completed = StateManager.instance.HasBool(level + " complete") ? StateManager.instance.GetBool(level + " complete") : false;
+        completed = StateManager.instance.GetBool(level + " complete");
         Debug.Log(level + " complete : " + completed);
 
     }
