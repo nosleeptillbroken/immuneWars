@@ -373,6 +373,7 @@ public class Player : MonoSingleton<Player>
     /// </summary>
     public void ReturnToMainMenu()
     {
+        StateManager.instance.SaveDataToFile("save.iws");
         StateManager.instance.SetState(StateManager.GameState.MainMenu);
     }
 

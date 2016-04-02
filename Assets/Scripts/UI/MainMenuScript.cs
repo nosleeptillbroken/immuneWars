@@ -38,7 +38,6 @@ public class MainMenuScript : MonoBehaviour
     // when exit is pressed
     public void ConfirmExit()
     {
-        StateManager.instance.SaveDataToFile("save.iws");
         Application.Quit();
     }
 

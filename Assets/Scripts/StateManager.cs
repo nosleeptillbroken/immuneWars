@@ -373,7 +373,7 @@ public class StateManager : MonoSingleton<StateManager>
     /// <returns>Whether or not saving was successful.</returns>
     public bool SaveDataToFile(string file)
     {
-        System.IO.BinaryWriter writer = new System.IO.BinaryWriter(System.IO.File.Open(file, System.IO.FileMode.OpenOrCreate));
+        System.IO.BinaryWriter writer = new System.IO.BinaryWriter(System.IO.File.Open(file, System.IO.FileMode.Create));
 
         _persistentStrings.Serialize(writer);
         _persistentInts.Serialize(writer);
