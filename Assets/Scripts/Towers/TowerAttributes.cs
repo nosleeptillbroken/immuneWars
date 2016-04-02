@@ -79,7 +79,7 @@ public class TowerAttributes
     /// </summary>
     public int burnDamage = 0;
 
-    [Header("AoE Damage")]
+    [Header("Area-of-Effect")]
 
     /// <summary>
     /// Whether or not the tower's shots apply area of effect damage.
@@ -87,9 +87,9 @@ public class TowerAttributes
     public bool applyAOE = false;
 
     /// <summary>
-    /// How much area of effect damage is applied.
+    /// The radius in which an area-of-effect covers
     /// </summary>
-    public int AOEDamage = 0;
+    public float AOERadius = 0;
 
     [Header("Display")]
 
@@ -114,6 +114,8 @@ public class TowerAttributes
         ret.burnTime = lhs.burnTime + rhs.burnTime;
         ret.burnCount = lhs.burnCount + rhs.burnCount;
         ret.burnDamage = lhs.burnDamage + rhs.burnDamage;
+        ret.applyAOE = lhs.applyAOE || rhs.applyAOE;
+        ret.AOERadius = lhs.AOERadius + rhs.AOERadius;
 
         return ret;
     }

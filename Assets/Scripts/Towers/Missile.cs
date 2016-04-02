@@ -69,12 +69,34 @@ public class Missile : MonoBehaviour
 			// Call the function TakeDamage(10) in the hit object, if any
 			// Call the specific bullet, otherwise all enemies take damage. take not for future sessions
 			//transform.position = Vector3.Lerp (transform.position, bulletman, _TurretScript.speed * Time.deltaTime);
-
-            CreepEffect effect = other.gameObject.GetComponent<CreepEffect>();
-            if(effect == null)  effect = other.gameObject.AddComponent<CreepEffect>();
             
+            if (attributes.applyAOE)
+            {
+                Collider[] aoeCreeps = Physics.OverlapSphere(transform.position, attributes.AOERadius, LayerMask.GetMask("Creeps"),QueryTriggerInteraction.Ignore);
+                foreach(Collider creep in aoeCreeps)
+                {
+                    ApplyCreepEffectWithAttributes(creep.gameObject, attributes);
+                }
+            }
+            else
+            {
+                ApplyCreepEffectWithAttributes(other.gameObject, attributes);
+            }
+
+            Destroy(gameObject); // Destroy this object after collision
+        }
+	}
+	
+    void ApplyCreepEffectWithAttributes(GameObject creep, TowerAttributes attributes)
+    {
+        if (creep.GetComponent<Creep>())
+        {
+            CreepEffect effect = creep.GetComponent<CreepEffect>();
+            if (effect == null) effect = creep.gameObject.AddComponent<CreepEffect>();
+
             effect.damage += attributes.damage;
 
+            //
             if (attributes.applyBurn)
             {
                 effect.burnCount = Mathf.Max(effect.burnCount, attributes.burnCount);
@@ -82,18 +104,17 @@ public class Missile : MonoBehaviour
                 effect.burnTime = (effect.burnTime > 0) ? Mathf.Min(effect.burnTime, attributes.burnTime) : attributes.burnTime;
             }
 
+            //
             if (attributes.applySlow)
             {
                 effect.slowFactor = (effect.slowFactor > 0) ? Mathf.Min(effect.slowFactor, attributes.slowFactor) : attributes.slowFactor;
                 effect.slowTime = Mathf.Max(effect.slowTime, attributes.slowTime);
             }
-            if (attributes.applyAOE)
-            {
-                Instantiate(AOEDamager, transform.position, transform.rotation);
-            }
-
-            Destroy(gameObject); // Destroy this object after collision
         }
-	}
-	
+        else
+        {
+            Debug.LogWarning("Attempted to apply CreepEffect to non-Creep; doing nothing.");
+        }
+    }
+
 }

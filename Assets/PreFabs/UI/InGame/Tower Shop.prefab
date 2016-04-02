@@ -189,6 +189,7 @@ MonoBehaviour:
   - {fileID: 127470, guid: 5325b770b8b68c7438271fc6546a9886, type: 2}
   - {fileID: 147452, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
   - {fileID: 180522, guid: c1e7041785ec6804c8a196abdb318b58, type: 2}
+  - {fileID: 180522, guid: 35be887746faef34787d861308ebfdd5, type: 2}
   animationSpeed: 5
   columns: 2
   padding: 8
@@ -396,8 +397,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: a92ebcd261e3c49ec9b318431e433cbe, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

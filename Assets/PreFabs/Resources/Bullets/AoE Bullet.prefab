@@ -107,7 +107,7 @@ MonoBehaviour:
     burnTime: 0
     burnCount: 0
     burnDamage: 0
-    applyAOE: 1
+    applyAOE: 0
     AOEDamage: 0
     mesh: {fileID: 0}
     material: {fileID: 0}
@@ -182,7 +182,7 @@ Prefab:
       objectReference: {fileID: 117990, guid: 58c9f0d0af2673349898b2dd8ad146fe, type: 2}
     - target: {fileID: 0}
       propertyPath: attributes.applyAOE
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
