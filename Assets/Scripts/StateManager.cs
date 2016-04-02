@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
+
 public class StateManager : MonoSingleton<StateManager>
 {
 
@@ -30,10 +31,10 @@ public class StateManager : MonoSingleton<StateManager>
 
     //
 
-    [SerializeField] private Dictionary<string, string> _persistentStrings = new Dictionary<string, string>(127);
-    [SerializeField] private Dictionary<string, int> _persistentInts = new Dictionary<string, int>(127);
-    [SerializeField] private Dictionary<string, bool> _persistentBools = new Dictionary<string, bool>(127);
-    [SerializeField] private Dictionary<string, float> _persistentFloats = new Dictionary<string, float>(127);
+    private PersistentDictionary<string> _persistentStrings = new PersistentDictionary<string>(127);
+    private PersistentDictionary<int> _persistentInts = new PersistentDictionary<int>(127);
+    private PersistentDictionary<bool> _persistentBools = new PersistentDictionary<bool>(127);
+    private PersistentDictionary<float> _persistentFloats = new PersistentDictionary<float>(127);
 
     //
 
@@ -111,7 +112,7 @@ public class StateManager : MonoSingleton<StateManager>
 
         foreach (Transform trans in FindObjectsOfType<Transform>())
         {
-            trans.SendMessage("OnLoadSubState", null, SendMessageOptions.DontRequireReceiver);
+            trans.SendMessage("OnLoadSubState", (string)newSubState, SendMessageOptions.DontRequireReceiver);
         }
     }
     
@@ -149,7 +150,7 @@ public class StateManager : MonoSingleton<StateManager>
                 DontDestroyOnLoad(trans.gameObject);
                 statePersistents.Add(trans.gameObject);
             }
-            trans.SendMessage("OnLoadState", null, SendMessageOptions.DontRequireReceiver);
+            trans.SendMessage("OnLoadState", newState, SendMessageOptions.DontRequireReceiver);
         }
 
         // If a SubState was specified, load the SubState
@@ -202,9 +203,10 @@ public class StateManager : MonoSingleton<StateManager>
     /// </summary>
     /// <param name="key">The access key</param>
     /// <param name="val">The string value</param>
-    public void SetString(string key, string val)
+    /// <param name="saveToDisk">Whether or not this entry should be saved to disk.</param>
+    public void SetString(string key, string val, bool saveToDisk = true)
     {
-        _persistentStrings[key] = val;
+        _persistentStrings.SetEntry(key, val, saveToDisk);
     }
 
     /// <summary>
@@ -215,7 +217,7 @@ public class StateManager : MonoSingleton<StateManager>
     /// <returns>The string value</returns>
     public string GetString(string key, string defaultVal = null)
     {
-        return HasString(key) ? _persistentStrings[key] : defaultVal;
+        return _persistentStrings.GetEntry(key, defaultVal);
     }
 
     /// <summary>
@@ -225,7 +227,7 @@ public class StateManager : MonoSingleton<StateManager>
     /// <returns></returns>
     public bool HasString(string key)
     {
-        return _persistentStrings.ContainsKey(key);
+        return _persistentStrings.HasEntry(key);
     }
 
     /// <summary>
@@ -233,9 +235,10 @@ public class StateManager : MonoSingleton<StateManager>
     /// </summary>
     /// <param name="key">The access key</param>
     /// <param name="val">The integer value</param>
-    public void SetInt(string key, int val)
+    /// <param name="saveToDisk">Whether or not this entry should be saved to disk.</param>
+    public void SetInt(string key, int val, bool saveToDisk = true)
     {
-        _persistentInts[key] = val;
+        _persistentInts.SetEntry(key, val, saveToDisk);
     }
 
     /// <summary>
@@ -246,7 +249,7 @@ public class StateManager : MonoSingleton<StateManager>
     /// <returns>The integer value</returns>
     public int GetInt(string key, int defaultVal = 0)
     {
-        return HasInt(key) ? _persistentInts[key] : defaultVal;
+        return _persistentInts.GetEntry(key, defaultVal);
     }
 
     /// <summary>
@@ -256,7 +259,7 @@ public class StateManager : MonoSingleton<StateManager>
     /// <returns></returns>
     public bool HasInt(string key)
     {
-        return _persistentInts.ContainsKey(key);
+        return _persistentInts.HasEntry(key);
     }
 
     /// <summary>
@@ -264,9 +267,10 @@ public class StateManager : MonoSingleton<StateManager>
     /// </summary>
     /// <param name="key">The access key</param>
     /// <param name="val">The boolean value</param>
-    public void SetBool(string key, bool val)
+    /// <param name="saveToDisk">Whether or not this entry should be saved to disk.</param>
+    public void SetBool(string key, bool val, bool saveToDisk = true)
     {
-        _persistentBools[key] = val;
+        _persistentBools.SetEntry(key, val, saveToDisk);
     }
 
     /// <summary>
@@ -277,7 +281,7 @@ public class StateManager : MonoSingleton<StateManager>
     /// <returns>The boolean value</returns>
     public bool GetBool(string key, bool defaultVal = false)
     {
-        return HasBool(key) ? _persistentBools[key] : defaultVal;
+        return _persistentBools.GetEntry(key, defaultVal);
     }
 
     /// <summary>
@@ -287,7 +291,7 @@ public class StateManager : MonoSingleton<StateManager>
     /// <returns></returns>
     public bool HasBool(string key)
     {
-        return _persistentBools.ContainsKey(key);
+        return _persistentBools.HasEntry(key);
     }
 
     /// <summary>
@@ -295,9 +299,10 @@ public class StateManager : MonoSingleton<StateManager>
     /// </summary>
     /// <param name="key">The access key</param>
     /// <param name="val">The float value</param>
-    public void SetFloat(string key, float val)
+    /// <param name="saveToDisk">Whether or not this entry should be saved to disk.</param>
+    public void SetFloat(string key, float val, bool saveToDisk = true)
     {
-        _persistentFloats[key] = val;
+        _persistentFloats.SetEntry(key, val, saveToDisk);
     }
 
     /// <summary>
@@ -308,7 +313,7 @@ public class StateManager : MonoSingleton<StateManager>
     /// <returns>The float value</returns>
     public float GetFloat(string key, float defaultVal = 0.0f)
     {
-        return HasFloat(key) ? _persistentFloats[key] : defaultVal;
+        return _persistentFloats.GetEntry(key, defaultVal);
     }
 
     /// <summary>
@@ -318,7 +323,7 @@ public class StateManager : MonoSingleton<StateManager>
     /// <returns></returns>
     public bool HasFloat(string key)
     {
-        return _persistentFloats.ContainsKey(key);
+        return _persistentFloats.HasEntry(key);
     }
 
     ///// <summary>
@@ -370,33 +375,10 @@ public class StateManager : MonoSingleton<StateManager>
     {
         System.IO.BinaryWriter writer = new System.IO.BinaryWriter(System.IO.File.Open(file, System.IO.FileMode.OpenOrCreate));
 
-        writer.Write(_persistentStrings.Count);
-        foreach(KeyValuePair<string, string> entry in _persistentStrings)
-        {
-            writer.Write(entry.Key);
-            writer.Write(entry.Value);
-        }
-
-        writer.Write(_persistentInts.Count);
-        foreach (KeyValuePair<string, int> entry in _persistentInts)
-        {
-            writer.Write(entry.Key);
-            writer.Write(entry.Value);
-        }
-
-        writer.Write(_persistentBools.Count);
-        foreach (KeyValuePair<string, bool> entry in _persistentBools)
-        {
-            writer.Write(entry.Key);
-            writer.Write(entry.Value);
-        }
-
-        writer.Write(_persistentFloats.Count);
-        foreach (KeyValuePair<string, float> entry in _persistentFloats)
-        {
-            writer.Write(entry.Key);
-            writer.Write(entry.Value);
-        }
+        _persistentStrings.Serialize(writer);
+        _persistentInts.Serialize(writer);
+        _persistentBools.Serialize(writer);
+        _persistentFloats.Serialize(writer);
 
         writer.Close();
 
@@ -432,59 +414,21 @@ public class StateManager : MonoSingleton<StateManager>
         {
             try
             {
-                if (additive == false)
+                if(additive)
                 {
                     _persistentStrings.Clear();
                     _persistentInts.Clear();
                     _persistentBools.Clear();
                     _persistentFloats.Clear();
                 }
-
-                int numPairs = 0;
-
-                // strings
-                numPairs = reader.ReadInt32();
-                for (int i = 0; i < numPairs; ++i)
-                {
-                    string tkey = reader.ReadString();
-                    string tval = reader.ReadString();
-                    _persistentStrings[tkey] = tval;
-                    Debug.Log(tkey + ": " + tval);
-                }
-
-                // ints
-                numPairs = reader.ReadInt32();
-                for (int i = 0; i < numPairs; ++i)
-                {
-                    string tkey = reader.ReadString();
-                    int tval = reader.ReadInt32();
-                    _persistentInts[tkey] = tval;
-                    Debug.Log(tkey + ": " + tval);
-                }
-
-                // bools
-                numPairs = reader.ReadInt32();
-                for (int i = 0; i < numPairs; ++i)
-                {
-                    string tkey = reader.ReadString();
-                    bool tval = reader.ReadBoolean();
-                    _persistentBools[tkey] = tval;
-                    Debug.Log(tkey + ": " + tval);
-                }
-
-                // floats
-                numPairs = reader.ReadInt32();
-                for (int i = 0; i < numPairs; ++i)
-                {
-                    string tkey = reader.ReadString();
-                    float tval = reader.ReadSingle();
-                    _persistentFloats[tkey] = tval;
-                    Debug.Log(tkey + ": " + tval);
-                }
+                _persistentStrings.Deserialize(reader);
+                _persistentInts.Deserialize(reader);
+                _persistentBools.Deserialize(reader);
+                _persistentFloats.Deserialize(reader);
             }
             catch(System.IO.IOException e)
             {
-                Debug.LogWarning(e.Message);
+                Debug.LogWarning(e.ToString() + e.Message);
                 reader.Close();
                 return false;
             }

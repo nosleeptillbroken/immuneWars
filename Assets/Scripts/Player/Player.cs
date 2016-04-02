@@ -176,8 +176,7 @@ public class Player : MonoSingleton<Player>
         Debug.Log("Player Won");
         gameWin.SetActive(true);
 
-        StateManager.instance.SetBool(currentLevel + " complete", true);
-        Debug.Log(currentLevel + " complete");
+        StateManager.instance.SetBool(StringUtils.KeyFriendlyString(currentLevel + " complete"), true);
 
         DisableInteractables();
     }
@@ -191,6 +190,8 @@ public class Player : MonoSingleton<Player>
         // Display game over menu
         Debug.Log("Player Lost");
         gameOver.SetActive(true);
+
+        //StateManager.instance.SetInt(currentLevel + " complete", true);
     }
 
     /// <summary>
@@ -218,6 +219,10 @@ public class Player : MonoSingleton<Player>
     /// </summary>
     void OnLoadState()
     {
+        if(StateManager.instance.currentState == StateManager.GameState.Overworld)
+        {
+            _currentHealth = StateManager.instance.GetInt(StringUtils.KeyFriendlyString("player_global_health"), maxHealth);
+        }
     }
 
     /// <summary>

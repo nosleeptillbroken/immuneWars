@@ -55,8 +55,10 @@ public class LevelData : MonoBehaviour {
     {
         Debug.Log("Load LevelData in SubState");
 
-        completed = StateManager.instance.GetBool(level + " complete");
+        completed = StateManager.instance.GetBool(StringUtils.KeyFriendlyString(level + " complete"));
         Debug.Log(level + " complete : " + completed);
+
+        StateManager.instance.SetInt(StringUtils.KeyFriendlyString(level + " difficulty"), (int)difficulty, false);
 
     }
 
