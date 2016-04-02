@@ -365,6 +365,133 @@ Transform:
 Transform:
   m_PrefabParentObject: {fileID: 466272, guid: 2ee19ec2b7d498c41a9b7df95ab4ed09, type: 2}
   m_PrefabInternal: {fileID: 759917809}
+--- !u!1001 &1306657689
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 474950, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 2.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 474950, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 474950, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -6.39
+      objectReference: {fileID: 0}
+    - target: {fileID: 474950, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 474950, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 474950, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 474950, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 474950, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 13594190, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 147452, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: m_Name
+      value: AoE Tower
+      objectReference: {fileID: 0}
+    - target: {fileID: 2389454, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2eb89b79274b3fc4ba969004482be46c, type: 2}
+    - target: {fileID: 11424554, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: attributes.description
+      value: Hit Many foes!
+      objectReference: {fileID: 0}
+    - target: {fileID: 11424554, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: attributes.displayName
+      value: Boulder
+      objectReference: {fileID: 0}
+    - target: {fileID: 11424554, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: attributes.applyAOE
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11424554, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: attributes.damage
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11424554, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: attributes.missileSpeed
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 11424554, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: attributes.AOEDamage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11424554, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: attributes.applyBurn
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11424554, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: attributes.burnTime
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11424554, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: attributes.burnCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11424554, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: attributes.burnDamage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11424554, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: upgradeTree.Array.data[1].list.Array.data[0].displayName
+      value: Splashing
+      objectReference: {fileID: 0}
+    - target: {fileID: 11424554, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: upgradeTree.Array.data[1].list.Array.data[0].burnCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11424554, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: upgradeTree.Array.data[1].list.Array.data[0].burnDamage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11424554, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: upgradeTree.Array.data[1].list.Array.data[0].AOEDamage
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11424554, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: upgradeTree.Array.data[1].list.Array.data[0].damage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11424554, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: upgradeTree.Array.data[0].list.Array.data[0].missileSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11424554, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: upgradeTree.Array.data[0].list.Array.data[0].damage
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11424554, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+      propertyPath: missilePrefab
+      value: 
+      objectReference: {fileID: 11403804, guid: ce0e28ca92183404fbb544be8d5f8006,
+        type: 2}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: ef55eb705266bd442951a09be10dd0b1, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &2003667196
 Prefab:
   m_ObjectHideFlags: 0

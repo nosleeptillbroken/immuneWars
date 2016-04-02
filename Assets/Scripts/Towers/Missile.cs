@@ -21,16 +21,21 @@ public class Missile : MonoBehaviour
     /// </summary>
     public Transform target = null;
 
-	// Use this for initialization
-	/*
+    /// <summary>
+    /// Object instantiated to inflict AoE Damage, if applicable.
+    /// </summary>
+    public GameObject AOEDamager;
+
+    // Use this for initialization
+    /*
 	void Start ()
     {
 		// nothing to initialize
 	}
 	*/
 
-	// Update is called once per frame
-	void Update () 
+    // Update is called once per frame
+    void Update () 
 	{
         if (tower == null || attributes == null || target == null)
         {
@@ -81,6 +86,10 @@ public class Missile : MonoBehaviour
             {
                 effect.slowFactor = (effect.slowFactor > 0) ? Mathf.Min(effect.slowFactor, attributes.slowFactor) : attributes.slowFactor;
                 effect.slowTime = Mathf.Max(effect.slowTime, attributes.slowTime);
+            }
+            if (attributes.applyAOE)
+            {
+                Instantiate(AOEDamager, transform.position, transform.rotation);
             }
 
             Destroy(gameObject); // Destroy this object after collision

@@ -79,6 +79,18 @@ public class TowerAttributes
     /// </summary>
     public int burnDamage = 0;
 
+    [Header("AoE Damage")]
+
+    /// <summary>
+    /// Whether or not the tower's shots apply area of effect damage.
+    /// </summary>
+    public bool applyAOE = false;
+
+    /// <summary>
+    /// How much area of effect damage is applied.
+    /// </summary>
+    public int AOEDamage = 0;
+
     [Header("Display")]
 
     public Mesh mesh = null;
