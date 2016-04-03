@@ -168,6 +168,10 @@ Prefab:
       propertyPath: m_Name
       value: State Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 11439900, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
+      propertyPath: initialState
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
   m_IsPrefabParent: 0

@@ -94,8 +94,7 @@ public class Player : MonoSingleton<Player>
     private int missScoreMult = 10;
 
     [Header("Level Loading")]
-    public int currentLevel = 0;
-    public string[] levels;
+    public string currentLevel;
 
     #region MonoBehaviour
 
@@ -103,16 +102,16 @@ public class Player : MonoSingleton<Player>
     void Start()
     {
         // If they were not linked in editor find the Health Bar and Game Over objects for the scene
-        if (!healthBar) healthBar = GameObject.Find("Health Display").GetComponent<Slider>();
-        if (!goldText) goldText = GameObject.Find("Gold Display").GetComponent<Text>();
+        if (!healthBar && GameObject.Find("Health Display")) healthBar = GameObject.Find("Health Display").GetComponent<Slider>();
+        if (!goldText && GameObject.Find("Gold Display")) goldText = GameObject.Find("Gold Display").GetComponent<Text>();
 
         if (!gameOver) gameOver = GameObject.Find("Game Over");
         if (!gameWin) gameWin = GameObject.Find("Game Win");
         if (!resultsScreen) resultsScreen = GameObject.Find("Results Screen");
 
-        gameOver.SetActive(false);
-        gameWin.SetActive(false);
-        resultsScreen.SetActive(false);
+        if (gameOver) gameOver.SetActive(false);
+        if (gameWin) gameWin.SetActive(false);
+        if (resultsScreen) resultsScreen.SetActive(false);
 
         // Get a reference to the tower spawner
         // set health to max at beginning
@@ -120,24 +119,34 @@ public class Player : MonoSingleton<Player>
         healthBar.maxValue = maxHealth;
         healthBar.minValue = 0;
 
-        ResetState();
-
     }
 
     // Update is called once per frame
     void Update()
     {
         // Health bar displayed reflects current health
-        healthBar.value = currentHealth;
-        scoreText.text = "Score: " + (totalKills * killScoreMult).ToString(); //Adjust the player's score killing enemies.
-        killsText.text = "Kills: " + totalKills.ToString(); //Adjust the player's total kills.
+        if(healthBar) healthBar.value = currentHealth;
+        if(scoreText) scoreText.text = "Score: " + (totalKills * killScoreMult).ToString(); //Adjust the player's score killing enemies.
+        if(killsText) killsText.text = "Kills: " + totalKills.ToString(); //Adjust the player's total kills.
 
         // Update text on the gold display
-        goldText.GetComponentInChildren<Text>().text = (infiniteGold ? "∞" : currentGold.ToString());
-
-        if (Debug.isDebugBuild && Input.GetButtonDown("Debug Next Level"))
+        if (goldText)
         {
-            NextLevel();
+            goldText.GetComponentInChildren<Text>().text = (infiniteGold ? "∞" : currentGold.ToString());
+        }
+
+        if (Debug.isDebugBuild && Input.GetButtonDown("Debug Win Level"))
+        {
+            OnWin();
+        }
+        else if (Debug.isDebugBuild && Input.GetButtonDown("Debug Lose Level"))
+        {
+            OnLose();
+        }
+
+        if(StateManager.instance.currentState == StateManager.GameState.Overworld)
+        {
+            CheckGlobalStatus();
         }
     }
 
@@ -151,13 +160,28 @@ public class Player : MonoSingleton<Player>
         // If player health is zero
         if (currentHealth <= 0 && loseFlag == false)
         {
-            loseFlag = true;
             OnLose();
         }
         // If player health is nonzero and total kills and misses is greater than / equal to level creeps
         else if ((totalKills + totalMisses) >= CreepSpawner.GetLevelTotalCreeps() && loseFlag == false && winFlag == false )
         {
-            winFlag = true;
+            OnWin();
+        }
+    }
+
+    /// <summary>
+    /// Checks if the player has lost (player has no health) or won (all creeps killed/despawned and player still has health)
+    /// </summary>
+    public void CheckGlobalStatus()
+    {
+        // If player health is zero
+        if (StateManager.instance.GetInt("player_global_health", maxHealth) <= 0 && loseFlag == false)
+        {
+            OnLose();
+        }
+        // If player health is nonzero and total kills and misses is greater than / equal to level creeps
+        else if (LevelData.completedCount >= LevelData.count && StateManager.instance.GetBool("overworld_complete") == false)
+        {
             OnWin();
         }
     }
@@ -169,12 +193,21 @@ public class Player : MonoSingleton<Player>
     /// </summary>
     void OnWin()
     {
+        winFlag = true;
 
         // Enable game win screen
         Debug.Log("Player Won");
+
         gameWin.SetActive(true);
 
-        DisableInteractables();
+        if (StateManager.instance.currentState == StateManager.GameState.InGame)
+        {
+            StateManager.instance.SetBool(StringUtils.KeyFriendlyString(currentLevel + " complete"), true);
+        }
+        else if (StateManager.instance.currentState == StateManager.GameState.Overworld)
+        {
+            StateManager.instance.SetBool("overworld_complete", true);
+        }
     }
 
     /// <summary>
@@ -182,10 +215,32 @@ public class Player : MonoSingleton<Player>
     /// </summary>
     void OnLose()
     {
+        loseFlag = true;
 
         // Display game over menu
         Debug.Log("Player Lost");
+
         gameOver.SetActive(true);
+
+        if (StateManager.instance.currentState == StateManager.GameState.InGame)
+        {
+
+            int levelDifficulty = StateManager.instance.GetInt(StringUtils.KeyFriendlyString(currentLevel + " difficulty"))+1;
+
+            int currentGlobalHealth = StateManager.instance.GetInt("player_global_health");
+            int newGlobalHealth = currentGlobalHealth - levelDifficulty;
+
+            Debug.Log("player_global_health = " + currentGlobalHealth + " - " + levelDifficulty + " = " + newGlobalHealth);
+
+            StateManager.instance.SetInt("player_global_health", newGlobalHealth);
+
+        }
+        else if (StateManager.instance.currentState == StateManager.GameState.Overworld)
+        {
+            StateManager.instance.WipeData();
+        }
+
+        DisableInteractables();
     }
 
     /// <summary>
@@ -213,7 +268,20 @@ public class Player : MonoSingleton<Player>
     /// </summary>
     void OnLoadState()
     {
-        Debug.Log("Loaded InGame State Player");
+        if(StateManager.instance.currentState == StateManager.GameState.Overworld)
+        {
+            if (!StateManager.instance.HasInt("player_global_health"))
+            {
+                StateManager.instance.SetInt("player_global_health", maxHealth);
+                Debug.Log("player_global_health = " + maxHealth + "(default)");
+            }
+            else
+            {
+                int newGlobalHealth = StateManager.instance.GetInt("player_global_health", maxHealth);
+                _currentHealth = newGlobalHealth;
+                Debug.Log("player_global_health = " + newGlobalHealth);
+            }
+        }
     }
 
     /// <summary>
@@ -221,7 +289,6 @@ public class Player : MonoSingleton<Player>
     /// </summary>
     void OnUnloadState()
     {
-        Debug.Log("Unloaded InGame State Player");
     }
 
     /// <summary>
@@ -229,7 +296,7 @@ public class Player : MonoSingleton<Player>
     /// </summary>
     void OnLoadSubState()
     {
-        Debug.Log("Loaded SubState Player");
+        currentLevel = StateManager.instance.currentSubState;
         ResetState();
     }
 
@@ -238,7 +305,6 @@ public class Player : MonoSingleton<Player>
     /// </summary>
     void OnUnloadSubState()
     {
-        Debug.Log("Unloaded SubState Player");
         ResetInteractables();
         ResetState();
     }
@@ -348,17 +414,9 @@ public class Player : MonoSingleton<Player>
     /// Transition to the next level
     /// </summary>
     /// <param name="sceneName"></param>
-    public void NextLevel()
+    public void ReturnToOverworld()
     {
-        currentLevel += 1;
-        if (currentLevel < levels.Length)
-        {
-            StateManager.instance.SetSubState(levels[currentLevel]);
-        }
-        else
-        {
-            ReturnToMainMenu();
-        }
+        StateManager.instance.SetState(StateManager.GameState.Overworld);
     }
 
     /// <summary>
@@ -366,7 +424,7 @@ public class Player : MonoSingleton<Player>
     /// </summary>
     public void ReloadCurrentLevel()
     {
-        StateManager.instance.SetSubState("Level " + currentLevel);
+        StateManager.instance.SetState(StateManager.GameState.InGame, StateManager.instance.currentSubState);
     }
 
     /// <summary>
@@ -374,6 +432,7 @@ public class Player : MonoSingleton<Player>
     /// </summary>
     public void ReturnToMainMenu()
     {
+        StateManager.instance.SaveDataToFile("save.iws");
         StateManager.instance.SetState(StateManager.GameState.MainMenu);
     }
 
@@ -410,17 +469,26 @@ public class Player : MonoSingleton<Player>
             Camera.main.GetComponent<CameraController>().enabled = true;
         }
 
-        healthBar.gameObject.SetActive(true);
+        if (healthBar)
+        {
+            healthBar.gameObject.SetActive(true);
+        }
 
-        goldText.transform.parent.gameObject.SetActive(true);
+        if (goldText)
+        {
+            goldText.transform.parent.gameObject.SetActive(true);
+        }
 
-        TowerManager.instance.gameObject.SetActive(true);
-        TowerManager.instance.SetSelectTowersMode();
+        if (TowerManager.HasInstance())
+        {
+            TowerManager.instance.gameObject.SetActive(true);
+            TowerManager.instance.SetSelectTowersMode();
+        }
 
         // reset results menus
-        gameOver.SetActive(false);
-        gameWin.SetActive(false);
-        resultsScreen.SetActive(false);
+        if (gameOver) gameOver.SetActive(false);
+        if (gameWin) gameWin.SetActive(false);
+        if (resultsScreen) resultsScreen.SetActive(false);
     }
 
     /// <summary>
@@ -435,12 +503,12 @@ public class Player : MonoSingleton<Player>
         }
 
         // Disable health bar
-        healthBar.gameObject.SetActive(false);
+        if(healthBar) healthBar.gameObject.SetActive(false);
 
         // Disable gold display
-        goldText.transform.parent.gameObject.SetActive(false);
+        if (goldText) goldText.transform.parent.gameObject.SetActive(false);
 
         // Disable tower spawner and tower selector
-        TowerManager.instance.gameObject.SetActive(false);
+        if (TowerManager.HasInstance()) TowerManager.instance.gameObject.SetActive(false);
     }
 }

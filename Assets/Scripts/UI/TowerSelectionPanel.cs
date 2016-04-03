@@ -57,7 +57,7 @@ public class TowerSelectionPanel : MonoBehaviour
             GetComponents();
         }
 
-        if (selectedTower)
+        if (selectedTower && selectedTowerBehaviour)
         {
             TowerAttributes compositeAttributes = selectedTowerBehaviour.attributes + selectedTowerBehaviour.upgradeAttributes;
             Debug.Log(selectedTowerBehaviour.attributes.displayName);
@@ -143,6 +143,11 @@ public class TowerSelectionPanel : MonoBehaviour
         {
             Tooltip.current.ForceHide();
         }
+    }
+
+    void OnLanguageChange()
+    {
+        UpdateDisplayInformation();
     }
 
     //

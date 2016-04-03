@@ -22,7 +22,8 @@ public class MainMenuScript : MonoBehaviour
 
     public void StartGame()
     {
-        StateManager.instance.SetState(StateManager.GameState.InGame, "Level 1");
+        StateManager.instance.LoadDataFromFile("save.iws");
+        StateManager.instance.SetState(StateManager.GameState.Overworld);
     }
 
 	// call when exit Button is pressed

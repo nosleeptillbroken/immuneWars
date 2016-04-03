@@ -80,7 +80,7 @@ public class TowerManager : MonoSingleton<TowerManager>
     //
     public void SetPlaceTowersMode()
     {
-        if (_towerMode != true) towerShop.SendMessage("OpenPanel", null, SendMessageOptions.DontRequireReceiver);
+        if (_towerMode != true && towerShop != null) towerShop.SendMessage("OpenPanel", null, SendMessageOptions.DontRequireReceiver);
         DeselectTower();
         _towerMode = true;
     }
@@ -88,7 +88,7 @@ public class TowerManager : MonoSingleton<TowerManager>
     //
     public void SetSelectTowersMode()
     {
-        if (_towerMode != false) towerShop.SendMessage("ClosePanel", null, SendMessageOptions.DontRequireReceiver);
+        if (_towerMode != false && towerShop != null) towerShop.SendMessage("ClosePanel", null, SendMessageOptions.DontRequireReceiver);
         DeselectTower();
         _towerMode = false;
     }
@@ -103,7 +103,7 @@ public class TowerManager : MonoSingleton<TowerManager>
     /// <param name="selectedTower">The tower to be used. Must contain a tower component.</param>
     public void SelectTower(GameObject selectedTower)
     {
-        if (selectedTower != null && selectedTower.GetComponent<TowerBehaviour>() != null)
+        if (selectedTower != null && (selectedTower.GetComponent<TowerBehaviour>() != null || selectedTower.GetComponent<LevelData>() != null))
         {
             this.selectedTower = selectedTower;
             if(placeTowers)
@@ -364,8 +364,11 @@ public class TowerManager : MonoSingleton<TowerManager>
             {
                 towerRangeCircle.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", Color.green);
                 TowerBehaviour selectedTowerBehaviour = selectedTower.GetComponent<TowerBehaviour>();
-                towerRangeCircle.transform.localScale = Vector3.one * selectedTowerBehaviour.compositeAttributes.range * 2.0f;
-                towerRangeCircle.transform.position = selectedTower.transform.FindChild("RangeVolume").transform.position + new Vector3(0.0f, 0.01f, 0.0f);
+                if (selectedTowerBehaviour)
+                {
+                    towerRangeCircle.transform.localScale = Vector3.one * selectedTowerBehaviour.compositeAttributes.range * 2.0f;
+                    towerRangeCircle.transform.position = selectedTower.transform.FindChild("RangeVolume").transform.position + new Vector3(0.0f, 0.01f, 0.0f);
+                }
             }
         }
     }
