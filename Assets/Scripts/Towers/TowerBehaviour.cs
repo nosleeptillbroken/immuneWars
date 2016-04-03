@@ -116,6 +116,9 @@ public class TowerBehaviour : MonoBehaviour
             if (upgradeLevels[i] >= 0)
             {
                 upgradeAttributes += GetCurrentUpgrade(i);
+                Debug.Log("Actual damage is: " + compositeAttributes.damage);
+                Debug.Log("Actual range: " + compositeAttributes.range);
+                Debug.Log("Actual ROF: " + compositeAttributes.rateOfFire);
             }
         }
 

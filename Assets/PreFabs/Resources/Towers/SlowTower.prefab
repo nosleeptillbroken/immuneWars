@@ -155,10 +155,10 @@ MonoBehaviour:
   attributes:
     displayName: Icer
     description: So cold, its enemies slow to a crawl!
-    cost: 20
+    cost: 45
     range: 7
-    damage: 0
-    rateOfFire: 2
+    damage: 5
+    rateOfFire: 1
     missileSpeed: 20
     applySlow: 1
     slowTime: 5
@@ -194,7 +194,7 @@ MonoBehaviour:
   - list:
     - displayName: 'Fast '
       description: 
-      cost: 15
+      cost: 75
       range: 0
       damage: 0
       rateOfFire: 1
@@ -211,14 +211,14 @@ MonoBehaviour:
   - list:
     - displayName: 'Freezing '
       description: 
-      cost: 15
-      range: 0
+      cost: 125
+      range: 1
       damage: 0
       rateOfFire: 0
       missileSpeed: 0
       applySlow: 1
-      slowTime: 5
-      slowFactor: -0.1
+      slowTime: 1
+      slowFactor: 0.2
       applyBurn: 0
       burnTime: 0
       burnCount: 0
@@ -320,7 +320,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[1].list.Array.data[0].range
-      value: -2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[1].list.Array.data[0].damage
@@ -340,11 +340,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: attributes.cost
-      value: 20
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[1].list.Array.data[0].slowFactor
-      value: -0.1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[1].list.Array.data[0].applySlow
@@ -381,19 +381,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: attributes.rateOfFire
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[0].list.Array.data[0].cost
-      value: 15
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[1].list.Array.data[0].cost
-      value: 15
+      value: 125
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[1].list.Array.data[0].slowTime
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_CastShadows
@@ -406,6 +406,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: attributes.damage
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

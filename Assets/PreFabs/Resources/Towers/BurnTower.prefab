@@ -167,10 +167,10 @@ MonoBehaviour:
   attributes:
     displayName: Flamer
     description: Burns foes!
-    cost: 20
+    cost: 30
     range: 7
-    damage: 0
-    rateOfFire: 2
+    damage: 5
+    rateOfFire: 1.5
     missileSpeed: 20
     applySlow: 0
     slowTime: 0
@@ -178,7 +178,7 @@ MonoBehaviour:
     applyBurn: 1
     burnTime: 2
     burnCount: 5
-    burnDamage: 5
+    burnDamage: 1
     mesh: {fileID: 0}
     material: {fileID: 0}
   upgradeAttributes:
@@ -206,10 +206,10 @@ MonoBehaviour:
   - list:
     - displayName: Fast
       description: 
-      cost: 15
+      cost: 75
       range: 0
       damage: 0
-      rateOfFire: 1
+      rateOfFire: 1.5
       missileSpeed: 10
       applySlow: 0
       slowTime: 0
@@ -223,7 +223,7 @@ MonoBehaviour:
   - list:
     - displayName: Flaming
       description: 
-      cost: 15
+      cost: 100
       range: 0
       damage: 0
       rateOfFire: 0
@@ -231,10 +231,10 @@ MonoBehaviour:
       applySlow: 0
       slowTime: 0
       slowFactor: 0
-      applyBurn: 0
-      burnTime: 0
-      burnCount: 5
-      burnDamage: 1
+      applyBurn: 1
+      burnTime: -1
+      burnCount: 10
+      burnDamage: 2
       mesh: {fileID: 0}
       material: {fileID: 0}
   upgradeLevels: 
@@ -409,7 +409,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: attributes.burnDamage
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[0].list.Array.data[0].material
@@ -417,11 +417,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[0].list.Array.data[0].cost
-      value: 10
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: attributes.cost
-      value: 20
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[1].list.Array.data[0].displayName
@@ -429,7 +429,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[1].list.Array.data[0].burnTime
-      value: 0.1
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[1].list.Array.data[0].applyBurn
@@ -445,11 +445,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: attributes.damage
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: attributes.rateOfFire
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: attributes.applySlow
@@ -470,7 +470,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[1].list.Array.data[0].cost
-      value: 15
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[1].list.Array.data[0].damage
@@ -478,15 +478,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[1].list.Array.data[0].burnCount
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[1].list.Array.data[0].burnDamage
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_UseGravity
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: upgradeTree.Array.data[0].list.Array.data[0].rateOfFire
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

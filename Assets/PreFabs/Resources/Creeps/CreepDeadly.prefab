@@ -93,9 +93,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawner: {fileID: 0}
-  goldValue: 25
-  health: 50
-  leakDamage: 5
+  goldValue: 12
+  health: 185
+  leakDamage: 20
+  applyHeal: 0
+  healTime: 0.5
+  heal: 0
 --- !u!135 &13594144
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -181,7 +184,7 @@ Prefab:
       objectReference: {fileID: 118252, guid: db29bf8ff0970d144b61b9d4ab84b905, type: 2}
     - target: {fileID: 0}
       propertyPath: goldValue
-      value: 25
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: CurrencyText
@@ -189,11 +192,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: leakDamage
-      value: 5
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: health
+      value: 185
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

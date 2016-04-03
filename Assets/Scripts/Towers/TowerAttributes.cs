@@ -18,27 +18,27 @@ public class TowerAttributes
     /// <summary>
     /// The cost to purchase or upgrade this tower.
     /// </summary>
-    public int cost = 1;
+    public int cost = 0;
 
     /// <summary>
     /// The tower's targeting range.
     /// </summary>
-    public float range = 5.0f;
+    public float range = 0.0f;
 
     /// <summary>
     /// The damage each shot inflicts.
     /// </summary>
-    public int damage = 5;
+    public int damage = 0;
 
     /// <summary>
     /// Number of shots the tower fires per second.
     /// </summary>
-    public float rateOfFire = 1.0f;
+    public float rateOfFire = 0.0f;
 
     /// <summary>
     /// Speed of a missile shot from this tower.
     /// </summary>
-    public float missileSpeed = 20.0f;
+    public float missileSpeed = 0.0f;
     
     [Header("Creep Slowing")]
 

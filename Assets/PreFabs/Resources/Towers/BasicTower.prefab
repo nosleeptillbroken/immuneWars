@@ -155,9 +155,9 @@ MonoBehaviour:
   attributes:
     displayName: Shooter
     description: Shoots bullets at enemies!
-    cost: 10
+    cost: 15
     range: 7
-    damage: 4
+    damage: 5
     rateOfFire: 1.5
     missileSpeed: 20
     applySlow: 0
@@ -194,10 +194,10 @@ MonoBehaviour:
   - list:
     - displayName: 'Fast '
       description: 
-      cost: 10
-      range: 0
+      cost: 75
+      range: 1
       damage: 0
-      rateOfFire: 1
+      rateOfFire: 2.8
       missileSpeed: 10
       applySlow: 0
       slowTime: 0
@@ -211,9 +211,9 @@ MonoBehaviour:
   - list:
     - displayName: 'Fierce '
       description: 
-      cost: 10
-      range: 0
-      damage: 2
+      cost: 75
+      range: 1
+      damage: 15
       rateOfFire: 0
       missileSpeed: 0
       applySlow: 0
@@ -296,7 +296,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[1].list.Array.data[0].damage
-      value: 2
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[1].list.Array.data[0].rateOfFire
@@ -304,7 +304,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[1].list.Array.data[0].range
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: attributes.displayName
@@ -320,19 +320,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[0].list.Array.data[0].range
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: attributes.cost
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[0].list.Array.data[0].cost
-      value: 10
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[1].list.Array.data[0].cost
-      value: 10
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: attributes.description
@@ -344,7 +344,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: attributes.damage
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: attributes.rateOfFire
@@ -377,7 +377,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[0].list.Array.data[0].rateOfFire
-      value: 1
+      value: 2.8
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[0].list.Array.data[0].missileSpeed

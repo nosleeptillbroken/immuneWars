@@ -40,7 +40,7 @@ public class TowerSelectionPanel : MonoBehaviour
 
     public void UpgradeSelectedTower(int path)
     {
-        if(TowerManager.instance && selectedTower && Player.instance.RemoveGold(selectedTowerBehaviour.attributes.cost))
+        if(TowerManager.instance && selectedTower && Player.instance.RemoveGold(selectedTowerBehaviour.GetNextUpgrade(path).cost))
         {
             selectedTowerBehaviour.Upgrade(path);
             UpdateDisplayInformation();
