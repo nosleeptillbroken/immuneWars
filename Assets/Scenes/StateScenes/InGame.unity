@@ -641,11 +641,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22433238, guid: 97e4d165bba629048aede654b3ca5df2, type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22433238, guid: 97e4d165bba629048aede654b3ca5df2, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22443358, guid: 97e4d165bba629048aede654b3ca5df2, type: 2}
       propertyPath: m_AnchorMin.x
@@ -1128,6 +1128,10 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 975765077}
     m_Modifications:
+    - target: {fileID: 11416214, guid: 6302bd64c8e0efa42883f28434a6a43a, type: 2}
+      propertyPath: towers.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 11412960, guid: 6302bd64c8e0efa42883f28434a6a43a, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -1241,6 +1245,10 @@ Prefab:
       propertyPath: m_Type
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11416214, guid: 6302bd64c8e0efa42883f28434a6a43a, type: 2}
+      propertyPath: towers.Array.data[3]
+      value: 
+      objectReference: {fileID: 180522, guid: 35be887746faef34787d861308ebfdd5, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6302bd64c8e0efa42883f28434a6a43a, type: 2}
   m_IsPrefabParent: 0
