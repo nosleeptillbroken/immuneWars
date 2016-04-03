@@ -32,6 +32,28 @@ public class LevelData : MonoBehaviour {
         }
     }
 
+    public static int count
+    {
+        get
+        {
+            return FindObjectsOfType<LevelData>().Length;
+        }
+    }
+
+    public static int completedCount
+    {
+        get
+        {
+            LevelData[] levels = FindObjectsOfType<LevelData>();
+            int numCompleted = 0;
+            foreach(LevelData level in levels)
+            {
+                numCompleted += level.completed ? 1 : 0;
+            }
+            return numCompleted;
+        }
+    }
+
     /// <summary>
     /// The levels still required to complete in order to play this level.
     /// </summary>
@@ -58,8 +80,7 @@ public class LevelData : MonoBehaviour {
         completed = StateManager.instance.GetBool(StringUtils.KeyFriendlyString(level + " complete"));
         Debug.Log(level + " complete : " + completed);
 
-        StateManager.instance.SetInt(StringUtils.KeyFriendlyString(level + " difficulty"), (int)difficulty, false);
-
+        StateManager.instance.SetInt(StringUtils.KeyFriendlyString(level + " difficulty"), (int)difficulty);
     }
 
     void OnUnloadState()

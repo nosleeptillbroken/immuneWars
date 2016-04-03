@@ -414,7 +414,7 @@ public class StateManager : MonoSingleton<StateManager>
         {
             try
             {
-                if(additive)
+                if (additive)
                 {
                     _persistentStrings.Clear();
                     _persistentInts.Clear();
@@ -426,7 +426,7 @@ public class StateManager : MonoSingleton<StateManager>
                 _persistentBools.Deserialize(reader);
                 _persistentFloats.Deserialize(reader);
             }
-            catch(System.IO.IOException e)
+            catch (System.IO.IOException e)
             {
                 Debug.LogWarning(e.ToString() + e.Message);
                 reader.Close();
@@ -436,6 +436,14 @@ public class StateManager : MonoSingleton<StateManager>
 
         reader.Close();
         return true;
+    }
+
+    public void WipeData()
+    {
+        _persistentStrings.Clear();
+        _persistentInts.Clear();
+        _persistentBools.Clear();
+        _persistentFloats.Clear();
     }
 
     #endregion

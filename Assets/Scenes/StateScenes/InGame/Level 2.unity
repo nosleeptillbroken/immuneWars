@@ -168,11 +168,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 102333440}
   m_LocalRotation: {x: 0.38268346, y: 0, z: 0, w: 0.9238795}
-  m_LocalPosition: {x: 2.8199997, y: 11, z: -52.16}
+  m_LocalPosition: {x: -0.55, y: 22.38, z: -56.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 187387986}
-  m_RootOrder: 1
+  m_RootOrder: 0
 --- !u!45 &102333446
 Skybox:
   m_ObjectHideFlags: 0
@@ -202,7 +202,7 @@ MonoBehaviour:
   rotationSensitivity: 90
   rotationSpeed: 45
   enableZoom: 1
-  zoomSensitivity: 18
+  zoomSensitivity: 24
   zoomSpeed: 4
   zoomedInOrientation: {x: 0, y: 0, z: 0}
   zoomedOutOrientation: {x: 90, y: 0, z: 0}
@@ -233,8 +233,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1077789415}
   - {fileID: 102333445}
+  - {fileID: 1077789415}
   - {fileID: 565856566}
   - {fileID: 1020258225}
   - {fileID: 785066712}
