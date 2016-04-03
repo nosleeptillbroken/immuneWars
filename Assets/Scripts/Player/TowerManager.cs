@@ -40,16 +40,22 @@ public class TowerManager : MonoSingleton<TowerManager>
 
     [Header("Placement Restrictions")]
 
+
+    public bool enableHeightRestriction = false;
     /// <summary>
     /// Minimum Y value towers can be placed at
     /// </summary>
-    public float minYHeight = 0.0f;
+    public float minimumHeight = 0.0f;
 
+
+    public bool enableAngleRestriction = true;
     /// <summary>
     /// The difference in angle that the surface normal can be from global up.
     /// </summary>
     [Range(0.0f,360.0f)] public float angleTolerance = 5.0f;
 
+
+    public bool enableTextureRestriction = true;
     /// <summary>
     /// The strength (or greater) the tower placement splat texture (texture 0) must be for the tower to be placeable.
     /// </summary>
@@ -246,16 +252,22 @@ public class TowerManager : MonoSingleton<TowerManager>
                             // Casts a sphere at the collision point that is the same radius as the tower's collider
                             // Returns true if colliding with tower
                             collidesWithtower = Physics.CheckSphere(hit.point, capCollider.radius * newTowerObj.transform.localScale.z, ~LayerMask.GetMask("Terrain")/*ignore terrain colliders*/, QueryTriggerInteraction.Ignore/*ignore range volumes*/);
-                            
-                            // check that the angle of the tower is within 45 degrees of the global up
-                            canPlacePoint = Mathf.Acos(Vector3.Dot(hit.normal, Vector3.up)) < (angleTolerance * Mathf.Deg2Rad);
 
-                            // check if the point is above the minimum y value
-                            canPlacePoint = canPlacePoint && (hit.point.y > minYHeight);
+                            if (enableAngleRestriction)
+                            {
+                                // check that the angle of the tower is within 45 degrees of the global up
+                                canPlacePoint = Mathf.Acos(Vector3.Dot(hit.normal, Vector3.up)) < (angleTolerance * Mathf.Deg2Rad);
+                            }
+
+                            if (enableHeightRestriction)
+                            {
+                                // check if the point is above the minimum y value
+                                canPlacePoint = canPlacePoint && (hit.point.y > minimumHeight);
+                            }
 
                             // if the ray hit a terrain component
                             Terrain terrain = hit.collider.gameObject.GetComponent<Terrain>();
-                            if(terrain)
+                            if(terrain && enableTextureRestriction)
                             {
                                 // if the splat texture is mostly the tower placement texture
                                 canPlacePoint = canPlacePoint && (GetTerrainValue(terrain, hit.point, 0) >= splatTextureTolerance);

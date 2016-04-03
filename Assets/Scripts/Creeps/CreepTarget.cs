@@ -85,6 +85,8 @@ public class CreepTarget : MonoBehaviour
         int nextTargetIndex = GetNextNodeIndex();
 
         creep.target = children[nextTargetIndex];
+        creep.previous = this;
+        creep.nodesHit += 1;
     }
     
     /// <summary>

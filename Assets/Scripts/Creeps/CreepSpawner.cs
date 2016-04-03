@@ -120,19 +120,23 @@ public class CreepSpawner : CreepTarget
         foreach(Creep creep in FindObjectsOfType<Creep>())
         {
             // add 1 to make it counted so we don't have an early win from killing creeps spawned through other means
-            if(creep.spawner && !creep.spawner.GetComponent<CreepSpawner>())
+            if(creep.spawner.GetComponent<CreepSpawner>() == null)
             {
                 result += 1;
             }
         }
 
+        //Debug.Log(result + " foreign creeps");
+
         // for the rest of the level creeps, count the number of creeps in each spawner's waves.
         foreach(CreepSpawner spawner in FindObjectsOfType<CreepSpawner>())
         {
             result += spawner.GetTotalCreeps();
+            //Debug.Log(spawner.name + " : " + spawner.GetTotalCreeps() + " creeps");
         }
 
         _totalLevelCreeps = Mathf.Max(result, _totalLevelCreeps);
+        //Debug.Log("total : " + _totalLevelCreeps + " creeps");
 
         return _totalLevelCreeps;
     }

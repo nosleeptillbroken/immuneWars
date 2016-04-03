@@ -33,6 +33,7 @@ public class TowerBehaviour : MonoBehaviour
     /// </summary>
     public enum TargetingMode
     {
+        Progress,
         Distance,
         Health,
         Damage,
@@ -236,6 +237,10 @@ public class TowerBehaviour : MonoBehaviour
 
         ClearOldTargets();
         // select the closest one
+        if (targetingMode == TargetingMode.Progress)
+        {
+            SortTargetsByProgress();
+        }
         if (targetingMode == TargetingMode.Distance)
         {
             SortTargetsByDistance();
@@ -270,6 +275,19 @@ public class TowerBehaviour : MonoBehaviour
     #endregion
 
     #region Target Sorting
+
+    /// <summary>
+    /// Sorts targets by progress in the level
+    /// </summary>
+    public void SortTargetsByProgress()
+    {
+        // sort the array according to distance
+        targets.Sort
+        (
+            (l, r) => (l.progress.CompareTo(r.progress) * GetSortOrder())
+        );
+    }
+
 
     /// <summary>
     /// Sorts targets by distance

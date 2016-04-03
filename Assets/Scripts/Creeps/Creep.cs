@@ -42,6 +42,11 @@ public class Creep : MonoBehaviour
     private CreepTarget _target = null;
 
     /// <summary>
+    /// The previous target on the path. Used for calculating progress towards the goal.
+    /// </summary>
+    public CreepTarget previous = null;
+
+    /// <summary>
     /// How much health the unit currently has.
     /// </summary>
 	public int health = 50;
@@ -51,6 +56,22 @@ public class Creep : MonoBehaviour
     /// How much damage the unit inflicts when it successfully leaks through.
     /// </summary>
     public int leakDamage = 1;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public float progress
+    {
+        get
+        {
+            return Vector3.Distance(transform.position, previous.transform.position) / Vector3.Distance(target.transform.position, previous.transform.position) + nodesHit;
+        }
+    }
+
+    /// <summary>
+    /// Number of nodes this creep has hit already.
+    /// </summary>
+    public int nodesHit = 0;
 
     [Header("Creep Heal")]
     [SerializeField]

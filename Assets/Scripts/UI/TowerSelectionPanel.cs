@@ -33,7 +33,7 @@ public class TowerSelectionPanel : MonoBehaviour
     {
         if(TowerManager.instance)
         {
-            Player.instance.AddGold(selectedTowerBehaviour.attributes.cost + selectedTowerBehaviour.upgradeAttributes.cost);
+            Player.instance.AddGold(selectedTowerBehaviour.compositeAttributes.cost);
             DestroySelectedTower();
         }
     }

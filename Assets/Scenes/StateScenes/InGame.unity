@@ -641,11 +641,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22433238, guid: 97e4d165bba629048aede654b3ca5df2, type: 2}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22433238, guid: 97e4d165bba629048aede654b3ca5df2, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22443358, guid: 97e4d165bba629048aede654b3ca5df2, type: 2}
       propertyPath: m_AnchorMin.x
@@ -976,7 +976,7 @@ Prefab:
       objectReference: {fileID: 926244307}
     - target: {fileID: 11481996, guid: ebef431b156aaf14087648c44ff4d1ee, type: 2}
       propertyPath: minYHeight
-      value: -2
+      value: -Infinity
       objectReference: {fileID: 0}
     - target: {fileID: 11481996, guid: ebef431b156aaf14087648c44ff4d1ee, type: 2}
       propertyPath: splatTextureTolerance
@@ -1264,6 +1264,10 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 975765077}
     m_Modifications:
+    - target: {fileID: 11408798, guid: c98087cccb614f149a52db7e085326a0, type: 2}
+      propertyPath: m_Options.m_Options.Array.size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 22456792, guid: c98087cccb614f149a52db7e085326a0, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1336,7 +1340,32 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 11408798, guid: c98087cccb614f149a52db7e085326a0, type: 2}
+      propertyPath: m_Options.m_Options.Array.data[4].m_Text
+      value: Speed
+      objectReference: {fileID: 0}
+    - target: {fileID: 11408798, guid: c98087cccb614f149a52db7e085326a0, type: 2}
+      propertyPath: m_Options.m_Options.Array.data[0].m_Text
+      value: Progress
+      objectReference: {fileID: 0}
+    - target: {fileID: 11408798, guid: c98087cccb614f149a52db7e085326a0, type: 2}
+      propertyPath: m_Options.m_Options.Array.data[1].m_Text
+      value: Distance
+      objectReference: {fileID: 0}
+    - target: {fileID: 11408798, guid: c98087cccb614f149a52db7e085326a0, type: 2}
+      propertyPath: m_Options.m_Options.Array.data[2].m_Text
+      value: Health
+      objectReference: {fileID: 0}
+    - target: {fileID: 11408798, guid: c98087cccb614f149a52db7e085326a0, type: 2}
+      propertyPath: m_Options.m_Options.Array.data[3].m_Text
+      value: Damage
+      objectReference: {fileID: 0}
+    - target: {fileID: 11456308, guid: c98087cccb614f149a52db7e085326a0, type: 2}
+      propertyPath: m_Text
+      value: Progress
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 11494690, guid: c98087cccb614f149a52db7e085326a0, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: c98087cccb614f149a52db7e085326a0, type: 2}
   m_IsPrefabParent: 0
 --- !u!224 &1680368523 stripped
@@ -1793,7 +1822,7 @@ Prefab:
       objectReference: {fileID: 637095918}
     - target: {fileID: 11459098, guid: 88015c4268f411c47b0cdbdef5c7514e, type: 2}
       propertyPath: infiniteGold
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 88015c4268f411c47b0cdbdef5c7514e, type: 2}

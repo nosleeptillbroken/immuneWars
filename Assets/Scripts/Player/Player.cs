@@ -29,7 +29,7 @@ public class Player : MonoSingleton<Player>
 
     // current gold the player has
     private int _currentGold = 0;
-    public int currentGold { get { return _currentGold; } }
+    public int currentGold { get { return (infiniteGold) ? maxGold : _currentGold; } }
 
     /// <summary>
     /// If true, player can buy and upgrade for free, and does not collect gold.
@@ -144,7 +144,7 @@ public class Player : MonoSingleton<Player>
             OnLose();
         }
 
-        if(StateManager.instance.currentState == StateManager.GameState.Overworld)
+        if(StateManager.HasInstance() && StateManager.instance.currentState == StateManager.GameState.Overworld)
         {
             CheckGlobalStatus();
         }
@@ -234,6 +234,8 @@ public class Player : MonoSingleton<Player>
 
             StateManager.instance.SetInt("player_global_health", newGlobalHealth);
 
+            bool isLevelAlreadyCompleted = StateManager.instance.GetBool(StringUtils.KeyFriendlyString(currentLevel + " complete"));
+            StateManager.instance.SetBool(StringUtils.KeyFriendlyString(currentLevel + " complete"), isLevelAlreadyCompleted);
         }
         else if (StateManager.instance.currentState == StateManager.GameState.Overworld)
         {
