@@ -97,7 +97,7 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 180522}
   m_Enabled: 1
-  m_CastShadows: 2
+  m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: b3523fa102fad124d9d17c588391c0a2, type: 2}
@@ -189,7 +189,7 @@ MonoBehaviour:
   targets: []
   currentTarget: {fileID: 0}
   targetingMode: 0
-  sortOrder: 1
+  sortDescending: 0
   upgradeTree:
   - list:
     - displayName: 'Fast '
@@ -394,6 +394,18 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: upgradeTree.Array.data[1].list.Array.data[0].slowTime
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_IsKinematic
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

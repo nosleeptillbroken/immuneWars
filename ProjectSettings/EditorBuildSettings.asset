@@ -6,10 +6,32 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Title Screen.unity
+    path: Assets/Scenes/StateScenes/InitialState.unity
   - enabled: 1
-    path: Assets/Scenes/Level 1.unity
+    path: Assets/Scenes/StateScenes/MainMenu.unity
   - enabled: 1
-    path: Assets/Scenes/Level 2.unity
+    path: Assets/Scenes/StateScenes/Overworld.unity
   - enabled: 1
-    path: Assets/Scenes/Level 3.unity
+    path: Assets/Scenes/StateScenes/InGame.unity
+  - enabled: 1
+    path: Assets/Scenes/StateScenes/InGame/Brain.unity
+  - enabled: 1
+    path: Assets/Scenes/StateScenes/InGame/Cat Scratch.unity
+  - enabled: 1
+    path: Assets/Scenes/StateScenes/InGame/Heart.unity
+  - enabled: 1
+    path: Assets/Scenes/StateScenes/InGame/Large Intestines.unity
+  - enabled: 1
+    path: Assets/Scenes/StateScenes/InGame/Liver.unity
+  - enabled: 1
+    path: Assets/Scenes/StateScenes/InGame/Lungs.unity
+  - enabled: 1
+    path: Assets/Scenes/StateScenes/InGame/Mouth.unity
+  - enabled: 1
+    path: Assets/Scenes/StateScenes/InGame/Small Intestines.unity
+  - enabled: 1
+    path: Assets/Scenes/StateScenes/InGame/Stomach.unity
+  - enabled: 1
+    path: Assets/Scenes/StateScenes/InGame/Throat.unity
+  - enabled: 0
+    path: Assets/Scenes/StateScenes/InGame/Test Level.unity
