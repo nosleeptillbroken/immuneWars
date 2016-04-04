@@ -395,42 +395,50 @@ public class StateManager : MonoSingleton<StateManager>
         System.IO.FileInfo readFile = new System.IO.FileInfo(file);
         System.IO.BinaryReader reader;
 
-        try
-        {
-            reader = new System.IO.BinaryReader(System.IO.File.Open(file, System.IO.FileMode.Open));
-        }
-        catch (System.IO.FileNotFoundException e)
+        if (!readFile.Exists)
         {
             Debug.LogWarning("File '" + file + "' not found; Loading nothing.");
-            return false;
-        }
-
-        if (readFile.Length <= 0)
-        {
-            Debug.LogWarning("Data file '" + file + "' is empty; No action taken.");
             return false;
         }
         else
         {
             try
             {
-                if (additive)
-                {
-                    _persistentStrings.Clear();
-                    _persistentInts.Clear();
-                    _persistentBools.Clear();
-                    _persistentFloats.Clear();
-                }
-                _persistentStrings.Deserialize(reader);
-                _persistentInts.Deserialize(reader);
-                _persistentBools.Deserialize(reader);
-                _persistentFloats.Deserialize(reader);
+                reader = new System.IO.BinaryReader(System.IO.File.Open(file, System.IO.FileMode.Open));
             }
-            catch (System.IO.IOException e)
+            catch(System.IO.IOException e)
             {
-                Debug.LogWarning(e.ToString() + e.Message);
-                reader.Close();
+                Debug.Log(e.Source + e.Message);
                 return false;
+            }
+
+            if (readFile.Length <= 0)
+            {
+                Debug.LogWarning("Data file '" + file + "' is empty; No action taken.");
+                return false;
+            }
+            else
+            {
+                try
+                {
+                    if (additive)
+                    {
+                        _persistentStrings.Clear();
+                        _persistentInts.Clear();
+                        _persistentBools.Clear();
+                        _persistentFloats.Clear();
+                    }
+                    _persistentStrings.Deserialize(reader);
+                    _persistentInts.Deserialize(reader);
+                    _persistentBools.Deserialize(reader);
+                    _persistentFloats.Deserialize(reader);
+                }
+                catch (System.IO.IOException e)
+                {
+                    Debug.LogWarning(e.ToString() + e.Message);
+                    reader.Close();
+                    return false;
+                }
             }
         }
 

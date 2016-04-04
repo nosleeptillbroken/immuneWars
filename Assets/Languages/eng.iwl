@@ -73,3 +73,5 @@ exit=Exit
 failureText=THE HORDE OF GERMS AND VIRUSES HAVE OVERTOOK YOUR ONCE MIGHTY KINGDOM.
 victoryText=CONGRATULATIONS! YOU'VE DEFEATED THE INFECTION!
 needToBeat=Need to beat
+quitToMenuPrompt=Return to Title Screen?
+quitToOverworldPrompt=Return to Overworld?
