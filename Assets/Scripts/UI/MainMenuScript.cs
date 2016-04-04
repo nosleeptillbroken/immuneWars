@@ -22,7 +22,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void StartGame()
     {
-        StateManager.instance.LoadDataFromFile("save.iws");
+        StateManager.instance.LoadDataFromFile("./Saves/save.iws");
         StateManager.instance.SetState(StateManager.GameState.Overworld);
     }
 
