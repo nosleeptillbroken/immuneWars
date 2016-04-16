@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-public class PersistentData<T>
+class PersistentData<T>
 {
     public T value;
     public bool saveToDisk;
@@ -23,6 +23,9 @@ class PersistentDictionary<T>
 
     public PersistentDictionary(int capacity)
     {
+        TypedDatabase db = new TypedDatabase();
+
+
         _dictionary = new Dictionary<string, PersistentData<T>>(capacity);
         _writeCount = 0;
     }
@@ -41,7 +44,7 @@ class PersistentDictionary<T>
 
     public void RemoveEntry(string key)
     {
-        if(_dictionary.ContainsKey(key))
+        if (_dictionary.ContainsKey(key))
         {
             _dictionary.Remove(key);
             _writeCount -= 1;
