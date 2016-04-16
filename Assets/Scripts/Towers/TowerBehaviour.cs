@@ -10,6 +10,8 @@ using System.Collections.Generic;
 [RequireComponent(typeof(CapsuleCollider))]
 public class TowerBehaviour : MonoBehaviour
 {
+    private AudioSource source;
+    public AudioClip fireClip;
 
     // the missile this tower fires
     public Missile missilePrefab;
@@ -341,6 +343,11 @@ public class TowerBehaviour : MonoBehaviour
 
     #region MonoBehaviour
 
+    void Awake()
+    {
+        source = GetComponent<AudioSource>();
+    }
+
     void Start()
     {
         if(transform.parent == null)
@@ -411,6 +418,7 @@ public class TowerBehaviour : MonoBehaviour
                 missile.target = currentTarget.transform;
                 missile.attributes = compositeAttributes;
 
+                source.PlayOneShot(fireClip);
 
                 // reset time
                 elapsedTime = 0.0f;

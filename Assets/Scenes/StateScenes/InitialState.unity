@@ -85,25 +85,13 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualCellSize: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &444038425
+--- !u!1001 &1763289924
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 11439900, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
-      propertyPath: levels.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 11439900, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
-      propertyPath: subStates.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 11439900, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
-      propertyPath: levelScenes.Array.size
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 482798, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -134,39 +122,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 482798, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
       propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11439900, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
-      propertyPath: startingLevel
-      value: Main Menu
-      objectReference: {fileID: 0}
-    - target: {fileID: 11439900, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
-      propertyPath: levels.Array.data[0]
-      value: Level 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11439900, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
-      propertyPath: levels.Array.data[1]
-      value: Level 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11439900, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
-      propertyPath: levels.Array.data[2]
-      value: Level 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 11439900, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
-      propertyPath: levelScenes.Array.data[0]
-      value: Level 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11439900, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
-      propertyPath: levelScenes.Array.data[1]
-      value: Level 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11439900, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
-      propertyPath: levelScenes.Array.data[2]
-      value: Level 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 174982, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
-      propertyPath: m_Name
-      value: State Manager
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11439900, guid: c7d9a72269e7d63469fe91c5cf6e00c4, type: 2}
       propertyPath: initialState

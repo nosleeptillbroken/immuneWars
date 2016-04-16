@@ -12,6 +12,9 @@ public class Creep : MonoBehaviour
 
     private GameObject goldDrop;
     public int goldValue; //This is the Creep's worth. See in inspector.
+
+    public AudioClip goldClip;
+    private AudioSource source;
     
     //Vars for the health bar
     private GameObject healthBar; //link to the health bar game object
@@ -104,6 +107,7 @@ public class Creep : MonoBehaviour
     void Awake ()
     {
         agent = GetComponent<NavMeshAgent>();
+        source = GetComponent<AudioSource>();
     }
 
     // Use this for initialization
@@ -196,6 +200,9 @@ public class Creep : MonoBehaviour
         Player.instance.AddGold(goldValue); //increments the player's gold by the set gold value associated with the creep
         Player.instance.SendMessage("OnKillCreep", null, SendMessageOptions.DontRequireReceiver);
         spawner.SendMessage("OnCreepDeath", null, SendMessageOptions.DontRequireReceiver);
+
+        GameObject ss = Instantiate(Resources.Load("SoundSource") as GameObject, transform.position, Quaternion.identity) as GameObject;
+        ss.GetComponent<AudioSource>().PlayOneShot(goldClip);
 
         Destroy(gameObject);
     }

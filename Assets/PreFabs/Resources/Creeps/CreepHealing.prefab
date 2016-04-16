@@ -94,8 +94,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawner: {fileID: 0}
   goldValue: 25
+  goldClip: {fileID: 8300000, guid: cef1c3b27c902d447a6a8654fb45cd3f, type: 3}
+  previous: {fileID: 0}
   health: 50
   leakDamage: 5
+  nodesHit: 0
   applyHeal: 1
   healTime: 0.5
   heal: 5
@@ -206,6 +209,10 @@ Prefab:
       propertyPath: heal
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: goldClip
+      value: 
+      objectReference: {fileID: 8300000, guid: cef1c3b27c902d447a6a8654fb45cd3f, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 138346}
