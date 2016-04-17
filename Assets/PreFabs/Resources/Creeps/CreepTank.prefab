@@ -97,7 +97,7 @@ MonoBehaviour:
   goldClip: {fileID: 8300000, guid: cef1c3b27c902d447a6a8654fb45cd3f, type: 3}
   previous: {fileID: 0}
   health: 250
-  leakDamage: 20
+  leakDamage: 15
   nodesHit: 0
   applyHeal: 0
   healTime: 0.5
@@ -227,7 +227,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: leakDamage
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: health
