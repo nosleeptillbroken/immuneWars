@@ -1841,10 +1841,6 @@ Prefab:
       propertyPath: scoreText
       value: 
       objectReference: {fileID: 637095918}
-    - target: {fileID: 11459098, guid: 88015c4268f411c47b0cdbdef5c7514e, type: 2}
-      propertyPath: infiniteGold
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 88015c4268f411c47b0cdbdef5c7514e, type: 2}
   m_IsPrefabParent: 0

@@ -45,14 +45,33 @@ MonoBehaviour:
   waveList:
   - creepList:
     - creep: {fileID: 138346, guid: f1f3730f36d1ab741b0be2371ef0696f, type: 2}
-      number: 2
+      number: 5
+  - creepList:
+    - creep: {fileID: 138346, guid: f1f3730f36d1ab741b0be2371ef0696f, type: 2}
+      number: 3
     - creep: {fileID: 138346, guid: 02dfe676f2184c44aa08a979b607f775, type: 2}
       number: 2
   - creepList:
+    - creep: {fileID: 138346, guid: f1f3730f36d1ab741b0be2371ef0696f, type: 2}
+      number: 5
+    - creep: {fileID: 138346, guid: 02dfe676f2184c44aa08a979b607f775, type: 2}
+      number: 3
     - creep: {fileID: 138346, guid: 40b4d32d849810d4fad73f8ba9188028, type: 2}
-      number: 2
+      number: 3
+  - creepList:
+    - creep: {fileID: 138346, guid: 02dfe676f2184c44aa08a979b607f775, type: 2}
+      number: 3
+    - creep: {fileID: 138346, guid: 40b4d32d849810d4fad73f8ba9188028, type: 2}
+      number: 3
     - creep: {fileID: 138346, guid: 5571547684fad2f4f858d4ebe766c94c, type: 2}
-      number: 2
+      number: 3
+  - creepList:
+    - creep: {fileID: 138346, guid: f757c119d70635842a6e3e7d3eadca9c, type: 2}
+      number: 5
+    - creep: {fileID: 138346, guid: 02dfe676f2184c44aa08a979b607f775, type: 2}
+      number: 5
+    - creep: {fileID: 138346, guid: 5571547684fad2f4f858d4ebe766c94c, type: 2}
+      number: 5
   spawnWait: 1
 --- !u!135 &13580316
 SphereCollider:
@@ -74,8 +93,24 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 0}
+      propertyPath: waveList.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
       propertyPath: levelList.Array.data[0].waveList.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[0].creepList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[2].creepList.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[5].creepList.Array.size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: levelList.Array.data[0].waveList.Array.data[1].creep
@@ -133,6 +168,98 @@ Prefab:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[0].creepList.Array.data[0].number
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[0].creepList.Array.data[1].creep
+      value: 
+      objectReference: {fileID: 138346, guid: 02dfe676f2184c44aa08a979b607f775, type: 2}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[0].creepList.Array.data[1].number
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[1].creepList.Array.data[0].creep
+      value: 
+      objectReference: {fileID: 138346, guid: f1f3730f36d1ab741b0be2371ef0696f, type: 2}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[1].creepList.Array.data[0].number
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[1].creepList.Array.data[1].creep
+      value: 
+      objectReference: {fileID: 138346, guid: 02dfe676f2184c44aa08a979b607f775, type: 2}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[2].creepList.Array.data[0].number
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[2].creepList.Array.data[1].number
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[2].creepList.Array.data[2].creep
+      value: 
+      objectReference: {fileID: 138346, guid: 40b4d32d849810d4fad73f8ba9188028, type: 2}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[5].creepList.Array.data[0].creep
+      value: 
+      objectReference: {fileID: 138346, guid: f1f3730f36d1ab741b0be2371ef0696f, type: 2}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[5].creepList.Array.data[0].number
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[5].creepList.Array.data[1].creep
+      value: 
+      objectReference: {fileID: 138346, guid: 02dfe676f2184c44aa08a979b607f775, type: 2}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[5].creepList.Array.data[1].number
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[5].creepList.Array.data[2].creep
+      value: 
+      objectReference: {fileID: 138346, guid: 40b4d32d849810d4fad73f8ba9188028, type: 2}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[5].creepList.Array.data[2].number
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[3].creepList.Array.data[0].creep
+      value: 
+      objectReference: {fileID: 138346, guid: 02dfe676f2184c44aa08a979b607f775, type: 2}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[3].creepList.Array.data[0].number
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[3].creepList.Array.data[1].creep
+      value: 
+      objectReference: {fileID: 138346, guid: 40b4d32d849810d4fad73f8ba9188028, type: 2}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[3].creepList.Array.data[2].creep
+      value: 
+      objectReference: {fileID: 138346, guid: 5571547684fad2f4f858d4ebe766c94c, type: 2}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[4].creepList.Array.data[0].creep
+      value: 
+      objectReference: {fileID: 138346, guid: f757c119d70635842a6e3e7d3eadca9c, type: 2}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[4].creepList.Array.data[1].number
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[4].creepList.Array.data[2].number
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: waveList.Array.data[4].creepList.Array.data[2].creep
+      value: 
+      objectReference: {fileID: 138346, guid: 5571547684fad2f4f858d4ebe766c94c, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 140994}

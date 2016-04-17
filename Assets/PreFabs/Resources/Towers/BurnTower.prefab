@@ -313,7 +313,7 @@ MonoBehaviour:
       applySlow: 0
       slowTime: 0
       slowFactor: 0
-      applyBurn: 0
+      applyBurn: 1
       burnTime: 0
       burnCount: 5
       burnDamage: 1

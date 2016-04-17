@@ -254,7 +254,7 @@ Prefab:
     - target: {fileID: 11424546, guid: 1f21745c4f80c7944a00979c361ea2a5, type: 2}
       propertyPath: completeRequired.Array.data[0]
       value: 
-      objectReference: {fileID: 2084752470}
+      objectReference: {fileID: 1480717733}
     - target: {fileID: 11424546, guid: 1f21745c4f80c7944a00979c361ea2a5, type: 2}
       propertyPath: completeRequired.Array.data[1]
       value: 
@@ -707,11 +707,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22433238, guid: 97e4d165bba629048aede654b3ca5df2, type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22433238, guid: 97e4d165bba629048aede654b3ca5df2, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22443358, guid: 97e4d165bba629048aede654b3ca5df2, type: 2}
       propertyPath: m_AnchorMin.x
@@ -1651,6 +1651,12 @@ MonoBehaviour:
 Transform:
   m_PrefabParentObject: {fileID: 435458, guid: 88015c4268f411c47b0cdbdef5c7514e, type: 2}
   m_PrefabInternal: {fileID: 1950231524}
+--- !u!114 &1480717733 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11424546, guid: 1f21745c4f80c7944a00979c361ea2a5,
+    type: 2}
+  m_PrefabInternal: {fileID: 1324380104}
+  m_Script: {fileID: 11500000, guid: 57ce24c05eb37c149ab062874e2fa5d6, type: 3}
 --- !u!114 &1483375594 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 11450888, guid: 97e4d165bba629048aede654b3ca5df2,
