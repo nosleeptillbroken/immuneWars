@@ -130,7 +130,8 @@ public class LangData {
         }
         else
         {
-            return "Not Found";
+            Debug.LogWarning("Language key '" + getKey + "' not found.");
+            return getKey;
         }
     }
 

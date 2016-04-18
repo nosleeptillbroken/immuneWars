@@ -93,11 +93,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawner: {fileID: 0}
-  goldValue: 15
+  goldValue: 10
   goldClip: {fileID: 8300000, guid: cef1c3b27c902d447a6a8654fb45cd3f, type: 3}
   previous: {fileID: 0}
   health: 250
-  leakDamage: 15
+  leakDamage: 20
   nodesHit: 0
   applyHeal: 0
   healTime: 0.5
@@ -219,7 +219,7 @@ Prefab:
       objectReference: {fileID: 118252, guid: db29bf8ff0970d144b61b9d4ab84b905, type: 2}
     - target: {fileID: 0}
       propertyPath: goldValue
-      value: 15
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: CurrencyText
@@ -227,7 +227,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: leakDamage
-      value: 15
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: health

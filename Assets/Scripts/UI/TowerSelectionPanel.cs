@@ -156,6 +156,11 @@ public class TowerSelectionPanel : MonoBehaviour
         GetComponents();
     }
 
+    void Update()
+    {
+        UpdateDisplayInformation();
+    }
+
     void OnEnable()
     {
         UpdateDisplayInformation();
