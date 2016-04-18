@@ -522,7 +522,7 @@ Prefab:
       objectReference: {fileID: 138346, guid: 02dfe676f2184c44aa08a979b607f775, type: 2}
     - target: {fileID: 11470492, guid: 37fa1e31aefd89b42906ac66b0da87ae, type: 2}
       propertyPath: waveList.Array.data[0].creepList.Array.data[1].number
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11470492, guid: 37fa1e31aefd89b42906ac66b0da87ae, type: 2}
       propertyPath: waveList.Array.data[1].creepList.Array.data[0].number
@@ -995,7 +995,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11470492, guid: 37fa1e31aefd89b42906ac66b0da87ae, type: 2}
       propertyPath: waveList.Array.data[1].creepList.Array.data[1].number
-      value: 8
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11470492, guid: 37fa1e31aefd89b42906ac66b0da87ae, type: 2}
       propertyPath: waveList.Array.data[2].creepList.Array.data[0].number
@@ -1277,7 +1277,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11470492, guid: 37fa1e31aefd89b42906ac66b0da87ae, type: 2}
       propertyPath: waveList.Array.data[1].creepList.Array.data[1].number
-      value: 8
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 11470492, guid: 37fa1e31aefd89b42906ac66b0da87ae, type: 2}
       propertyPath: waveList.Array.data[2].creepList.Array.data[0].number

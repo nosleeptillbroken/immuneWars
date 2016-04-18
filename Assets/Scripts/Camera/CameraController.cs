@@ -12,7 +12,8 @@ public class CameraController : MonoBehaviour {
     public bool enableEdgePanning = true;
     [Tooltip("Distance from the edge of the screen before edge panning will occur.")]
     public float edgePanThreshold = 16; // The number of px on each side of the screen that will count towards panning the screen
-    public float panSpeed = 32; // The speed at which the camera pans
+    public float arrowPanSpeed = 32; // The speed at which the camera pans for the arrows
+    public float mousePanSpeed = 325; // The speed at which the camera pans for the mouse
 
     [Tooltip("Enables camera restriction within a box defined by two points.")]
     public bool cameraBoundsRestriction = false;
@@ -24,7 +25,7 @@ public class CameraController : MonoBehaviour {
 
     public bool enableRotation = true;
     public float rotationSensitivity = 90;
-    public float rotationSpeed = 45; // The speed at which the camera rotates during zoom
+    public float rotationSpeed = 145; // The speed at which the camera rotates during zoom
                                     //public float rotationThreshold = 8; // The threshold at which rotation stops. larger number = more narrow range of rotation
 
     // Zoom Properties
@@ -32,7 +33,7 @@ public class CameraController : MonoBehaviour {
 
     public bool enableZoom = true;
     public float zoomSensitivity = 18;
-    public float zoomSpeed = 4;
+    public float zoomSpeed = 50;
 
     private float zoom = 0.5f;
     private float zoomLerp = 0;
@@ -101,8 +102,8 @@ public class CameraController : MonoBehaviour {
             // Set rotation to identity so that translation is planar
             transform.rotation = Quaternion.identity;
             // Translate camera according to mouse delta
-            transform.Translate(Vector3.right * -deltaMouseX * Time.deltaTime * panSpeed);
-            transform.Translate(Vector3.forward * -deltaMouseY * Time.deltaTime * panSpeed);
+            transform.Translate(Vector3.right * -deltaMouseX * Time.deltaTime * mousePanSpeed);
+            transform.Translate(Vector3.forward * -deltaMouseY * Time.deltaTime * mousePanSpeed);
             // Reset Rotation to initial
             transform.rotation = currRot;
         }
@@ -120,26 +121,26 @@ public class CameraController : MonoBehaviour {
             if ((cursorX < edgePanThreshold && enableEdgePanning) || Input.GetAxisRaw("Horizontal") < 0)
             {
                 transform.rotation = Quaternion.identity;
-                transform.Translate(Vector3.right * -panSpeed * Time.deltaTime * sprintMult);
+                transform.Translate(Vector3.right * -arrowPanSpeed * Time.deltaTime * sprintMult);
                 transform.rotation = currRot;
             }
             else if ((cursorX >= Screen.width - edgePanThreshold && enableEdgePanning) || Input.GetAxisRaw("Horizontal") > 0)
             {
                 transform.rotation = Quaternion.identity;
-                transform.Translate(Vector3.right * panSpeed * Time.deltaTime * sprintMult);
+                transform.Translate(Vector3.right * arrowPanSpeed * Time.deltaTime * sprintMult);
                 transform.rotation = currRot;
             }
 
             if ((cursorY < edgePanThreshold && enableEdgePanning) || Input.GetAxisRaw("Vertical") < 0)
             {
                 transform.rotation = Quaternion.identity;
-                transform.Translate(Vector3.forward * -panSpeed * Time.deltaTime * sprintMult);
+                transform.Translate(Vector3.forward * -arrowPanSpeed * Time.deltaTime * sprintMult);
                 transform.rotation = currRot;
             }
             else if ((cursorY >= Screen.height - edgePanThreshold && enableEdgePanning) || Input.GetAxisRaw("Vertical") > 0)
             {
                 transform.rotation = Quaternion.identity;
-                transform.Translate(Vector3.forward * panSpeed * Time.deltaTime * sprintMult);
+                transform.Translate(Vector3.forward * arrowPanSpeed * Time.deltaTime * sprintMult);
                 transform.rotation = currRot;
             }
         }
